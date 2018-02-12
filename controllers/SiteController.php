@@ -3,15 +3,22 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\web\{Controller, Response};
+use yii\filters\{AccessControl, VerbFilter};
+use app\models\{LoginForm, RegForm, ContactForm};
 
 class SiteController extends Controller
 {
+    /**
+     * Initialize.
+     */
+    public function init()
+    {
+        $this->defaultAction = 'index';
+
+        parent::init();
+    }
+
     /**
      * @inheritdoc
      */
@@ -20,11 +27,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'allow'   => true,
+                        'actions' => ['index', 'reg', 'login', 'error'],
+                        'roles'   => ['?'],
+                    ],
+                    [
                         'allow' => true,
+                        'actions' => ['index', 'logout', 'error'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -32,7 +43,8 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'index' => ['get'],
+                    'logout' => ['post', 'get'],
                 ],
             ],
         ];
@@ -76,12 +88,36 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
 
-        $model->password = '';
         return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Register action.
+     *
+     * @return Response|string
+     */
+    public function actionReg()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->reg()) {
+
+            if (Yii::$app->getUser()->login($model->getUser())){
+                return $this->goHome();
+            }
+        }
+        return $this->render('reg', [
             'model' => $model,
         ]);
     }

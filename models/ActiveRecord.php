@@ -1,0 +1,29 @@
+<?php
+
+namespace app\models;
+
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+
+/**
+ * Class ActiveRecord
+ */
+class ActiveRecord extends \yii\db\ActiveRecord
+{
+    /**
+     * Connect behavior to the basic model.
+     *
+     * @return array
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors[] = [
+            'class'              => TimestampBehavior::className(),
+            'createdAtAttribute' => 'created_at',
+            'updatedAtAttribute' => 'updated_at',
+            'value'              => new Expression('NOW()'),
+        ];
+        return $behaviors;
+    }
+}

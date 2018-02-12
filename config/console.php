@@ -1,5 +1,7 @@
 <?php
 
+use Itstructure\AdminModule\Module;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -27,6 +29,11 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
+    'modules' => [
+        'admin' => [
+            'class' => Module::class,
+        ],
+    ],
     /*
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.

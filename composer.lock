@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1445db6e90f36dfba9ffaaf9f6dc736",
+    "content-hash": "fdc5a88246e854a2be90119843ff5b0a",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -531,6 +531,46 @@
     ],
     "packages-dev": [
         {
+            "name": "almasaeed2010/adminlte",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/almasaeed2010/AdminLTE.git",
+                "reference": "6157c7bc77bfca7e9aa75f529f3f612122d9a2f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/6157c7bc77bfca7e9aa75f529f3f612122d9a2f1",
+                "reference": "6157c7bc77bfca7e9aa75f529f3f612122d9a2f1",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abdullah Almsaeed",
+                    "email": "abdullah@almsaeedstudio.com"
+                }
+            ],
+            "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 3",
+            "homepage": "https://adminlte.io/",
+            "keywords": [
+                "JS",
+                "admin",
+                "back-end",
+                "css",
+                "less",
+                "responsive",
+                "template",
+                "theme",
+                "web"
+            ],
+            "time": "2017-07-08T17:45:57+00:00"
+        },
+        {
             "name": "behat/gherkin",
             "version": "dev-master",
             "source": {
@@ -607,6 +647,47 @@
                 "bower-asset/jquery": ">=1.7"
             },
             "type": "bower-asset"
+        },
+        {
+            "name": "ckeditor/ckeditor",
+            "version": "4.7.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ckeditor/ckeditor-releases.git",
+                "reference": "97b8f412f6b36985c734daf0717e81009a885dba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/97b8f412f6b36985c734daf0717e81009a885dba",
+                "reference": "97b8f412f6b36985c734daf0717e81009a885dba",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+",
+                "LGPL-2.1+",
+                "MPL-1.1+"
+            ],
+            "authors": [
+                {
+                    "name": "CKSource",
+                    "homepage": "http://cksource.com"
+                }
+            ],
+            "description": "JavaScript WYSIWYG web text editor.",
+            "homepage": "http://ckeditor.com",
+            "keywords": [
+                "CKEditor",
+                "editor",
+                "fckeditor",
+                "html",
+                "javascript",
+                "richtext",
+                "text",
+                "wysiwyg"
+            ],
+            "time": "2017-09-13T13:09:47+00:00"
         },
         {
             "name": "codeception/base",
@@ -976,6 +1057,138 @@
                 "url"
             ],
             "time": "2017-10-07T03:19:56+00:00"
+        },
+        {
+            "name": "itstructure/yii2-admin-module",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itstructure/yii2-admin-module.git",
+                "reference": "fac1f82bff96d0fa118714974554aa48fb1d9a20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/fac1f82bff96d0fa118714974554aa48fb1d9a20",
+                "reference": "fac1f82bff96d0fa118714974554aa48fb1d9a20",
+                "shasum": ""
+            },
+            "require": {
+                "almasaeed2010/adminlte": "2.4.0",
+                "itstructure/yii2-field-widgets": "^1.0.0",
+                "yiisoft/yii2": "~2.0.5",
+                "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Itstructure\\AdminModule\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Girnik",
+                    "email": "girnikandrey@gmail.com"
+                }
+            ],
+            "description": "Admin module for Yii2 Framework with AdminLTE template",
+            "keywords": [
+                "admin",
+                "dashboard",
+                "module",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2018-02-12T11:04:58+00:00"
+        },
+        {
+            "name": "itstructure/yii2-ckeditor",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itstructure/yii2-ckeditor.git",
+                "reference": "ac7b108854a87ffc0b391cfa52f16c99c2d23747"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itstructure/yii2-ckeditor/zipball/ac7b108854a87ffc0b391cfa52f16c99c2d23747",
+                "reference": "ac7b108854a87ffc0b391cfa52f16c99c2d23747",
+                "shasum": ""
+            },
+            "require": {
+                "ckeditor/ckeditor": "~4.7.1",
+                "yiisoft/yii2": "~2.0.5"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "Itstructure\\CKEditor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Girnik",
+                    "email": "girnikandrey@gmail.com"
+                }
+            ],
+            "description": "CKEditor widget for Yii2 Framework",
+            "keywords": [
+                "CKEditor",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2018-02-04T10:31:43+00:00"
+        },
+        {
+            "name": "itstructure/yii2-field-widgets",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itstructure/yii2-field-widgets.git",
+                "reference": "53d71fd4127f2223c7491d81c8c13ad5a9cadeb3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itstructure/yii2-field-widgets/zipball/53d71fd4127f2223c7491d81c8c13ad5a9cadeb3",
+                "reference": "53d71fd4127f2223c7491d81c8c13ad5a9cadeb3",
+                "shasum": ""
+            },
+            "require": {
+                "itstructure/yii2-ckeditor": "^1.0.0",
+                "yiisoft/yii2": "~2.0.5"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "Itstructure\\FieldWidgets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Girnik",
+                    "email": "girnikandrey@gmail.com"
+                }
+            ],
+            "description": "The form field widgets for Yii2 Framework with multilanguage mode support.",
+            "keywords": [
+                "field",
+                "multilanguage",
+                "widget",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2018-02-04T13:08:48+00:00"
         },
         {
             "name": "myclabs/deep-copy",

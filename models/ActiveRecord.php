@@ -19,7 +19,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         $behaviors = parent::behaviors();
         $behaviors[] = [
-            'class'              => TimestampBehavior::className(),
+            'class'              => TimestampBehavior::class,
             'createdAtAttribute' => 'created_at',
             'updatedAtAttribute' => 'updated_at',
             'value'              => new Expression('NOW()'),

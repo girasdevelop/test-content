@@ -67,14 +67,14 @@ class CatalogLanguage extends \yii\db\ActiveRecord
                 ['catalog_id'],
                 'exist',
                 'skipOnError' => true,
-                'targetClass' => Catalog::className(),
+                'targetClass' => Catalog::class,
                 'targetAttribute' => ['catalog_id' => 'id'],
             ],
             [
                 ['language_id'],
                 'exist',
                 'skipOnError' => true,
-                'targetClass' => Language::className(),
+                'targetClass' => Language::class,
                 'targetAttribute' => ['language_id' => 'id'],
             ],
         ];
@@ -100,7 +100,7 @@ class CatalogLanguage extends \yii\db\ActiveRecord
      */
     public function getCatalog()
     {
-        return $this->hasOne(Catalog::className(), ['id' => 'catalog_id']);
+        return $this->hasOne(Catalog::class, ['id' => 'catalog_id']);
     }
 
     /**
@@ -108,6 +108,6 @@ class CatalogLanguage extends \yii\db\ActiveRecord
      */
     public function getLanguage()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language_id']);
+        return $this->hasOne(Language::class, ['id' => 'language_id']);
     }
 }

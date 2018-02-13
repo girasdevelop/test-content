@@ -11,7 +11,7 @@ $this->title = 'Register';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
     <p>Please fill out the following fields to login:</p>
 
@@ -24,17 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+    <?php echo $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
-    <?= $form->field($model, 'email')->textInput() ?>
+    <?php echo $form->field($model, 'email')->textInput() ?>
 
-    <?= $form->field($model, 'login')->textInput() ?>
+    <?php echo $form->field($model, 'login')->textInput() ?>
 
-    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?php echo $form->field($model, 'password')->passwordInput() ?>
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
-            <?= Html::submitButton('Register', ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
+            <?php echo Html::submitButton('Register', ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
         </div>
     </div>
 

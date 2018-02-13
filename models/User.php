@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\rbac\ManagerInterface;
+use Itstructure\AdminModule\interfaces\AdminMenuInterface;
 
 /**
  * Class User model.
@@ -13,7 +14,7 @@ use yii\rbac\ManagerInterface;
  *
  * @package app\models
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, AdminMenuInterface
 {
     /**
      * Password confirmed.

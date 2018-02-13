@@ -1,7 +1,7 @@
 <?php
 
-use Itstructure\AdminModule\components\MultilanguageMigration;
 use app\models\Catalog;
+use Itstructure\AdminModule\components\MultilanguageMigration;
 
 /**
  * Handles the creation of table `catalog`.

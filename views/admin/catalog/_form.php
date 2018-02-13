@@ -6,7 +6,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 use Itstructure\AdminModule\models\Language;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
-/* @var $model app\models\Catalog */
+/* @var $model app\models\Catalog|Itstructure\AdminModule\models\MultilanguageValidateModel */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -46,7 +46,11 @@ use Itstructure\AdminModule\models\Language;
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php echo Html::submitButton($model->mainModel->isNewRecord ? 'Create' : 'Update',
+            [
+                'class' => $model->mainModel->isNewRecord ? 'btn btn-success' : 'btn btn-primary'
+            ]
+        ) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

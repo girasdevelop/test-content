@@ -86,13 +86,13 @@ class RegForm extends Model
             [
                 'name',
                 'unique',
-                'targetClass' => User::className(),
+                'targetClass' => User::class,
                 'message' => 'This name already exists.',
             ],
             [
                 'login',
                 'unique',
-                'targetClass' => User::className(),
+                'targetClass' => User::class,
                 'message' => 'This login already exists.',
             ],
             [
@@ -102,7 +102,7 @@ class RegForm extends Model
             [
                 'email',
                 'unique',
-                'targetClass' => User::className(),
+                'targetClass' => User::class,
                 'message' => 'This email already exists.',
             ],
         ];

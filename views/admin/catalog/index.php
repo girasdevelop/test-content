@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Catalog', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a('Create Catalog', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?= GridView::widget([
+    <?php echo GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         /*'tableOptions' => [
@@ -46,11 +46,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'created_at',
-                'format' =>  ['date', 'dd.MM.Y H:m:s'],
+                'format' =>  ['date', 'dd.MM.Y HH:mm:ss'],
             ],
             [
                 'attribute' => 'updated_at',
-                'format' =>  ['date', 'dd.MM.Y H:m:s'],
+                'format' =>  ['date', 'dd.MM.Y HH:mm:ss'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

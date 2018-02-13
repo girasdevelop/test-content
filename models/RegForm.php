@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\base\Model;
+use app\helpers\InitialUserSettings;
 
 class RegForm extends Model
 {
@@ -145,6 +146,8 @@ class RegForm extends Model
         if (!$this->_user->save()){
             return false;
         }
+
+        InitialUserSettings::run($this->_user);
 
         return true;
     }

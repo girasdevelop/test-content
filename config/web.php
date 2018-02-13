@@ -51,6 +51,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/users' => 'users/profile',
                 '<controller>/<action>' => '<controller>/<action>',
             ],
         ],

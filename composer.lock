@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e51db0efde7dc6f9c4c822c8ae9e1a3",
+    "content-hash": "2f9cf20fd3c1911576095230574ec849",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -297,16 +297,16 @@
         },
         {
             "name": "itstructure/yii2-admin-module",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itstructure/yii2-admin-module.git",
-                "reference": "94b3daae3847df4f72aff98b85dd3ec86c779199"
+                "reference": "4e86da3898fc5d805fa4de0da8bd2ebc60caa7ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/94b3daae3847df4f72aff98b85dd3ec86c779199",
-                "reference": "94b3daae3847df4f72aff98b85dd3ec86c779199",
+                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/4e86da3898fc5d805fa4de0da8bd2ebc60caa7ac",
+                "reference": "4e86da3898fc5d805fa4de0da8bd2ebc60caa7ac",
                 "shasum": ""
             },
             "require": {
@@ -339,7 +339,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2018-02-13T09:59:32+00:00"
+            "time": "2018-02-13T11:48:36+00:00"
         },
         {
             "name": "itstructure/yii2-ckeditor",
@@ -430,16 +430,16 @@
         },
         {
             "name": "itstructure/yii2-rbac-module",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itstructure/yii2-rbac-module.git",
-                "reference": "57ebf580879bcffbe963fc11453b0a19bb0c9fab"
+                "reference": "55297ff0e001358ba8db51e87d5d8fcfc93b6843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itstructure/yii2-rbac-module/zipball/57ebf580879bcffbe963fc11453b0a19bb0c9fab",
-                "reference": "57ebf580879bcffbe963fc11453b0a19bb0c9fab",
+                "url": "https://api.github.com/repos/itstructure/yii2-rbac-module/zipball/55297ff0e001358ba8db51e87d5d8fcfc93b6843",
+                "reference": "55297ff0e001358ba8db51e87d5d8fcfc93b6843",
                 "shasum": ""
             },
             "require": {
@@ -469,7 +469,51 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2018-02-13T09:50:14+00:00"
+            "time": "2018-02-13T11:53:51+00:00"
+        },
+        {
+            "name": "itstructure/yii2-users-module",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itstructure/yii2-users-module.git",
+                "reference": "e819aaa8187adf2ffe4f6dfea56bdae9e373ec95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itstructure/yii2-users-module/zipball/e819aaa8187adf2ffe4f6dfea56bdae9e373ec95",
+                "reference": "e819aaa8187adf2ffe4f6dfea56bdae9e373ec95",
+                "shasum": ""
+            },
+            "require": {
+                "itstructure/yii2-field-widgets": "^1.0.0",
+                "yiisoft/yii2": "~2.0.5",
+                "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Itstructure\\UsersModule\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Girnik",
+                    "email": "girnikandrey@gmail.com"
+                }
+            ],
+            "description": "Module to users manage for Yii2 Framework.",
+            "keywords": [
+                "Users",
+                "module",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2018-02-13T12:07:05+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -531,12 +575,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "1213294a73c628d963dba9e1d672457c76e8c814"
+                "reference": "f33d0e14cfa1d9dc15c3e9eddc0e51ecca22675f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/1213294a73c628d963dba9e1d672457c76e8c814",
-                "reference": "1213294a73c628d963dba9e1d672457c76e8c814",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/f33d0e14cfa1d9dc15c3e9eddc0e51ecca22675f",
+                "reference": "f33d0e14cfa1d9dc15c3e9eddc0e51ecca22675f",
                 "shasum": ""
             },
             "require": {
@@ -623,7 +667,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2018-02-12T22:12:05+00:00"
+            "time": "2018-02-13T09:12:42+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",

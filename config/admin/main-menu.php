@@ -2,6 +2,11 @@
 
 return [
     'menuItems' => [
+        'settings' => [
+            'title' => 'Settings',
+            'icon' => 'fa fa-cog',
+            'url' => '/admin/settings',
+        ],
         'users' => [
             'title' => 'Users',
             'icon' => 'fa fa-users',

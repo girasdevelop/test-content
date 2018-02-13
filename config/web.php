@@ -52,8 +52,25 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '/users' => 'users/profile',
+                '/admin' => 'admin/settings',
                 '<controller>/<action>' => '<controller>/<action>',
             ],
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
+                'settings*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap' => [
+                        'settings' => 'settings.php',
+                    ],
+                ],
+            ]
         ],
     ],
     'defaultRoute' => 'site',

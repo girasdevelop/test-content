@@ -1,6 +1,8 @@
 <?php
 
+use app\components\SettingsComponent;
 use app\controllers\admin\CatalogController;
+use app\controllers\admin\SettingsController;
 use Itstructure\UsersModule\controllers\ProfileController;
 use Itstructure\RbacModule\controllers\{RolesController, PermissionsController};
 use Itstructure\AdminModule\Module as AdminModule;
@@ -13,6 +15,8 @@ return [
             'class' => AdminModule::class,
             'viewPath' => '@app/views/admin',
             'controllerMap' => [
+                '' => SettingsController::class,
+                'settings' => SettingsController::class,
                 'catalog' => CatalogController::class,
             ],
             'components' => [
@@ -44,4 +48,9 @@ return [
             ]
         ],
     ],
+    'components' => [
+        'settings' => [
+            'class' => SettingsComponent::class
+        ],
+    ]
 ];

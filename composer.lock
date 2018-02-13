@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc27dd2b0b9031a8799afc1e5951d6f9",
+    "content-hash": "8e51db0efde7dc6f9c4c822c8ae9e1a3",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -297,16 +297,16 @@
         },
         {
             "name": "itstructure/yii2-admin-module",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itstructure/yii2-admin-module.git",
-                "reference": "4886c18a487cec1607776117d50f7ac7bce68fd4"
+                "reference": "94b3daae3847df4f72aff98b85dd3ec86c779199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/4886c18a487cec1607776117d50f7ac7bce68fd4",
-                "reference": "4886c18a487cec1607776117d50f7ac7bce68fd4",
+                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/94b3daae3847df4f72aff98b85dd3ec86c779199",
+                "reference": "94b3daae3847df4f72aff98b85dd3ec86c779199",
                 "shasum": ""
             },
             "require": {
@@ -339,7 +339,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2018-02-13T06:38:06+00:00"
+            "time": "2018-02-13T09:59:32+00:00"
         },
         {
             "name": "itstructure/yii2-ckeditor",
@@ -427,6 +427,49 @@
                 "yii2"
             ],
             "time": "2018-02-13T07:00:52+00:00"
+        },
+        {
+            "name": "itstructure/yii2-rbac-module",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itstructure/yii2-rbac-module.git",
+                "reference": "57ebf580879bcffbe963fc11453b0a19bb0c9fab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itstructure/yii2-rbac-module/zipball/57ebf580879bcffbe963fc11453b0a19bb0c9fab",
+                "reference": "57ebf580879bcffbe963fc11453b0a19bb0c9fab",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.5",
+                "yiisoft/yii2-bootstrap": "~2.0.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Itstructure\\RbacModule\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Girnik",
+                    "email": "girnikandrey@gmail.com"
+                }
+            ],
+            "description": "Module to manage roles and permissions for the Yii2 Framework.",
+            "keywords": [
+                "module",
+                "rbac",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2018-02-13T09:50:14+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

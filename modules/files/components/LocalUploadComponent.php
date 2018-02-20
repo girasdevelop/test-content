@@ -5,6 +5,7 @@ namespace app\modules\files\components;
 use Yii;
 use yii\base\{Component, InvalidConfigException};
 use app\modules\files\models\Mediafile;
+use app\modules\files\models\LocalUpload;
 
 /**
  * Class LocalUploadComponent
@@ -33,10 +34,10 @@ class LocalUploadComponent extends Component
      * @var string
      */
     public $localUploadDirs = [
-        Mediafile::TYPE_IMAGE => 'uploads/images',
-        Mediafile::TYPE_AUDIO => 'uploads/audio',
-        Mediafile::TYPE_VIDEO => 'uploads/video',
-        Mediafile::TYPE_OTHER => 'uploads/other',
+        LocalUpload::TYPE_IMAGE => 'uploads/images',
+        LocalUpload::TYPE_AUDIO => 'uploads/audio',
+        LocalUpload::TYPE_VIDEO => 'uploads/video',
+        LocalUpload::TYPE_OTHER => 'uploads/other',
     ];
 
     /**
@@ -75,14 +76,17 @@ class LocalUploadComponent extends Component
     }
 
     /**
-     * Sets a user model for ProfileValidateComponent validation model.
+     * Sets a mediafile model.
+     *
+     * @param Mediafile $model
      *
      * @return object
      */
-    public function setModel()
+    public function setModel(Mediafile $model)
     {
         $object = Yii::createObject([
-            'class' => Mediafile::class,
+            'class' => LocalUpload::class,
+            'mediafileModel' => $model,
             'localUploadRoot' => $this->localUploadRoot,
             'localUploadDirs' => $this->localUploadDirs,
             'renameFiles' => $this->renameFiles,

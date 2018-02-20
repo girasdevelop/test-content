@@ -18,7 +18,7 @@ class m180220_081105_create_mediafiles_table extends Migration
             'type' => $this->string()->notNull(),
             'url' => $this->string()->notNull(),
             'alt' => $this->text(),
-            'size' => $this->string()->notNull(),
+            'size' => $this->integer()->notNull(),
             'description' => $this->text(),
             'thumbs' => $this->text(),
             'advance' => $this->text(),

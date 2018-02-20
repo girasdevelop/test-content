@@ -1,0 +1,37 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `mediafiles`.
+ */
+class m180220_081105_create_mediafiles_table extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->createTable('mediafiles', [
+            'id' => $this->primaryKey(),
+            'filename' => $this->string()->notNull(),
+            'type' => $this->string()->notNull(),
+            'url' => $this->string()->notNull(),
+            'alt' => $this->text(),
+            'size' => $this->string()->notNull(),
+            'description' => $this->text(),
+            'thumbs' => $this->text(),
+            'advance' => $this->text(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        $this->dropTable('mediafiles');
+    }
+}

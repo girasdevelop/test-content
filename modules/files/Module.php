@@ -6,7 +6,7 @@ use Yii;
 use yii\web\View;
 use yii\helpers\ArrayHelper;
 use yii\base\{Module as BaseModule, InvalidConfigException};
-use app\modules\files\components\FileUploadComponent;
+use app\modules\files\components\LocalUploadComponent;
 
 /**
  * Files module class.
@@ -67,7 +67,7 @@ class Module extends BaseModule
          */
         $this->setComponents(
             ArrayHelper::merge(
-                $this->getFilesUploadComponentConfig(),
+                $this->getLocalUploadComponentConfig(),
                 $this->components
             )
         );
@@ -147,11 +147,11 @@ class Module extends BaseModule
      *
      * @return array
      */
-    private function getFilesUploadComponentConfig(): array
+    private function getLocalUploadComponentConfig(): array
     {
         return [
-            'file-upload-component' => [
-                'class' => FileUploadComponent::class,
+            'local-upload-component' => [
+                'class' => LocalUploadComponent::class,
             ]
         ];
     }

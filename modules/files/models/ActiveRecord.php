@@ -3,7 +3,6 @@
 namespace app\modules\files\models;
 
 use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
 
 /**
  * Class ActiveRecord
@@ -19,13 +18,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
-        $behaviors[] = [
-            'class'              => TimestampBehavior::class,
-            'createdAtAttribute' => 'created_at',
-            'updatedAtAttribute' => 'updated_at',
-            'value'              => new Expression('NOW()'),
+        return [
+            TimestampBehavior::class
         ];
-        return $behaviors;
     }
 }

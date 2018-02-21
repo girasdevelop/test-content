@@ -45,7 +45,6 @@ class Mediafile extends ActiveRecord
                     'type',
                     'url',
                     'size',
-                    'created_at',
                 ],
                 'required',
             ],
@@ -61,8 +60,6 @@ class Mediafile extends ActiveRecord
             [
                 [
                     'size',
-                    'created_at',
-                    'updated_at',
                 ],
                 'integer',
             ],
@@ -74,6 +71,13 @@ class Mediafile extends ActiveRecord
                 ],
                 'string',
                 'max' => 255,
+            ],
+            [
+                [
+                    'created_at',
+                    'updated_at',
+                ],
+                'safe',
             ],
         ];
     }

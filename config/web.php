@@ -12,6 +12,19 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+        'files' => [
+            'class' => app\modules\files\Module::class,
+            'controllerMap' => [
+                'local-upload' => app\modules\files\controllers\LocalUploadController::class,
+            ],
+            /*'components' => [
+                'local-upload-component' => [
+                    'class' => app\modules\files\components\LocalUploadComponent::class,
+                ]
+            ]*/
+        ]
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

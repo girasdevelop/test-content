@@ -47,6 +47,8 @@ class RestController extends Controller
         if (null === $data) {
             $data = (object)[];
         }
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         Yii::$app->response->statusCode = $statusCode;
 
         return [

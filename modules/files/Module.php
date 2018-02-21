@@ -5,7 +5,7 @@ namespace app\modules\files;
 use Yii;
 use yii\web\View;
 use yii\helpers\ArrayHelper;
-use yii\base\{Module as BaseModule, InvalidConfigException};
+use yii\base\Module as BaseModule;
 use app\modules\files\components\LocalUploadComponent;
 
 /**

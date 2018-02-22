@@ -23,3 +23,5 @@ tests/_support/_generated
 web/ckfinder/userfiles/.ckfinder/*
 web/ckfinder/userfiles/files/*
 web/ckfinder/userfiles/images/*
+
+web/uploads/*

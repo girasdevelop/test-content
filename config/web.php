@@ -18,11 +18,15 @@ $config = [
             'controllerMap' => [
                 'local-upload' => app\modules\files\controllers\LocalUploadController::class,
             ],
-            /*'components' => [
+            'components' => [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
+                    'fileExtensions' => ['ffd']
                 ]
-            ]*/
+            ],
+            'authenticator' => [
+                'class' => yii\filters\auth\HttpBearerAuth::class,
+            ],
         ]
     ],
     'components' => [
@@ -69,6 +73,10 @@ $config = [
             'rules' => [
                 '/users' => 'users/profile',
                 '/admin' => 'admin/settings',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'local-upload',
+                ],
                 '<controller>/<action>' => '<controller>/<action>',
             ],
         ],

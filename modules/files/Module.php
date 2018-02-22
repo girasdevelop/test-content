@@ -13,6 +13,7 @@ use app\modules\files\components\LocalUploadComponent;
  *
  * @property null|string|array $loginUrl
  * @property array $accessRoles
+ * @property array|null $authenticator
  * @property View $_view
  *
  * @package Itstructure\FilesModule
@@ -32,6 +33,13 @@ class Module extends BaseModule
      * @var array
      */
     public $accessRoles = ['@'];
+
+    /**
+     * Auth filter.
+     *
+     * @var array|null
+     */
+    public $authenticator = null;
 
     /**
      * View component to render content.

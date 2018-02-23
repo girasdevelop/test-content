@@ -22,6 +22,8 @@ use Yii;
  * @property AlbumsMediafiles[] $albumsMediafiles
  * @property Album[] $albums
  * @property Owner[] $owners
+ *
+ * @package Itstructure\FilesModule\models
  */
 class Mediafile extends ActiveRecord
 {

@@ -3,16 +3,23 @@
 namespace app\modules\files\controllers;
 
 use Yii;
-use yii\filters\VerbFilter;
-use yii\helpers\{Url, ArrayHelper};
+use yii\helpers\Url;
 use yii\web\{UploadedFile, BadRequestHttpException};
 use app\modules\files\models\{Mediafile, LocalUpload};
 use app\modules\files\components\LocalUploadComponent;
 
+/**
+ * Class LocalUploadController
+ * Upload controller class to upload files in local directory.
+ *
+ * @property LocalUploadComponent $localUploadComponent
+ *
+ * @package Itstructure\FilesModule\controllers
+ */
 class LocalUploadController extends RestController
 {
     /**
-     * @var LocalUploadComponent
+     * @var LocalUploadComponent LocalUploadComponent
      */
     private $localUploadComponent;
 
@@ -25,19 +32,19 @@ class LocalUploadController extends RestController
 
         $this->enableCsrfValidation = $this->localUploadComponent->enableCsrfValidation;
 
-        $this->authenticator = $this->module->authenticator;
+        $this->authenticator     = $this->module->authenticator;
+        $this->rateLimiter       = $this->module->rateLimiter;
+        $this->contentNegotiator = $this->module->contentNegotiator;
     }
 
-    public function behaviors()
+    /**
+     * @return array
+     */
+    public function verbs()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'upload' => ['post'],
-                ],
-            ],
-        ]);
+        return [
+            'upload' => ['POST'],
+        ];
     }
 
     /**

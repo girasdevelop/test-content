@@ -3,18 +3,42 @@
 namespace app\modules\files\controllers;
 
 use Yii;
-use yii\web\Response;
 use yii\rest\Controller;
+use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
 
+/**
+ * Class RestController
+ * Common rest controller.
+ *
+ * @property array|null $authenticator
+ * @property array|null $rateLimiter
+ * @property array|null $contentNegotiator
+ *
+ * @package Itstructure\FilesModule\controllers
+ */
 class RestController extends Controller
 {
     /**
      * Auth filter.
      *
-     * @var \yii\filters\auth\AuthMethod|null
+     * @var array|null
      */
     protected $authenticator = null;
+
+    /**
+     * Rate limit filter.
+     *
+     * @var array|null
+     */
+    protected $rateLimiter = null;
+
+    /**
+     * Content negotiator filter.
+     *
+     * @var array|null
+     */
+    protected $contentNegotiator = null;
 
     /**
      * @return array
@@ -22,11 +46,32 @@ class RestController extends Controller
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['contentNegotiator']['formats']['text/html'] = Response::FORMAT_JSON;
 
         if (null !== $this->authenticator){
+
             $this->checkConfigureFormat($this->authenticator);
-            $behaviors['authenticator'] = $this->authenticator;
+
+            $behaviors = ArrayHelper::merge($behaviors, [
+                'authenticator' => $this->authenticator
+            ]);
+        }
+
+        if (null !== $this->rateLimiter){
+
+            $this->checkConfigureFormat($this->rateLimiter);
+
+            $behaviors = ArrayHelper::merge($behaviors, [
+                'rateLimiter' => $this->rateLimiter
+            ]);
+        }
+
+        if (null !== $this->contentNegotiator){
+
+            $this->checkConfigureFormat($this->contentNegotiator);
+
+            $behaviors = ArrayHelper::merge($behaviors, [
+                'contentNegotiator' => $this->contentNegotiator
+            ]);
         }
 
         return $behaviors;

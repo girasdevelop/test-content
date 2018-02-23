@@ -20,6 +20,8 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property UploadedFile $file
  * @property string $localUploadDir
  * @property Mediafile $mediafileModel
+ *
+ * @package Itstructure\FilesModule\models
  */
 class LocalUpload extends Model implements UploadModelInterface
 {

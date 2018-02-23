@@ -14,6 +14,8 @@ use app\modules\files\components\LocalUploadComponent;
  * @property null|string|array $loginUrl
  * @property array $accessRoles
  * @property array|null $authenticator
+ * @property array|null $rateLimiter
+ * @property array|null $contentNegotiator
  * @property View $_view
  *
  * @package Itstructure\FilesModule
@@ -40,6 +42,20 @@ class Module extends BaseModule
      * @var array|null
      */
     public $authenticator = null;
+
+    /**
+     * Rate limit filter.
+     *
+     * @var array|null
+     */
+    public $rateLimiter = null;
+
+    /**
+     * Content negotiator filter.
+     *
+     * @var array|null
+     */
+    public $contentNegotiator = null;
 
     /**
      * View component to render content.

@@ -3,9 +3,11 @@
 namespace app\modules\files\models;
 
 use Yii;
+use yii\imagine\Image;
 use yii\web\UploadedFile;
 use yii\base\{Model, InvalidConfigException};
 use yii\helpers\{BaseFileHelper, Inflector};
+use Imagine\Image\ImageInterface;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
@@ -17,6 +19,8 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property string $directorySeparator
  * @property array $fileExtensions
  * @property int $fileMaxSize
+ * @property array $thumbs
+ * @property string $thumbFilenameTemplate
  * @property UploadedFile $file
  * @property string $localUploadDir
  * @property Mediafile $mediafileModel
@@ -78,6 +82,19 @@ class LocalUpload extends Model implements UploadModelInterface
      * @var int
      */
     public $fileMaxSize = 1024*1024*5;
+
+    /**
+     * @var array
+     */
+    public $thumbs = [];
+
+    /**
+     * Thumbnails name template.
+     * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
+     *
+     * @var string
+     */
+    public $thumbFilenameTemplate = '{original}-{alias}.{extension}';
 
     /**
      * File object.
@@ -213,6 +230,84 @@ class LocalUpload extends Model implements UploadModelInterface
     }
 
     /**
+     * Create thumbs for this image
+     */
+    public function createThumbs()
+    {
+        $thumbs = [];
+        $localUploadRoot = trim($this->localUploadRoot, $this->directorySeparator);
+        $originalFile = pathinfo($this->mediafileModel->url);
+
+        Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
+
+        foreach ($this->thumbs as $alias => $preset) {
+            $width = $preset['size'][0];
+            $height = $preset['size'][1];
+            $mode = (isset($preset['mode']) ? $preset['mode'] : ImageInterface::THUMBNAIL_OUTBOUND);
+
+            $thumbUrl = $originalFile['dirname'] .
+                        $this->directorySeparator .
+                        $this->getThumbFilename($originalFile['filename'], $originalFile['extension'], $alias, $width, $height);
+
+            Image::thumbnail("$localUploadRoot".$this->directorySeparator."{$this->mediafileModel->url}", $width, $height, $mode)
+                ->save("$localUploadRoot".$this->directorySeparator."$thumbUrl");
+
+            $thumbs[$alias] = $thumbUrl;
+        }
+
+        $this->thumbs = serialize($thumbs);
+        $this->detachBehavior('timestamp');
+
+        $this->createDefaultThumb();
+
+        return $this->save();
+    }
+
+    /**
+     * Create default thumbnail
+     */
+    public function createDefaultThumb()
+    {
+        $originalFile = pathinfo($this->mediafileModel->url);
+
+        Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
+
+        $size = Module::getDefaultThumbSize();
+        $width = $size[0];
+        $height = $size[1];
+        $thumbUrl = $originalFile['dirname'] .
+                    $this->directorySeparator .
+                    $this->getThumbFilename($originalFile['filename'], $originalFile['extension'], Module::DEFAULT_THUMB_ALIAS, $width, $height);
+
+        $localUploadRoot = trim($this->localUploadRoot, $this->directorySeparator);
+
+        Image::thumbnail("$localUploadRoot".$this->directorySeparator."{$this->mediafileModel->url}", $width, $height)
+            ->save("$localUploadRoot".$this->directorySeparator."$thumbUrl");
+    }
+
+    /**
+     * Returns thumbnail name.
+     *
+     * @param $original
+     * @param $extension
+     * @param $alias
+     * @param $width
+     * @param $height
+     *
+     * @return string
+     */
+    protected function getThumbFilename($original, $extension, $alias, $width, $height)
+    {
+        return strtr($this->thumbFilenameTemplate, [
+            '{width}'     => $width,
+            '{height}'    => $height,
+            '{alias}'     => $alias,
+            '{original}'  => $original,
+            '{extension}' => $extension,
+        ]);
+    }
+
+    /**
      * Returns current model id.
      *
      * @return int|string
@@ -223,6 +318,16 @@ class LocalUpload extends Model implements UploadModelInterface
     }
 
     /**
+     * Check if the file is image.
+     *
+     * @return bool
+     */
+    public function isImage(): bool
+    {
+        return strpos($this->mediafileModel->type, self::TYPE_IMAGE) !== false;
+    }
+
+    /**
      * Set params for local uploaded file by its type.
      *
      * @param string $type
@@ -230,28 +335,24 @@ class LocalUpload extends Model implements UploadModelInterface
     private function setParamsByType(string $type): void
     {
         if (strpos($type, self::TYPE_IMAGE) !== false) {
-            $this->mediafileModel->type = self::TYPE_IMAGE;
             $this->localUploadDir = trim($this->localUploadDirs[self::TYPE_IMAGE], $this->directorySeparator);
 
         } elseif (strpos($type, self::TYPE_AUDIO) !== false) {
-            $this->mediafileModel->type = self::TYPE_AUDIO;
             $this->localUploadDir = trim($this->localUploadDirs[self::TYPE_AUDIO], $this->directorySeparator);
 
         } elseif (strpos($type, self::TYPE_VIDEO) !== false) {
-            $this->mediafileModel->type = self::TYPE_VIDEO;
             $this->localUploadDir = trim($this->localUploadDirs[self::TYPE_VIDEO], $this->directorySeparator);
 
         } elseif (strpos($type, self::TYPE_APP) !== false) {
-            $this->mediafileModel->type = self::TYPE_APP;
             $this->localUploadDir = trim($this->localUploadDirs[self::TYPE_APP], $this->directorySeparator);
 
         } elseif (strpos($type, self::TYPE_TEXT) !== false) {
-            $this->mediafileModel->type = self::TYPE_TEXT;
             $this->localUploadDir = trim($this->localUploadDirs[self::TYPE_TEXT], $this->directorySeparator);
 
         } else {
-            $this->mediafileModel->type = self::TYPE_OTHER;
             $this->localUploadDir = trim($this->localUploadDirs[self::TYPE_OTHER], $this->directorySeparator);
         }
+
+        $this->mediafileModel->type = $type;
     }
 }

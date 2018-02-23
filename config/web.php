@@ -21,12 +21,11 @@ $config = [
             'components' => [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
-                    'fileExtensions' => ['ffd']
                 ]
             ],
-            'authenticator' => [
+            /*'authenticator' => [
                 'class' => yii\filters\auth\HttpBearerAuth::class,
-            ],
+            ],*/
         ]
     ],
     'components' => [

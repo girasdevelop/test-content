@@ -16,6 +16,8 @@ use app\modules\files\components\LocalUploadComponent;
  * @property array|null $authenticator
  * @property array|null $rateLimiter
  * @property array|null $contentNegotiator
+ * @property array $thumbs
+ * @property string $thumbFilenameTemplate
  * @property View $_view
  *
  * @package Itstructure\FilesModule
@@ -56,6 +58,32 @@ class Module extends BaseModule
      * @var array|null
      */
     public $contentNegotiator = null;
+
+    /**
+     * @var array of thumbnails.
+     */
+    public $thumbs = [
+        'small' => [
+            'name' => 'Small size',
+            'size' => [120, 80],
+        ],
+        'medium' => [
+            'name' => 'Medium size',
+            'size' => [400, 300],
+        ],
+        'large' => [
+            'name' => 'Large size',
+            'size' => [800, 600],
+        ],
+    ];
+
+    /**
+     * Thumbnails name template.
+     * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
+     *
+     * @var string
+     */
+    public $thumbFilenameTemplate = '{original}-{alias}.{extension}';
 
     /**
      * View component to render content.
@@ -176,6 +204,8 @@ class Module extends BaseModule
         return [
             'local-upload-component' => [
                 'class' => LocalUploadComponent::class,
+                'thumbs' => $this->thumbs,
+                'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
             ]
         ];
     }

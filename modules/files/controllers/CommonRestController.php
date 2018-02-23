@@ -6,6 +6,7 @@ use Yii;
 use yii\rest\Controller;
 use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Class RestController
@@ -17,7 +18,7 @@ use yii\base\InvalidConfigException;
  *
  * @package Itstructure\FilesModule\controllers
  */
-class RestController extends Controller
+class CommonRestController extends Controller
 {
     /**
      * Auth filter.
@@ -39,6 +40,11 @@ class RestController extends Controller
      * @var array|null
      */
     protected $contentNegotiator = null;
+
+    /**
+     * @var UploadModelInterface
+     */
+    private $uploadModel;
 
     /**
      * @return array
@@ -75,6 +81,26 @@ class RestController extends Controller
         }
 
         return $behaviors;
+    }
+
+    /**
+     * Set upload model.
+     *
+     * @param UploadModelInterface $model
+     */
+    public function setUploadModel(UploadModelInterface $model): void
+    {
+        $this->uploadModel = $model;
+    }
+
+    /**
+     * Returns upload model.
+     *
+     * @return UploadModelInterface
+     */
+    public function getUploadModel(): UploadModelInterface
+    {
+        return $this->uploadModel;
     }
 
     /**

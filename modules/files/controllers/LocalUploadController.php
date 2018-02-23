@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\web\{UploadedFile, BadRequestHttpException};
 use app\modules\files\models\{Mediafile, LocalUpload};
 use app\modules\files\components\LocalUploadComponent;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Class LocalUploadController
@@ -16,7 +17,7 @@ use app\modules\files\components\LocalUploadComponent;
  *
  * @package Itstructure\FilesModule\controllers
  */
-class LocalUploadController extends RestController
+class LocalUploadController extends CommonRestController
 {
     /**
      * @var LocalUploadComponent LocalUploadComponent
@@ -64,9 +65,12 @@ class LocalUploadController extends RestController
             );
         }
 
-        /* @var LocalUpload $uploadModel */
-        $uploadModel = $this->localUploadComponent->setModel(new Mediafile());
+        $this->setUploadModel(
+            $this->localUploadComponent->setModel(new Mediafile())
+        );
 
+        /* @var UploadModelInterface|LocalUpload $uploadModel */
+        $uploadModel = $this->getUploadModel();
         $uploadModel->setAttributes(Yii::$app->request->post(), false);
         $uploadModel->setFile($file);
 
@@ -81,6 +85,10 @@ class LocalUploadController extends RestController
                 'Error to upload file.',
                 $uploadModel->errors
             );
+        }
+
+        if ($uploadModel->isImage()){
+            $uploadModel->createThumbs($routes, $this->module->thumbs);
         }
 
         $response['files'][] = [

@@ -113,11 +113,11 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     public function init()
     {
         if (null === $this->uploadRoot){
-            $this->localUploadRoot = Yii::getAlias('@webroot');
+            $this->uploadRoot = Yii::getAlias('@webroot');
         }
 
         if (null === $this->uploadRoot){
-            throw new InvalidConfigException('The localUploadRoot is not defined.');
+            throw new InvalidConfigException('The uploadRoot is not defined.');
         }
     }
 

@@ -21,6 +21,7 @@ $config = [
             'components' => [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
+                    //'fileExtensions' => ['ext']
                 ]
             ],
             /*'authenticator' => [

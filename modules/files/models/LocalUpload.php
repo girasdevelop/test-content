@@ -12,16 +12,7 @@ use Imagine\Image\ImageInterface;
 /**
  * Class LocalUpload
  *
- * @property string $localUploadRoot
- * @property array $localUploadDirs
- * @property bool $renameFiles
- * @property string $directorySeparator
- * @property array $fileExtensions
- * @property int $fileMaxSize
- * @property array $thumbs
- * @property string $thumbFilenameTemplate
- * @property UploadedFile $file
- * @property string $localUploadDir
+ * @property array $uploadDirs
  *
  * @package Itstructure\FilesModule\models
  */
@@ -33,13 +24,6 @@ class LocalUpload extends BaseUpload
      * @var array
      */
     public $uploadDirs;
-
-    /**
-     * Directory for local uploaded files.
-     *
-     * @var string
-     */
-    private $uploadDir;
 
     /**
      * Initialize.
@@ -57,64 +41,50 @@ class LocalUpload extends BaseUpload
 
     /**
      * Set params for local uploaded file by its type.
-     *
-     * @param string $type
      */
-    protected function setParamsByType(string $type): void
+    protected function setParamsForUpload(): void
     {
-        if (strpos($type, self::TYPE_IMAGE) !== false) {
+        if (strpos($this->file->type, self::TYPE_IMAGE) !== false) {
             $uploadDir = $this->uploadDirs[self::TYPE_IMAGE];
 
-        } elseif (strpos($type, self::TYPE_AUDIO) !== false) {
+        } elseif (strpos($this->file->type, self::TYPE_AUDIO) !== false) {
             $uploadDir = $this->uploadDirs[self::TYPE_AUDIO];
 
-        } elseif (strpos($type, self::TYPE_VIDEO) !== false) {
+        } elseif (strpos($this->file->type, self::TYPE_VIDEO) !== false) {
             $uploadDir = $this->uploadDirs[self::TYPE_VIDEO];
 
-        } elseif (strpos($type, self::TYPE_APP) !== false) {
+        } elseif (strpos($this->file->type, self::TYPE_APP) !== false) {
             $uploadDir = $this->uploadDirs[self::TYPE_APP];
 
-        } elseif (strpos($type, self::TYPE_TEXT) !== false) {
+        } elseif (strpos($this->file->type, self::TYPE_TEXT) !== false) {
             $uploadDir = $this->uploadDirs[self::TYPE_TEXT];
 
         } else {
             $uploadDir = $this->uploadDirs[self::TYPE_OTHER];
         }
 
-        $this->uploadDir = trim($uploadDir, $this->directorySeparator) . $this->directorySeparator . substr(md5(time()), 0, 2);
+        $this->uploadDir = trim($uploadDir, $this->directorySeparator) .
+                           $this->directorySeparator . substr(md5(time()), 0, 2) .
+                           $this->directorySeparator . substr(md5(time()+1), 0, 4);
 
-        $this->mediafileModel->type = $type;
-    }
+        $this->uploadPath = trim($this->uploadRoot, $this->directorySeparator) .
+                            $this->directorySeparator . $this->uploadDir;
 
-    /**
-     * Set path to upload file.
-     *
-     * @return void
-     */
-    protected function setUploadPath(): void
-    {
-        $this->uploadPath = trim($this->uploadRoot, $this->directorySeparator) . $this->directorySeparator . $this->uploadDir;
-    }
+        $this->outFileName = $this->renameFiles ?
+            md5(time()+2).'.'.$this->file->extension :
+            Inflector::slug($this->file->baseName).'.'. $this->file->extension;
 
-    /**
-     * Set file directory path for database.
-     *
-     * @return void
-     */
-    protected function setDatabaseDir(): void
-    {
         $this->databaseDir = $this->uploadDir . $this->directorySeparator . $this->outFileName;
+
+        $this->mediafileModel->type = $this->file->type;
     }
 
     /**
      * Save file in local directory or send file to remote storage.
      *
-     * @param string $uploadPath
-     * @param string $outFileName
-     *
      * @return bool
      */
-    protected function sendFile(string $uploadPath, string $outFileName): bool
+    protected function sendFile(): bool
     {
         BaseFileHelper::createDirectory($this->uploadPath, 0777);
 

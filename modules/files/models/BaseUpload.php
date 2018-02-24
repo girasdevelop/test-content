@@ -20,6 +20,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property array $thumbs
  * @property string $thumbFilenameTemplate
  * @property string $uploadRoot
+ * @property string $uploadDir
  * @property string $uploadPath
  * @property string $outFileName
  * @property string $databaseDir
@@ -91,7 +92,14 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     public $uploadRoot;
 
     /**
-     * Path to upload file.
+     * Directory for uploaded files.
+     *
+     * @var string
+     */
+    protected $uploadDir;
+
+    /**
+     * Full directory path to upload file.
      *
      * @var string
      */
@@ -126,37 +134,18 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     private $mediafileModel;
 
     /**
-     * Set some params before upload according with type of file.
-     *
-     * @param string $type
+     * Set some params for upload.
      *
      * @return void
      */
-    abstract protected function setParamsByType(string $type): void;
-
-    /**
-     * Set path to upload file.
-     *
-     * @return void
-     */
-    abstract protected function setUploadPath(): void;
-
-    /**
-     * Set file directory path for database.
-     *
-     * @return void
-     */
-    abstract protected function setDatabaseDir(): void;
+    abstract protected function setParamsForUpload(): void;
 
     /**
      * Save file in local directory or send file to remote storage.
      *
-     * @param string $uploadPath
-     * @param string $outFileName
-     *
      * @return bool
      */
-    abstract protected function sendFile(string $uploadPath, string $outFileName): bool;
+    abstract protected function sendFile(): bool;
 
         /**
      * {@inheritdoc}
@@ -233,17 +222,11 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             return false;
         }
 
-        $this->setParamsByType($this->file->type);
+        $this->setParamsForUpload();
 
-        $this->setUploadPath();
-
-        $this->outFileName = $this->renameFiles ? md5(time()+2).'.'.$this->file->extension : Inflector::slug($this->file->baseName).'.'. $this->file->extension;
-
-        if (!$this->sendFile($this->uploadPath, $this->outFileName)){
+        if (!$this->sendFile()){
             throw new \Exception('Error save file in to directory.', 500);
         }
-
-        $this->setDatabaseDir();
 
         $this->mediafileModel->url = $this->databaseDir;
         $this->mediafileModel->filename = $this->outFileName;

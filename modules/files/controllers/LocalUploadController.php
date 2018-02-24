@@ -5,9 +5,8 @@ namespace app\modules\files\controllers;
 use Yii;
 use yii\helpers\Url;
 use yii\web\{UploadedFile, BadRequestHttpException};
-use app\modules\files\models\{Mediafile, LocalUpload};
+use app\modules\files\models\Mediafile;
 use app\modules\files\components\LocalUploadComponent;
-use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Class LocalUploadController

@@ -4,10 +4,8 @@ namespace app\modules\files\models;
 
 use Yii;
 use yii\imagine\Image;
-use yii\web\UploadedFile;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
-use Imagine\Image\ManipulatorInterface;
 
 /**
  * Class LocalUpload

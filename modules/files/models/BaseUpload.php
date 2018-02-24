@@ -2,11 +2,9 @@
 
 namespace app\modules\files\models;
 
-use Yii;
-use yii\imagine\Image;
+use yii\base\Model;
 use yii\web\UploadedFile;
-use yii\base\{Model, InvalidConfigException};
-use yii\helpers\{BaseFileHelper, Inflector};
+use yii\imagine\Image;
 use Imagine\Image\ImageInterface;
 use app\modules\files\interfaces\UploadModelInterface;
 

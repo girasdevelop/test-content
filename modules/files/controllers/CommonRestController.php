@@ -6,6 +6,7 @@ use Yii;
 use yii\rest\Controller;
 use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
+use app\modules\files\models\LocalUpload;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
@@ -15,6 +16,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property array|null $authenticator
  * @property array|null $rateLimiter
  * @property array|null $contentNegotiator
+ * @property UploadModelInterface|LocalUpload $uploadModel
  *
  * @package Itstructure\FilesModule\controllers
  */
@@ -42,7 +44,7 @@ class CommonRestController extends Controller
     protected $contentNegotiator = null;
 
     /**
-     * @var UploadModelInterface
+     * @var UploadModelInterface|LocalUpload
      */
     private $uploadModel;
 

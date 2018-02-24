@@ -31,14 +31,14 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      *
      * @var string
      */
-    public $localUploadRoot;
+    public $uploadRoot;
 
     /**
      * Directory for uploaded files.
      *
      * @var string
      */
-    public $localUploadDirs = [
+    public $uploadDirs = [
         LocalUpload::TYPE_IMAGE => 'uploads\\images',
         LocalUpload::TYPE_AUDIO => 'uploads\\audio',
         LocalUpload::TYPE_VIDEO => 'uploads\\video',
@@ -112,11 +112,11 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      */
     public function init()
     {
-        if (null === $this->localUploadRoot){
+        if (null === $this->uploadRoot){
             $this->localUploadRoot = Yii::getAlias('@webroot');
         }
 
-        if (null === $this->localUploadRoot){
+        if (null === $this->uploadRoot){
             throw new InvalidConfigException('The localUploadRoot is not defined.');
         }
     }
@@ -134,8 +134,8 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
         $object = Yii::createObject([
             'class' => LocalUpload::class,
             'mediafileModel' => $mediafileModel,
-            'localUploadRoot' => $this->localUploadRoot,
-            'localUploadDirs' => $this->localUploadDirs,
+            'uploadRoot' => $this->uploadRoot,
+            'uploadDirs' => $this->uploadDirs,
             'renameFiles' => $this->renameFiles,
             'directorySeparator' => $this->directorySeparator,
             'fileExtensions' => $this->fileExtensions,

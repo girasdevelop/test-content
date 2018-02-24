@@ -65,17 +65,13 @@ class LocalUploadController extends CommonRestController
             );
         }
 
-        $this->setUploadModel(
-            $this->localUploadComponent->setModel(new Mediafile())
-        );
+        $this->uploadModel = $this->localUploadComponent->setModel(new Mediafile());
 
-        /* @var UploadModelInterface|LocalUpload $uploadModel */
-        $uploadModel = $this->getUploadModel();
-        $uploadModel->setAttributes(Yii::$app->request->post(), false);
-        $uploadModel->setFile($file);
+        $this->uploadModel->setAttributes(Yii::$app->request->post(), false);
+        $this->uploadModel->setFile($file);
 
         try {
-            $out =  $uploadModel->save();
+            $out =  $this->uploadModel->save();
         } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
@@ -83,21 +79,21 @@ class LocalUploadController extends CommonRestController
         if (false == $out){
             return $this->getFailResponse(
                 'Error to upload file.',
-                $uploadModel->errors
+                $this->uploadModel->errors
             );
         }
 
-        if ($uploadModel->isImage()){
-            $uploadModel->createThumbs($routes, $this->module->thumbs);
+        if ($this->uploadModel->isImage()){
+            $this->uploadModel->createThumbs();
         }
 
         $response['files'][] = [
-            'url'           => $uploadModel->mediafileModel->url,
+            'url'           => $this->uploadModel->mediafileModel->url,
             //'thumbnailUrl'  => $uploadModel->getDefaultThumbUrl($bundle->baseUrl),
-            'name'          => $uploadModel->mediafileModel->filename,
-            'type'          => $uploadModel->mediafileModel->type,
-            'size'          => $uploadModel->mediafileModel->size,
-            'deleteUrl'     => Url::to(['local-upload/delete', 'id' => $uploadModel->id]),
+            'name'          => $this->uploadModel->mediafileModel->filename,
+            'type'          => $this->uploadModel->mediafileModel->type,
+            'size'          => $this->uploadModel->mediafileModel->size,
+            'deleteUrl'     => Url::to(['local-upload/delete', 'id' => $this->uploadModel->id]),
         ];
 
         return $this->getSuccessResponse(

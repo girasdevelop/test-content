@@ -7,7 +7,7 @@ use yii\imagine\Image;
 use yii\web\UploadedFile;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
-use Imagine\Image\ImageInterface;
+use Imagine\Image\ManipulatorInterface;
 
 /**
  * Class LocalUpload
@@ -37,6 +37,8 @@ class LocalUpload extends BaseUpload
         if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
             throw new InvalidConfigException('The localUploadDirs is not defined.');
         }
+
+        $this->uploadRoot = trim($this->uploadRoot, $this->directorySeparator);
     }
 
     /**
@@ -67,8 +69,7 @@ class LocalUpload extends BaseUpload
                            $this->directorySeparator . substr(md5(time()), 0, 2) .
                            $this->directorySeparator . substr(md5(time()+1), 0, 4);
 
-        $this->uploadPath = trim($this->uploadRoot, $this->directorySeparator) .
-                            $this->directorySeparator . $this->uploadDir;
+        $this->uploadPath = $this->uploadRoot . $this->directorySeparator . $this->uploadDir;
 
         $this->outFileName = $this->renameFiles ?
             md5(time()+2).'.'.$this->file->extension :
@@ -89,5 +90,29 @@ class LocalUpload extends BaseUpload
         BaseFileHelper::createDirectory($this->uploadPath, 0777);
 
         return $this->file->saveAs($this->uploadPath . $this->directorySeparator . $this->outFileName);
+    }
+
+    /**
+     * Create thumb.
+     *
+     * @param string $alias
+     * @param int    $width
+     * @param int    $height
+     * @param string $mode
+     *
+     * @return string
+     */
+    protected function createThumb(string $alias, int $width, int $height, string $mode): string
+    {
+        $originalFile = pathinfo($this->mediafileModel->url);
+
+        $thumbUrl = $originalFile['dirname'] .
+                    $this->directorySeparator .
+                    $this->getThumbFilename($originalFile['filename'], $originalFile['extension'], $alias, $width, $height);
+
+        Image::thumbnail($this->uploadRoot.$this->directorySeparator.$this->mediafileModel->url, $width, $height, $mode)
+            ->save($this->uploadRoot.$this->directorySeparator.$thumbUrl);
+
+        return $thumbUrl;
     }
 }

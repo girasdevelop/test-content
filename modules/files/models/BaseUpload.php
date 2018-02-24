@@ -147,6 +147,18 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      */
     abstract protected function sendFile(): bool;
 
+    /**
+     * Create thumb.
+     *
+     * @param string $alias
+     * @param int    $width
+     * @param int    $height
+     * @param string $mode
+     *
+     * @return string
+     */
+    abstract protected function createThumb(string $alias, int $width, int $height, string $mode): string;
+
         /**
      * {@inheritdoc}
      */
@@ -265,8 +277,6 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     public function createThumbs()
     {
         $thumbs = [];
-        $localUploadRoot = trim($this->localUploadRoot, $this->directorySeparator);
-        $originalFile = pathinfo($this->mediafileModel->url);
 
         Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
 
@@ -275,44 +285,12 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             $height = $preset['size'][1];
             $mode = (isset($preset['mode']) ? $preset['mode'] : ImageInterface::THUMBNAIL_OUTBOUND);
 
-            $thumbUrl = $originalFile['dirname'] .
-                        $this->directorySeparator .
-                        $this->getThumbFilename($originalFile['filename'], $originalFile['extension'], $alias, $width, $height);
-
-            Image::thumbnail("$localUploadRoot".$this->directorySeparator."{$this->mediafileModel->url}", $width, $height, $mode)
-                ->save("$localUploadRoot".$this->directorySeparator."$thumbUrl");
-
-            $thumbs[$alias] = $thumbUrl;
+            $thumbs[$alias] = $this->createThumb($alias, $width, $height, $mode);
         }
 
-        $this->thumbs = serialize($thumbs);
-        $this->detachBehavior('timestamp');
+        $this->mediafileModel->thumbs = serialize($thumbs);
 
-        $this->createDefaultThumb();
-
-        return $this->save();
-    }
-
-    /**
-     * Create default thumbnail
-     */
-    public function createDefaultThumb()
-    {
-        $originalFile = pathinfo($this->mediafileModel->url);
-
-        Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
-
-        $size = Module::getDefaultThumbSize();
-        $width = $size[0];
-        $height = $size[1];
-        $thumbUrl = $originalFile['dirname'] .
-                    $this->directorySeparator .
-                    $this->getThumbFilename($originalFile['filename'], $originalFile['extension'], Module::DEFAULT_THUMB_ALIAS, $width, $height);
-
-        $localUploadRoot = trim($this->localUploadRoot, $this->directorySeparator);
-
-        Image::thumbnail("$localUploadRoot".$this->directorySeparator."{$this->mediafileModel->url}", $width, $height)
-            ->save("$localUploadRoot".$this->directorySeparator."$thumbUrl");
+        return $this->mediafileModel->save();
     }
 
     /**

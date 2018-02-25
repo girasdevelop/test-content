@@ -2,11 +2,11 @@
 
 namespace app\modules\files\models;
 
-use yii\base\Model;
+use yii\base\{Model, InvalidConfigException};
 use yii\web\UploadedFile;
 use yii\imagine\Image;
-use Imagine\Image\ImageInterface;
-use app\modules\files\interfaces\UploadModelInterface;
+use app\modules\files\Module;
+use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
 
 /**
  * Class LocalUpload
@@ -19,6 +19,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property int $fileMaxSize
  * @property array $thumbs
  * @property string $thumbFilenameTemplate
+ * @property string $thumbStubUrl
  * @property string $uploadRoot
  * @property string $subDir
  * @property string $uploadDir
@@ -97,7 +98,14 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      *
      * @var string
      */
-    public $thumbFilenameTemplate = '{original}-{alias}.{extension}';
+    public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
+
+    /**
+     * Default thumbnail stub url.
+     *
+     * @var string
+     */
+    public $thumbStubUrl;
 
     /**
      * Root directory for uploaded files.
@@ -178,14 +186,11 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     /**
      * Create thumb.
      *
-     * @param string $alias
-     * @param int    $width
-     * @param int    $height
-     * @param string $mode
+     * @param ThumbConfigInterface $thumbConfig
      *
      * @return string
      */
-    abstract protected function createThumb(string $alias, int $width, int $height, string $mode): string;
+    abstract protected function createThumb(ThumbConfigInterface $thumbConfig): string;
 
         /**
      * {@inheritdoc}
@@ -328,24 +333,50 @@ abstract class BaseUpload extends Model implements UploadModelInterface
 
     /**
      * Create thumbs for this image
+     *
+     * @throws InvalidConfigException
+     *
+     * @return bool
      */
-    public function createThumbs()
+    public function createThumbs(): bool
     {
         $thumbs = [];
 
         Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
 
         foreach ($this->thumbs as $alias => $preset) {
-            $width = $preset['size'][0];
-            $height = $preset['size'][1];
-            $mode = (isset($preset['mode']) ? $preset['mode'] : ImageInterface::THUMBNAIL_OUTBOUND);
-
-            $thumbs[$alias] = $this->createThumb($alias, $width, $height, $mode);
+            $thumbs[$alias] = $this->createThumb(Module::configureThumb($alias, $preset));
         }
 
         $this->mediafileModel->thumbs = serialize($thumbs);
 
         return $this->mediafileModel->save();
+    }
+
+    /**
+     * Get default thumbnail url.
+     *
+     * @throws InvalidConfigException
+     *
+     * @return string
+     */
+    public function getDefaultThumbUrl(): string
+    {
+        if ($this->isImage()) {
+
+            $thumbConfig = Module::configureThumb(Module::DEFAULT_THUMB_ALIAS, $this->thumbs[Module::DEFAULT_THUMB_ALIAS]);
+
+            $originalFile = pathinfo($this->mediafileModel->url);
+            $dirname = $originalFile['dirname'];
+            $filename = $originalFile['filename'];
+            $extension = $originalFile['extension'];
+
+            return $dirname .
+                   $this->directorySeparator .
+                   $this->getThumbFilename($filename, $extension, Module::DEFAULT_THUMB_ALIAS, $thumbConfig->width, $thumbConfig->height);
+        }
+
+        return $this->thumbStubUrl;
     }
 
     /**

@@ -6,6 +6,8 @@ use Yii;
 use yii\imagine\Image;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
+use app\modules\files\components\ThumbConfig;
+use app\modules\files\interfaces\ThumbConfigInterface;
 
 /**
  * Class LocalUpload
@@ -107,23 +109,28 @@ class LocalUpload extends BaseUpload
     /**
      * Create thumb.
      *
-     * @param string $alias
-     * @param int    $width
-     * @param int    $height
-     * @param string $mode
+     * @param ThumbConfigInterface|ThumbConfig $thumbConfig
      *
      * @return string
      */
-    protected function createThumb(string $alias, int $width, int $height, string $mode): string
+    protected function createThumb(ThumbConfigInterface $thumbConfig): string
     {
         $originalFile = pathinfo($this->mediafileModel->url);
 
         $thumbUrl = $originalFile['dirname'] .
                     $this->directorySeparator .
-                    $this->getThumbFilename($originalFile['filename'], $originalFile['extension'], $alias, $width, $height);
+                    $this->getThumbFilename($originalFile['filename'],
+                        $originalFile['extension'],
+                        $thumbConfig->alias,
+                        $thumbConfig->width,
+                        $thumbConfig->height
+                    );
 
-        Image::thumbnail($this->uploadRoot.$this->directorySeparator.$this->mediafileModel->url, $width, $height, $mode)
-            ->save($this->uploadRoot.$this->directorySeparator.$thumbUrl);
+        Image::thumbnail($this->uploadRoot . $this->directorySeparator . $this->mediafileModel->url,
+            $thumbConfig->width,
+            $thumbConfig->height,
+            $thumbConfig->mode
+        )->save($this->uploadRoot.$this->directorySeparator.$thumbUrl);
 
         return $thumbUrl;
     }

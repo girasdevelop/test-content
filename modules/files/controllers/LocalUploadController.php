@@ -4,6 +4,7 @@ namespace app\modules\files\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\base\InvalidConfigException;
 use yii\web\{UploadedFile, BadRequestHttpException};
 use app\modules\files\models\Mediafile;
 use app\modules\files\components\LocalUploadComponent;
@@ -70,25 +71,25 @@ class LocalUploadController extends CommonRestController
         $this->uploadModel->setFile($file);
 
         try {
-            $out =  $this->uploadModel->save();
-        } catch (\Exception $e) {
+
+            if (!$this->uploadModel->save()){
+                return $this->getFailResponse(
+                    'Error to upload file.',
+                    $this->uploadModel->errors
+                );
+            }
+
+            if ($this->uploadModel->isImage()){
+                $this->uploadModel->createThumbs();
+            }
+
+        } catch (\Exception|InvalidConfigException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
-        }
-
-        if (false == $out){
-            return $this->getFailResponse(
-                'Error to upload file.',
-                $this->uploadModel->errors
-            );
-        }
-
-        if ($this->uploadModel->isImage()){
-            $this->uploadModel->createThumbs();
         }
 
         $response['files'][] = [
             'url'           => $this->uploadModel->mediafileModel->url,
-            //'thumbnailUrl'  => $uploadModel->getDefaultThumbUrl($bundle->baseUrl),
+            'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
             'name'          => $this->uploadModel->mediafileModel->filename,
             'type'          => $this->uploadModel->mediafileModel->type,
             'size'          => $this->uploadModel->mediafileModel->size,

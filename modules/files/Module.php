@@ -5,8 +5,10 @@ namespace app\modules\files;
 use Yii;
 use yii\web\View;
 use yii\helpers\ArrayHelper;
-use yii\base\Module as BaseModule;
-use app\modules\files\components\LocalUploadComponent;
+use yii\base\{Module as BaseModule, InvalidConfigException};
+use Imagine\Image\ImageInterface;
+use app\modules\files\interfaces\ThumbConfigInterface;
+use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
 
 /**
  * Files module class.
@@ -18,12 +20,18 @@ use app\modules\files\components\LocalUploadComponent;
  * @property array|null $contentNegotiator
  * @property array $thumbs
  * @property string $thumbFilenameTemplate
+ * @property string $thumbStubUrl
  * @property View $_view
  *
  * @package Itstructure\FilesModule
  */
 class Module extends BaseModule
 {
+    const DEFAULT_THUMB_ALIAS = 'default';
+    const SMALL_THUMB_ALIAS = 'small';
+    const MEDIUM_THUMB_ALIAS = 'medium';
+    const LARGE_THUMB_ALIAS = 'large';
+
     /**
      * Login url.
      *
@@ -63,15 +71,19 @@ class Module extends BaseModule
      * @var array of thumbnails.
      */
     public $thumbs = [
-        'small' => [
+        self::DEFAULT_THUMB_ALIAS => [
+            'name' => 'Default size',
+            'size' => [128, 128],
+        ],
+        self::SMALL_THUMB_ALIAS => [
             'name' => 'Small size',
             'size' => [120, 80],
         ],
-        'medium' => [
+        self::MEDIUM_THUMB_ALIAS => [
             'name' => 'Medium size',
             'size' => [400, 300],
         ],
-        'large' => [
+        self::LARGE_THUMB_ALIAS => [
             'name' => 'Large size',
             'size' => [800, 600],
         ],
@@ -83,7 +95,14 @@ class Module extends BaseModule
      *
      * @var string
      */
-    public $thumbFilenameTemplate = '{original}-{alias}.{extension}';
+    public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
+
+    /**
+     * Default thumbnail stub url.
+     *
+     * @var string
+     */
+    public $thumbStubUrl;
 
     /**
      * View component to render content.
@@ -150,6 +169,43 @@ class Module extends BaseModule
     }
 
     /**
+     * Set thumb configuration.
+     *
+     * @param string $alias
+     * @param array  $config
+     *
+     * @throws InvalidConfigException
+     *
+     * @return ThumbConfigInterface
+     *
+     */
+    public static function configureThumb(string $alias, array $config): ThumbConfigInterface
+    {
+        if (!isset($config['name']) ||
+            !isset($config['size']) ||
+            !is_array($config['size']) ||
+            !isset($config['size'][0]) ||
+            !isset($config['size'][1])) {
+
+            throw new InvalidConfigException('Error in thumb configuration.');
+        }
+
+        $thumbConfig = [
+            'class'  => ThumbConfig::class,
+            'alias'  => $alias,
+            'name'   => $config['name'],
+            'width'  => $config['size'][0],
+            'height' => $config['size'][1],
+            'mode'   => (isset($config['mode']) ? $config['mode'] : ImageInterface::THUMBNAIL_OUTBOUND),
+        ];
+
+        /* @var ThumbConfigInterface $object */
+        $object = Yii::createObject($thumbConfig);
+
+        return $object;
+    }
+
+    /**
      * Module translator.
      *
      * @param       $category
@@ -206,6 +262,7 @@ class Module extends BaseModule
                 'class' => LocalUploadComponent::class,
                 'thumbs' => $this->thumbs,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
+                'thumbStubUrl' => $this->thumbStubUrl
             ]
         ];
     }

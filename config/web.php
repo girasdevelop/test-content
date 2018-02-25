@@ -27,6 +27,7 @@ $config = [
             /*'authenticator' => [
                 'class' => yii\filters\auth\HttpBearerAuth::class,
             ],*/
+            'defaultThumbSize' => [200, 200]
         ]
     ],
     'components' => [

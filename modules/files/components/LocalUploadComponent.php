@@ -11,8 +11,8 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * Class LocalUploadComponent
  * Component class to upload files in local space.
  *
- * @property string $localUploadRoot
- * @property array $localUploadDirs
+ * @property string $uploadRoot
+ * @property array $uploadDirs
  * @property bool $renameFiles
  * @property string $directorySeparator
  * @property array $fileExtensions
@@ -20,6 +20,7 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property string $fileAttributeName
  * @property array $thumbs
  * @property string $thumbFilenameTemplate
+ * @property string $thumbStubUrl
  * @property bool $enableCsrfValidation
  *
  * @package Itstructure\FilesModule\components
@@ -39,12 +40,12 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var string
      */
     public $uploadDirs = [
-        LocalUpload::TYPE_IMAGE => 'uploads\\images',
-        LocalUpload::TYPE_AUDIO => 'uploads\\audio',
-        LocalUpload::TYPE_VIDEO => 'uploads\\video',
-        LocalUpload::TYPE_APP => 'uploads\\application',
-        LocalUpload::TYPE_TEXT => 'uploads\\text',
-        LocalUpload::TYPE_OTHER => 'uploads\\other',
+        LocalUpload::TYPE_IMAGE => 'uploads'.DIRECTORY_SEPARATOR.'images',
+        LocalUpload::TYPE_AUDIO => 'uploads'.DIRECTORY_SEPARATOR.'audio',
+        LocalUpload::TYPE_VIDEO => 'uploads'.DIRECTORY_SEPARATOR.'video',
+        LocalUpload::TYPE_APP => 'uploads'.DIRECTORY_SEPARATOR.'application',
+        LocalUpload::TYPE_TEXT => 'uploads'.DIRECTORY_SEPARATOR.'text',
+        LocalUpload::TYPE_OTHER => 'uploads'.DIRECTORY_SEPARATOR.'other',
     ];
 
     /**
@@ -98,7 +99,14 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      *
      * @var string
      */
-    public $thumbFilenameTemplate = '{original}-{alias}.{extension}';
+    public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
+
+    /**
+     * Default thumbnail stub url.
+     *
+     * @var string
+     */
+    public $thumbStubUrl;
 
     /**
      * Csrf validation.
@@ -142,6 +150,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'fileMaxSize' => $this->fileMaxSize,
             'thumbs' => $this->thumbs,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
+            'thumbStubUrl' => $this->thumbStubUrl
         ]);
 
         return $object;

@@ -40,7 +40,15 @@ class LocalUpload extends BaseUpload
     }
 
     /**
-     * Set params for local uploaded file by its type.
+     * Set some params for upload.
+     * It is needed to set the next parameters:
+     * $this->uploadDir
+     * $this->uploadPath
+     * $this->outFileName
+     * $this->databaseDir
+     * $this->mediafileModel->type
+     *
+     * @return void
      */
     protected function setParamsForUpload(): void
     {
@@ -61,6 +69,12 @@ class LocalUpload extends BaseUpload
 
         } else {
             $uploadDir = $this->uploadDirs[self::TYPE_OTHER];
+        }
+
+        if (!empty($this->subDir)){
+            $uploadDir = trim($uploadDir, $this->directorySeparator) .
+                         $this->directorySeparator .
+                         $this->subDir;
         }
 
         $this->uploadDir = trim($uploadDir, $this->directorySeparator) .

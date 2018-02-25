@@ -11,6 +11,8 @@ use app\modules\files\interfaces\UploadModelInterface;
 /**
  * Class LocalUpload
  *
+ * @property string $alt
+ * @property string $description
  * @property bool $renameFiles
  * @property string $directorySeparator
  * @property array $fileExtensions
@@ -18,6 +20,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property array $thumbs
  * @property string $thumbFilenameTemplate
  * @property string $uploadRoot
+ * @property string $subDir
  * @property string $uploadDir
  * @property string $uploadPath
  * @property string $outFileName
@@ -35,6 +38,20 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     const TYPE_APP = 'application';
     const TYPE_TEXT = 'text';
     const TYPE_OTHER = 'other';
+
+    /**
+     * Alt text for the file.
+     *
+     * @var string
+     */
+    public $alt;
+
+    /**
+     * File description.
+     *
+     * @var string
+     */
+    public $description;
 
     /**
      * Rename file after upload.
@@ -90,6 +107,13 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     public $uploadRoot;
 
     /**
+     * Addition sub-directory for uploaded files.
+     *
+     * @var string
+     */
+    public $subDir;
+
+    /**
      * Directory for uploaded files.
      *
      * @var string
@@ -133,6 +157,12 @@ abstract class BaseUpload extends Model implements UploadModelInterface
 
     /**
      * Set some params for upload.
+     * It is needed to set the next parameters:
+     * $this->uploadDir
+     * $this->uploadPath
+     * $this->outFileName
+     * $this->databaseDir
+     * $this->mediafileModel->type
      *
      * @return void
      */
@@ -164,15 +194,34 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     {
         return [
             [
-                ['file'],
+                'file',
                 'required',
             ],
             [
-                ['file'],
+                'file',
                 'file',
                 'skipOnEmpty' => false,
                 'extensions' => $this->fileExtensions,
                 'maxSize' => $this->fileMaxSize
+            ],
+            [
+                'subDir',
+                'string',
+                'max' => 24,
+            ],
+            [
+                'subDir',
+                'filter',
+                'filter' => function($value){
+                    return trim($value, $this->directorySeparator);
+                }
+            ],
+            [
+                [
+                    'alt',
+                    'description'
+                ],
+                'string',
             ],
         ];
     }
@@ -241,6 +290,14 @@ abstract class BaseUpload extends Model implements UploadModelInterface
         $this->mediafileModel->url = $this->databaseDir;
         $this->mediafileModel->filename = $this->outFileName;
         $this->mediafileModel->size = $this->file->size;
+
+        if (!empty($this->alt)){
+            $this->mediafileModel->alt = $this->alt;
+        }
+
+        if (!empty($this->description)){
+            $this->mediafileModel->description = $this->description;
+        }
 
         if (!$this->mediafileModel->save()){
             throw new \Exception('Error save file data in database.', 500);

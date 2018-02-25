@@ -2,6 +2,7 @@
 
 namespace app\modules\files\interfaces;
 
+use yii\web\UploadedFile;
 use app\modules\files\models\Mediafile;
 
 /**
@@ -27,13 +28,19 @@ interface UploadModelInterface
 
     /**
      * Set file.
+     *
+     * @param UploadedFile $file
+     *
+     * @return void
      */
-    public function setFile();
+    public function setFile(UploadedFile $file): void;
 
     /**
      * Get file.
+     *
+     * @return UploadedFile
      */
-    public function getFile();
+    public function getFile(): UploadedFile;
 
     /**
      * Save data.

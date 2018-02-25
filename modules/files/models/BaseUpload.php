@@ -13,6 +13,8 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  *
  * @property string $alt
  * @property string $description
+ * @property string $advance
+ * @property string $subDir
  * @property bool $renameFiles
  * @property string $directorySeparator
  * @property array $fileExtensions
@@ -21,7 +23,6 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
  * @property string $uploadRoot
- * @property string $subDir
  * @property string $uploadDir
  * @property string $uploadPath
  * @property string $outFileName
@@ -53,6 +54,20 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      * @var string
      */
     public $description;
+
+    /**
+     * Advance value.
+     *
+     * @var string
+     */
+    public $advance;
+
+    /**
+     * Addition sub-directory for uploaded files.
+     *
+     * @var string
+     */
+    public $subDir;
 
     /**
      * Rename file after upload.
@@ -113,13 +128,6 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      * @var string
      */
     public $uploadRoot;
-
-    /**
-     * Addition sub-directory for uploaded files.
-     *
-     * @var string
-     */
-    public $subDir;
 
     /**
      * Directory for uploaded files.
@@ -224,7 +232,8 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             [
                 [
                     'alt',
-                    'description'
+                    'description',
+                    'advance'
                 ],
                 'string',
             ],
@@ -302,6 +311,10 @@ abstract class BaseUpload extends Model implements UploadModelInterface
 
         if (!empty($this->description)){
             $this->mediafileModel->description = $this->description;
+        }
+
+        if (!empty($this->advance)){
+            $this->mediafileModel->advance = $this->advance;
         }
 
         if (!$this->mediafileModel->save()){

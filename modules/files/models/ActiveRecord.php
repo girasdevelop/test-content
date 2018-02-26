@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 /**
  * Class ActiveRecord
  *
- * @package app\components\db
+ * @package Itstructure\FilesModule\models
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {

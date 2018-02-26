@@ -13,6 +13,8 @@ use Yii;
  * @property string $ownerAttribute
  *
  * @property Mediafile $mediafile
+ *
+ * @package Itstructure\FilesModule\models
  */
 class OwnersMediafiles extends \yii\db\ActiveRecord
 {

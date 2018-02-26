@@ -3,6 +3,7 @@
 namespace app\modules\files\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "albums".
@@ -15,8 +16,10 @@ use Yii;
  * @property int $updated_at
  *
  * @property OwnersAlbums[] $ownersAlbums
+ *
+ * @package Itstructure\FilesModule\models
  */
-class Album extends \yii\db\ActiveRecord
+class Album extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -35,7 +38,6 @@ class Album extends \yii\db\ActiveRecord
             [
                 [
                     'title',
-                    'created_at',
                 ],
                 'required',
             ],
@@ -45,18 +47,18 @@ class Album extends \yii\db\ActiveRecord
             ],
             [
                 [
-                    'created_at',
-                    'updated_at',
-                ],
-                'integer',
-            ],
-            [
-                [
                     'title',
                     'type',
                 ],
                 'string',
                 'max' => 255,
+            ],
+            [
+                [
+                    'created_at',
+                    'updated_at',
+                ],
+                'safe',
             ],
         ];
     }
@@ -74,6 +76,122 @@ class Album extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * Search models by file types.
+     *
+     * @param array $types
+     *
+     * @return ActiveRecord|array
+     */
+    public static function findByTypes(array $types): ActiveRecord
+    {
+        return self::find()->filterWhere(['in', 'type', $types])->all();
+    }
+
+    /**
+     * Get all mediafiles by owner.
+     *
+     * @param string $owner
+     * @param int    $ownerId
+     * @param string $ownerAttribute
+     *
+     * @return ActiveRecord|Mediafile[]
+     */
+    public static function getAllByOwner(string $owner, int $ownerId, string $ownerAttribute): ActiveRecord
+    {
+        return static::find()
+            ->where(
+                [
+                    'id' =>  static::getIdsByOwner($owner, $ownerId, $ownerAttribute)->asArray()
+                ]
+            )->all();
+    }
+
+    /**
+     * Get one mediafile by owner.
+     *
+     * @param string $owner
+     * @param int    $ownerId
+     * @param string $ownerAttribute
+     *
+     * @return array|null|Mediafile
+     */
+    public static function getOneByOwner(string $owner, int $ownerId, string $ownerAttribute): Mediafile
+    {
+        return static::find()
+            ->where(
+                [
+                    'id' =>  static::getIdsByOwner($owner, $ownerId, $ownerAttribute)->one()->albumId
+                ]
+            )->one();
+    }
+
+    /**
+     * Get Id's by owner.
+     *
+     * @param string $owner
+     * @param int    $ownerId
+     * @param string $ownerAttribute
+     *
+     * @return ActiveQuery|Album[]
+     */
+    private static function getIdsByOwner(string $owner, int $ownerId, string $ownerAttribute): ActiveQuery
+    {
+        return OwnersAlbums::find()
+            ->select('albumId')
+            ->where(
+                [
+                    'owner' => $owner,
+                    'ownerId' => $ownerId,
+                    'ownerAttribute' => $ownerAttribute,
+                ]
+            );
+    }
+
+    /**
+     * Add owner to mediafiles table.
+     *
+     * @param int    $ownerId
+     * @param string $owner
+     * @param string $ownerAttribute
+     *
+     * @return bool
+     */
+    public function addOwner(int $ownerId, string $owner, string $ownerAttribute): bool
+    {
+        $owners = new OwnersAlbums();
+        $owners->albumId = $this->id;
+        $owners->owner = $owner;
+        $owners->ownerId = $ownerId;
+        $owners->ownerAttribute = $ownerAttribute;
+
+        return $owners->save();
+    }
+
+    /**
+     * Remove this mediafile owner.
+     *
+     * @param int    $ownerId
+     * @param string $owner
+     * @param string $ownerAttribute
+     *
+     * @return bool
+     */
+    public static function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool
+    {
+        $owner = OwnersAlbums::findOne([
+            'ownerId' => $ownerId,
+            'owner' => $owner,
+            'ownerAttribute' => $ownerAttribute,
+        ]);
+
+        if ($owner) {
+            return $owner->delete();
+        }
+
+        return false;
     }
 
     /**

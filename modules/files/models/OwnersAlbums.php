@@ -13,6 +13,8 @@ use Yii;
  * @property string $ownerAttribute
  *
  * @property Album $album
+ *
+ * @package Itstructure\FilesModule\models
  */
 class OwnersAlbums extends \yii\db\ActiveRecord
 {

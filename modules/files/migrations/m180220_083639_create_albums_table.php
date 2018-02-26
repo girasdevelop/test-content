@@ -16,6 +16,9 @@ class m180220_083639_create_albums_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string()->notNull(),
             'description' => $this->text(),
+            'type' => $this->string(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer(),
         ]);
     }
 

@@ -58,15 +58,15 @@ class LocalUploadController extends CommonRestController
      */
     public function actionUpload()
     {
-        $file = UploadedFile::getInstanceByName($this->localUploadComponent->fileAttributeName);
-
-        if (!$file){
-            return $this->getFailResponse(
-                'File is absent.'
-            );
-        }
-
         try {
+
+            $file = UploadedFile::getInstanceByName($this->localUploadComponent->fileAttributeName);
+
+            if (!$file){
+                return $this->getFailResponse(
+                    'File is absent.'
+                );
+            }
 
             $request = Yii::$app->request;
 
@@ -91,28 +91,28 @@ class LocalUploadController extends CommonRestController
                 $this->uploadModel->createThumbs();
             }
 
+            $response['files'][] = [
+                'id'            => $this->uploadModel->id,
+                'url'           => $this->uploadModel->mediafileModel->url,
+                'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
+                'name'          => $this->uploadModel->mediafileModel->filename,
+                'type'          => $this->uploadModel->mediafileModel->type,
+                'size'          => $this->uploadModel->mediafileModel->size,
+                'deleteUrl'     => Url::to(['local-upload/delete', 'id' => $this->uploadModel->id]),
+            ];
+
+            return $this->getSuccessResponse(
+                'File uploaded.',
+                $response
+            );
+
         } catch (\Exception|InvalidConfigException|UnknownMethodException|NotFoundHttpException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
-
-        $response['files'][] = [
-            'id'            => $this->uploadModel->id,
-            'url'           => $this->uploadModel->mediafileModel->url,
-            'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
-            'name'          => $this->uploadModel->mediafileModel->filename,
-            'type'          => $this->uploadModel->mediafileModel->type,
-            'size'          => $this->uploadModel->mediafileModel->size,
-            'deleteUrl'     => Url::to(['local-upload/delete', 'id' => $this->uploadModel->id]),
-        ];
-
-        return $this->getSuccessResponse(
-            'File uploaded.',
-            $response
-        );
     }
 
     /**
-     * Delete the media model entry.
+     * Delete the media model entry with files.
      *
      * @throws BadRequestHttpException
      *
@@ -121,14 +121,7 @@ class LocalUploadController extends CommonRestController
     public function actionDelete()
     {
         try {
-
-            $request = Yii::$app->request;
-
-            $this->uploadModel = $this->localUploadComponent->setModelForDelete(
-                $this->findMediafileModel($request->post('id'))
-            );
-
-            $deleted = $this->uploadModel->delete();
+            $deleted = $this->deleteMediafileEntry(Yii::$app->request->post('id'));
 
             if (!$deleted){
                 return $this->getFailResponse(
@@ -136,13 +129,13 @@ class LocalUploadController extends CommonRestController
                 );
             }
 
+            return $this->getSuccessResponse(
+                'Deleted '.$deleted.' files.'
+            );
+
         } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
-
-        return $this->getSuccessResponse(
-            'Deleted '.$deleted.' files.'
-        );
     }
 
     /**
@@ -192,6 +185,39 @@ class LocalUploadController extends CommonRestController
             return new Mediafile();
         } else {
             return $this->findMediafileModel($id);
+        }
+    }
+
+    /**
+     * Delete mediafile record with files.
+     *
+     * @param array|int|string $id
+     *
+     * @return bool|int
+     */
+    private function deleteMediafileEntry($id)
+    {
+        if (is_array($id)){
+            $i = 0;
+            foreach ($id as $item) {
+                if (!$this->deleteMediafileEntry((int)$item)){
+                    return false;
+                }
+                $i += 1;
+            }
+            return $i;
+
+        } else {
+
+            $this->uploadModel = $this->localUploadComponent->setModelForDelete(
+                $this->findMediafileModel((int)$id)
+            );
+
+            if (!$this->uploadModel->delete()){
+                return false;
+            }
+
+            return 1;
         }
     }
 }

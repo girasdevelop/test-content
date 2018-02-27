@@ -34,10 +34,6 @@ class LocalUpload extends BaseUpload
             throw new InvalidConfigException('The uploadRoot is not defined.');
         }
 
-        if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
-            throw new InvalidConfigException('The localUploadDirs is not defined.');
-        }
-
         $this->uploadRoot = trim($this->uploadRoot, $this->directorySeparator);
     }
 
@@ -50,10 +46,16 @@ class LocalUpload extends BaseUpload
      * $this->databaseDir
      * $this->mediafileModel->type
      *
+     * @throws InvalidConfigException
+     *
      * @return void
      */
     protected function setParamsForUpload(): void
     {
+        if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
+            throw new InvalidConfigException('The localUploadDirs is not defined.');
+        }
+
         if (strpos($this->file->type, self::TYPE_IMAGE) !== false) {
             $uploadDir = $this->uploadDirs[self::TYPE_IMAGE];
 
@@ -95,6 +97,20 @@ class LocalUpload extends BaseUpload
     }
 
     /**
+     * Set some params for upload.
+     * It is needed to set the next parameters:
+     * $this->directoryForDelete
+     *
+     * @return void
+     */
+    protected function setParamsForDelete(): void
+    {
+        $originalFile = pathinfo($this->mediafileModel->url);
+
+        $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $originalFile['dirname'];
+    }
+
+    /**
      * Save file in local directory or send file to remote storage.
      *
      * @return bool
@@ -104,6 +120,18 @@ class LocalUpload extends BaseUpload
         BaseFileHelper::createDirectory($this->uploadPath, 0777);
 
         return $this->file->saveAs($this->uploadPath . $this->directorySeparator . $this->outFileName);
+    }
+
+    /**
+     * Delete local directory with original file and thumbs.
+     *
+     * @return mixed
+     */
+    protected function deleteFiles()
+    {
+        BaseFileHelper::removeDirectory($this->directoryForDelete);
+
+        return true;
     }
 
     /**

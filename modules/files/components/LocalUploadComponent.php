@@ -130,13 +130,13 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     }
 
     /**
-     * Sets a mediafile model.
+     * Sets a mediafile model for upload file.
      *
      * @param Mediafile $mediafileModel
      *
      * @return UploadModelInterface
      */
-    public function setModel(Mediafile $mediafileModel): UploadModelInterface
+    public function setModelForUpload(Mediafile $mediafileModel): UploadModelInterface
     {
         /* @var UploadModelInterface $object */
         $object = Yii::createObject([
@@ -151,6 +151,26 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'thumbs' => $this->thumbs,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
             'thumbStubUrl' => $this->thumbStubUrl
+        ]);
+
+        return $object;
+    }
+
+    /**
+     * Sets a mediafile model for delete file.
+     *
+     * @param Mediafile $mediafileModel
+     *
+     * @return UploadModelInterface
+     */
+    public function setModelForDelete(Mediafile $mediafileModel): UploadModelInterface
+    {
+        /* @var UploadModelInterface $object */
+        $object = Yii::createObject([
+            'class' => LocalUpload::class,
+            'mediafileModel' => $mediafileModel,
+            'uploadRoot' => $this->uploadRoot,
+            'directorySeparator' => $this->directorySeparator,
         ]);
 
         return $object;

@@ -43,11 +43,18 @@ interface UploadModelInterface
     public function getFile(): UploadedFile;
 
     /**
-     * Save data.
+     * Save file in storage and database.
      *
      * @return bool
      */
     public function save(): bool ;
+
+    /**
+     * Delete file from storage and database.
+     *
+     * @return int
+     */
+    public function delete(): int;
 
     /**
      * Returns current model id.

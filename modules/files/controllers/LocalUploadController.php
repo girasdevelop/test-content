@@ -71,7 +71,7 @@ class LocalUploadController extends CommonRestController
 
             $id = null !== $request->post('id') && !empty($request->post('id')) ? $request->post('id') : null;
 
-            $this->uploadModel = $this->localUploadComponent->setModel(
+            $this->uploadModel = $this->localUploadComponent->setModelForUpload(
                 $this->setMediafileModel($id)
             );
 
@@ -113,17 +113,35 @@ class LocalUploadController extends CommonRestController
     /**
      * Delete the media model entry.
      *
-     * @param int $id
+     * @throws BadRequestHttpException
      *
-     * @return \yii\web\Response
+     * @return array
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $model = $this->findMediafileModel($id);
+        try {
 
-        $model->delete();
+            $request = Yii::$app->request;
 
-        return $this->redirect(['index']);
+            $this->uploadModel = $this->localUploadComponent->setModelForDelete(
+                $this->findMediafileModel($request->post('id'))
+            );
+
+            $deleted = $this->uploadModel->delete();
+
+            if (!$deleted){
+                return $this->getFailResponse(
+                    'Error to delete file.'
+                );
+            }
+
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage(), $e->getCode());
+        }
+
+        return $this->getSuccessResponse(
+            'Deleted '.$deleted.' files.'
+        );
     }
 
     /**

@@ -23,6 +23,7 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
  * @property string $uploadRoot
+ * @property string $directoryForDelete
  * @property string $uploadDir
  * @property string $uploadPath
  * @property string $outFileName
@@ -130,6 +131,13 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     public $uploadRoot;
 
     /**
+     * Directory for delete with all content.
+     *
+     * @var string
+     */
+    public $directoryForDelete = [];
+
+    /**
      * Directory for uploaded files.
      *
      * @var string
@@ -185,11 +193,25 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     abstract protected function setParamsForUpload(): void;
 
     /**
+     * Set some params for delete.
+     *
+     * @return void
+     */
+    abstract protected function setParamsForDelete(): void;
+
+    /**
      * Save file in local directory or send file to remote storage.
      *
      * @return bool
      */
     abstract protected function sendFile(): bool;
+
+    /**
+     * Delete files from local directory or from remote storage.
+     *
+     * @return mixed
+     */
+    abstract protected function deleteFiles();
 
     /**
      * Create thumb.
@@ -322,6 +344,28 @@ abstract class BaseUpload extends Model implements UploadModelInterface
         }
 
         return true;
+    }
+
+    /**
+     * Delete files from local directory or from remote storage.
+     *
+     * @throws \Exception
+     *
+     * @return int
+     */
+    public function delete(): int
+    {
+        $this->setParamsForDelete();
+
+        $this->deleteFiles();
+
+        $deleted = $this->mediafileModel->delete();
+
+        if (!$deleted){
+            throw new \Exception('Error delete file data from database.', 500);
+        }
+
+        return $deleted;
     }
 
     /**

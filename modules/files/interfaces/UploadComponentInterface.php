@@ -12,11 +12,20 @@ use app\modules\files\models\Mediafile;
 interface UploadComponentInterface
 {
     /**
-     * Search model data.
+     * Sets a mediafile model for upload file.
      *
      * @param $model $mediafileModel
      *
      * @return UploadModelInterface
      */
-    public function setModel(Mediafile $mediafileModel): UploadModelInterface;
+    public function setModelForUpload(Mediafile $mediafileModel): UploadModelInterface;
+
+    /**
+     * Sets a mediafile model for delete file.
+     *
+     * @param $model $mediafileModel
+     *
+     * @return UploadModelInterface
+     */
+    public function setModelForDelete(Mediafile $mediafileModel): UploadModelInterface;
 }

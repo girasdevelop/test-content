@@ -18,6 +18,9 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  */
 class LocalUpload extends BaseUpload
 {
+    const DIR_LENGTH_FIRST = 2;
+    const DIR_LENGTH_SECOND = 4;
+
     /**
      * Directories for local uploaded files.
      *
@@ -82,8 +85,8 @@ class LocalUpload extends BaseUpload
         }
 
         $this->uploadDir = trim($uploadDir, $this->directorySeparator) .
-                           $this->directorySeparator . substr(md5(time()), 0, 2) .
-                           $this->directorySeparator . substr(md5(time()+1), 0, 4);
+                           $this->directorySeparator . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
+                           $this->directorySeparator . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
 
         $this->uploadPath = $this->uploadRoot . $this->directorySeparator . $this->uploadDir;
 
@@ -108,10 +111,12 @@ class LocalUpload extends BaseUpload
         $originalFile = pathinfo($this->mediafileModel->url);
         $dirname = $originalFile['dirname'];
 
-        $dirnameArr = explode($dirname, '\\');
-        unset($dirnameArr[(count($dirnameArr)-1)]);
-        $dirnameParent = implode($dirnameArr, $this->directorySeparator);
-        var_dump($dirnameArr);
+        $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
+        $dirnameLast = substr($dirname, -self::DIR_LENGTH_SECOND);
+        if (count(BaseFileHelper::findDirectories($dirnameParent)) == 1){
+            $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $dirnameParent;
+        }
+        var_dump($dirnameLast);
 
         $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $dirname;
     }

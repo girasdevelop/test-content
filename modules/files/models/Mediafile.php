@@ -219,17 +219,13 @@ class Mediafile extends ActiveRecord
      */
     public static function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool
     {
-        $owner = OwnersMediafiles::findOne([
+        $deleted = OwnersMediafiles::findOne([
             'ownerId' => $ownerId,
             'owner' => $owner,
             'ownerAttribute' => $ownerAttribute,
         ]);
 
-        if ($owner) {
-            return $owner->delete();
-        }
-
-        return false;
+        return $deleted > 0;
     }
 
     /**

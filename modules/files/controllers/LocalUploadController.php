@@ -4,8 +4,8 @@ namespace app\modules\files\controllers;
 
 use Yii;
 use yii\helpers\Url;
-use yii\base\InvalidConfigException;
-use yii\web\{UploadedFile, BadRequestHttpException};
+use yii\base\{InvalidConfigException, UnknownMethodException};
+use yii\web\{UploadedFile, BadRequestHttpException, NotFoundHttpException};
 use app\modules\files\models\Mediafile;
 use app\modules\files\components\LocalUploadComponent;
 
@@ -20,7 +20,7 @@ use app\modules\files\components\LocalUploadComponent;
 class LocalUploadController extends CommonRestController
 {
     /**
-     * @var LocalUploadComponent LocalUploadComponent
+     * @var LocalUploadComponent
      */
     private $localUploadComponent;
 
@@ -65,12 +65,19 @@ class LocalUploadController extends CommonRestController
             );
         }
 
-        $this->uploadModel = $this->localUploadComponent->setModel(new Mediafile());
-
-        $this->uploadModel->setAttributes(Yii::$app->request->post(), false);
-        $this->uploadModel->setFile($file);
-
         try {
+
+            $request = Yii::$app->request;
+
+            $id = null !== $request->post('id') && !empty($request->post('id')) ? $request->post('id') : null;
+
+            $this->uploadModel = $this->localUploadComponent->setModel(
+                $this->setMediafileModel($id)
+            );
+
+            $this->uploadModel->setAttributes($request->post(), false);
+            $this->uploadModel->setFile($file);
+
 
             if (!$this->uploadModel->save()){
                 return $this->getFailResponse(
@@ -83,11 +90,12 @@ class LocalUploadController extends CommonRestController
                 $this->uploadModel->createThumbs();
             }
 
-        } catch (\Exception|InvalidConfigException $e) {
+        } catch (\Exception|InvalidConfigException|UnknownMethodException|NotFoundHttpException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
 
         $response['files'][] = [
+            'id'            => $this->uploadModel->id,
             'url'           => $this->uploadModel->mediafileModel->url,
             'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
             'name'          => $this->uploadModel->mediafileModel->filename,
@@ -100,5 +108,71 @@ class LocalUploadController extends CommonRestController
             'File uploaded.',
             $response
         );
+    }
+
+    /**
+     * Delete the media model entry.
+     *
+     * @param int $id
+     *
+     * @return \yii\web\Response
+     */
+    public function actionDelete($id)
+    {
+        $model = $this->findMediafileModel($id);
+
+        $model->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Find the media model entry.
+     *
+     * @param int $id
+     *
+     * @throws UnknownMethodException
+     * @throws NotFoundHttpException
+     *
+     * @return Mediafile
+     */
+    private function findMediafileModel(int $id): Mediafile
+    {
+        $modelObject = new Mediafile();
+
+        if (!method_exists($modelObject, 'findOne')){
+            $class = (new\ReflectionClass($modelObject));
+            throw new UnknownMethodException('Method findOne does not exists in ' . $class->getNamespaceName() . '\\' . $class->getShortName().' class.');
+        }
+
+        $result = call_user_func([
+            $modelObject,
+            'findOne',
+        ], $id);
+
+        if ($result !== null) {
+            return $result;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Returns an intermediate model for working with the main.
+     *
+     * @param int|null $id
+     *
+     * @throws UnknownMethodException
+     * @throws NotFoundHttpException
+     *
+     * @return Mediafile
+     */
+    private function setMediafileModel(int $id = null): Mediafile
+    {
+        if (null === $id){
+            return new Mediafile();
+        } else {
+            return $this->findMediafileModel($id);
+        }
     }
 }

@@ -181,17 +181,13 @@ class Album extends ActiveRecord
      */
     public static function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool
     {
-        $owner = OwnersAlbums::findOne([
+        $deleted = OwnersAlbums::deleteAll([
             'ownerId' => $ownerId,
             'owner' => $owner,
             'ownerAttribute' => $ownerAttribute,
         ]);
 
-        if ($owner) {
-            return $owner->delete();
-        }
-
-        return false;
+        return $deleted > 0;
     }
 
     /**

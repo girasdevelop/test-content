@@ -106,8 +106,14 @@ class LocalUpload extends BaseUpload
     protected function setParamsForDelete(): void
     {
         $originalFile = pathinfo($this->mediafileModel->url);
+        $dirname = $originalFile['dirname'];
 
-        $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $originalFile['dirname'];
+        $dirnameArr = explode($dirname, '\\');
+        unset($dirnameArr[(count($dirnameArr)-1)]);
+        $dirnameParent = implode($dirnameArr, $this->directorySeparator);
+        var_dump($dirnameArr);
+
+        $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $dirname;
     }
 
     /**
@@ -129,8 +135,9 @@ class LocalUpload extends BaseUpload
      */
     protected function deleteFiles()
     {
+        var_dump($this->directoryForDelete);die();
         BaseFileHelper::removeDirectory($this->directoryForDelete);
-
+        //var_dump($this->directoryForDelete);die();
         return true;
     }
 

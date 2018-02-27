@@ -317,11 +317,18 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             return false;
         }
 
+        if (!$this->mediafileModel->isNewRecord){
+            $this->setParamsForDelete();
+            $this->deleteFiles();
+        }
+
         $this->setParamsForUpload();
 
         if (!$this->sendFile()){
             throw new \Exception('Error save file in to directory.', 500);
         }
+
+
 
         $this->mediafileModel->url = $this->databaseDir;
         $this->mediafileModel->filename = $this->outFileName;

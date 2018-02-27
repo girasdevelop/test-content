@@ -45,6 +45,7 @@ class LocalUploadController extends CommonRestController
     {
         return [
             'upload' => ['POST'],
+            'delete' => ['POST'],
         ];
     }
 

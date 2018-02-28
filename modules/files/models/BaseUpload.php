@@ -35,13 +35,6 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  */
 abstract class BaseUpload extends Model implements UploadModelInterface
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_AUDIO = 'audio';
-    const TYPE_VIDEO = 'video';
-    const TYPE_APP = 'application';
-    const TYPE_TEXT = 'text';
-    const TYPE_OTHER = 'other';
-
     /**
      * Alt text for the file.
      *

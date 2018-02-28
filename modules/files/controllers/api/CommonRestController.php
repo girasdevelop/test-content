@@ -1,13 +1,11 @@
 <?php
 
-namespace app\modules\files\controllers;
+namespace app\modules\files\controllers\api;
 
 use Yii;
 use yii\rest\Controller;
 use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
-use app\modules\files\models\LocalUpload;
-use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Class RestController
@@ -16,7 +14,6 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property array|null $authenticator
  * @property array|null $rateLimiter
  * @property array|null $contentNegotiator
- * @property UploadModelInterface|LocalUpload $uploadModel
  *
  * @package Itstructure\FilesModule\controllers
  */
@@ -42,11 +39,6 @@ class CommonRestController extends Controller
      * @var array|null
      */
     protected $contentNegotiator = null;
-
-    /**
-     * @var UploadModelInterface|LocalUpload
-     */
-    private $uploadModel;
 
     /**
      * @return array
@@ -83,26 +75,6 @@ class CommonRestController extends Controller
         }
 
         return $behaviors;
-    }
-
-    /**
-     * Set upload model.
-     *
-     * @param UploadModelInterface $model
-     */
-    public function setUploadModel(UploadModelInterface $model): void
-    {
-        $this->uploadModel = $model;
-    }
-
-    /**
-     * Returns upload model.
-     *
-     * @return UploadModelInterface
-     */
-    public function getUploadModel(): UploadModelInterface
-    {
-        return $this->uploadModel;
     }
 
     /**

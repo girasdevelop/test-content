@@ -55,28 +55,7 @@ class LocalUpload extends BaseUpload
      */
     protected function setParamsForUpload(): void
     {
-        if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
-            throw new InvalidConfigException('The localUploadDirs is not defined.');
-        }
-
-        if (strpos($this->file->type, self::TYPE_IMAGE) !== false) {
-            $uploadDir = $this->uploadDirs[self::TYPE_IMAGE];
-
-        } elseif (strpos($this->file->type, self::TYPE_AUDIO) !== false) {
-            $uploadDir = $this->uploadDirs[self::TYPE_AUDIO];
-
-        } elseif (strpos($this->file->type, self::TYPE_VIDEO) !== false) {
-            $uploadDir = $this->uploadDirs[self::TYPE_VIDEO];
-
-        } elseif (strpos($this->file->type, self::TYPE_APP) !== false) {
-            $uploadDir = $this->uploadDirs[self::TYPE_APP];
-
-        } elseif (strpos($this->file->type, self::TYPE_TEXT) !== false) {
-            $uploadDir = $this->uploadDirs[self::TYPE_TEXT];
-
-        } else {
-            $uploadDir = $this->uploadDirs[self::TYPE_OTHER];
-        }
+        $uploadDir = $this->getUploadDirConfig($this->file->type);
 
         if (!empty($this->subDir)){
             $uploadDir = trim($uploadDir, $this->directorySeparator) .
@@ -172,5 +151,40 @@ class LocalUpload extends BaseUpload
         )->save($this->uploadRoot.$this->directorySeparator.$thumbUrl);
 
         return $thumbUrl;
+    }
+
+    /**
+     * Get upload directory configuration by file type.
+     *
+     * @param string $type
+     *
+     * @throws InvalidConfigException
+     *
+     * @return string
+     */
+    private function getUploadDirConfig(string $type): string
+    {
+        if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
+            throw new InvalidConfigException('The localUploadDirs is not defined.');
+        }
+
+        if (strpos($type, self::TYPE_IMAGE) !== false) {
+            return $this->uploadDirs[self::TYPE_IMAGE];
+
+        } elseif (strpos($type, self::TYPE_AUDIO) !== false) {
+            return $this->uploadDirs[self::TYPE_AUDIO];
+
+        } elseif (strpos($type, self::TYPE_VIDEO) !== false) {
+            return $this->uploadDirs[self::TYPE_VIDEO];
+
+        } elseif (strpos($type, self::TYPE_APP) !== false) {
+            return $this->uploadDirs[self::TYPE_APP];
+
+        } elseif (strpos($type, self::TYPE_TEXT) !== false) {
+            return $this->uploadDirs[self::TYPE_TEXT];
+
+        } else {
+            return $this->uploadDirs[self::TYPE_OTHER];
+        }
     }
 }

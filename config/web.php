@@ -16,7 +16,7 @@ $config = [
         'files' => [
             'class' => app\modules\files\Module::class,
             'controllerMap' => [
-                'local-upload' => app\modules\files\controllers\LocalUploadController::class,
+                'api/local-upload' => app\modules\files\controllers\api\LocalUploadController::class,
             ],
             'components' => [
                 'local-upload-component' => [

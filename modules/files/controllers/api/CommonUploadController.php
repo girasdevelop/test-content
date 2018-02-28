@@ -1,37 +1,46 @@
 <?php
 
-namespace app\modules\files\controllers;
+namespace app\modules\files\controllers\api;
 
 use Yii;
-use yii\helpers\Url;
 use yii\base\{InvalidConfigException, UnknownMethodException};
 use yii\web\{UploadedFile, BadRequestHttpException, NotFoundHttpException};
-use app\modules\files\models\Mediafile;
 use app\modules\files\components\LocalUploadComponent;
+use app\modules\files\models\{Mediafile, LocalUpload};
+use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
 /**
- * Class LocalUploadController
- * Upload controller class to upload files in local directory.
+ * Class CommonUploadController
+ * Common upload controller class to upload files in local directory.
  *
- * @property LocalUploadComponent $localUploadComponent
+ * @property UploadComponentInterface|LocalUploadComponent $uploadComponent
+ * @property UploadModelInterface|LocalUpload $uploadModel
  *
  * @package Itstructure\FilesModule\controllers
  */
-class LocalUploadController extends CommonRestController
+abstract class CommonUploadController extends CommonRestController
 {
     /**
-     * @var LocalUploadComponent
+     * @var null|UploadComponentInterface|LocalUploadComponent
      */
-    private $localUploadComponent;
+    protected $uploadComponent = null;
+
+    /**
+     * @var UploadModelInterface|LocalUpload
+     */
+    private $uploadModel;
+
+    /**
+     * @return UploadComponentInterface|LocalUploadComponent
+     */
+    abstract protected function getUploadComponent(): UploadComponentInterface;
 
     /**
      * Initialize.
      */
     public function init()
     {
-        $this->localUploadComponent = $this->module->get('local-upload-component');
-
-        $this->enableCsrfValidation = $this->localUploadComponent->enableCsrfValidation;
+        $this->enableCsrfValidation = $this->getUploadComponent()->enableCsrfValidation;
 
         $this->authenticator     = $this->module->authenticator;
         $this->rateLimiter       = $this->module->rateLimiter;
@@ -50,6 +59,28 @@ class LocalUploadController extends CommonRestController
     }
 
     /**
+     * Set upload model.
+     *
+     * @param UploadModelInterface $model
+     *
+     * @return void
+     */
+    public function setUploadModel(UploadModelInterface $model): void
+    {
+        $this->uploadModel = $model;
+    }
+
+    /**
+     * Returns upload model.
+     *
+     * @return UploadModelInterface
+     */
+    public function getUploadModel(): UploadModelInterface
+    {
+        return $this->uploadModel;
+    }
+
+    /**
      * Provides upload file.
      *
      * @throws BadRequestHttpException
@@ -60,7 +91,7 @@ class LocalUploadController extends CommonRestController
     {
         try {
 
-            $file = UploadedFile::getInstanceByName($this->localUploadComponent->fileAttributeName);
+            $file = UploadedFile::getInstanceByName($this->getUploadComponent()->fileAttributeName);
 
             if (!$file){
                 return $this->getFailResponse(
@@ -70,10 +101,8 @@ class LocalUploadController extends CommonRestController
 
             $request = Yii::$app->request;
 
-            $id = null !== $request->post('id') && !empty($request->post('id')) ? $request->post('id') : null;
-
-            $this->uploadModel = $this->localUploadComponent->setModelForUpload(
-                $this->setMediafileModel($id)
+            $this->uploadModel = $this->getUploadComponent()->setModelForUpload(
+                $this->setMediafileModel(!empty($request->post('id')) ? $request->post('id') : null)
             );
 
             $this->uploadModel->setAttributes($request->post(), false);
@@ -91,15 +120,7 @@ class LocalUploadController extends CommonRestController
                 $this->uploadModel->createThumbs();
             }
 
-            $response['files'][] = [
-                'id'            => $this->uploadModel->id,
-                'url'           => $this->uploadModel->mediafileModel->url,
-                'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
-                'name'          => $this->uploadModel->mediafileModel->filename,
-                'type'          => $this->uploadModel->mediafileModel->type,
-                'size'          => $this->uploadModel->mediafileModel->size,
-                'deleteUrl'     => Url::to(['local-upload/delete', 'id' => $this->uploadModel->id]),
-            ];
+            $response['files'][] = $this->getUploadResponse();
 
             return $this->getSuccessResponse(
                 'File uploaded.',
@@ -136,6 +157,23 @@ class LocalUploadController extends CommonRestController
         } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * Response with uploaded file data.
+     *
+     * @return array
+     */
+    private function getUploadResponse(): array
+    {
+        return [
+            'id'            => $this->uploadModel->id,
+            'url'           => $this->uploadModel->mediafileModel->url,
+            'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
+            'name'          => $this->uploadModel->mediafileModel->filename,
+            'type'          => $this->uploadModel->mediafileModel->type,
+            'size'          => $this->uploadModel->mediafileModel->size,
+        ];
     }
 
     /**
@@ -209,7 +247,7 @@ class LocalUploadController extends CommonRestController
 
         } else {
 
-            $this->uploadModel = $this->localUploadComponent->setModelForDelete(
+            $this->uploadModel = $this->getUploadComponent()->setModelForDelete(
                 $this->findMediafileModel((int)$id)
             );
 

@@ -94,9 +94,7 @@ abstract class CommonUploadController extends CommonRestController
             $file = UploadedFile::getInstanceByName($this->getUploadComponent()->fileAttributeName);
 
             if (!$file){
-                return $this->getFailResponse(
-                    'File is absent.'
-                );
+                return $this->getFailResponse('File is absent.');
             }
 
             $request = Yii::$app->request;
@@ -110,10 +108,7 @@ abstract class CommonUploadController extends CommonRestController
 
 
             if (!$this->uploadModel->save()){
-                return $this->getFailResponse(
-                    'Error to upload file.',
-                    $this->uploadModel->errors
-                );
+                return $this->getFailResponse('Error to upload file.', $this->uploadModel->errors);
             }
 
             if ($this->uploadModel->isImage()){
@@ -122,10 +117,7 @@ abstract class CommonUploadController extends CommonRestController
 
             $response['files'][] = $this->getUploadResponse();
 
-            return $this->getSuccessResponse(
-                'File uploaded.',
-                $response
-            );
+            return $this->getSuccessResponse('File uploaded.', $response);
 
         } catch (\Exception|InvalidConfigException|UnknownMethodException|NotFoundHttpException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());

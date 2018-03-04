@@ -4,6 +4,8 @@ namespace app\modules\files\models;
 
 use Yii;
 use yii\db\ActiveQuery;
+use app\modules\files\Module;
+use app\modules\files\models\upload\BaseUpload;
 
 /**
  * This is the model class for table "albums".
@@ -38,6 +40,7 @@ class Album extends ActiveRecord
             [
                 [
                     'title',
+                    'type',
                 ],
                 'required',
             ],
@@ -76,6 +79,31 @@ class Album extends ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * Get album types or selected type.
+     *
+     * @param string|null $key
+     *
+     * @return mixed
+     */
+    public static function getTypes(string $key = null)
+    {
+        $types = [
+            BaseUpload::TYPE_IMAGE => Module::t('album', 'Image album'),
+            BaseUpload::TYPE_AUDIO => Module::t('album', 'Audio album'),
+            BaseUpload::TYPE_VIDEO => Module::t('album', 'Video album'),
+            BaseUpload::TYPE_APP   => Module::t('album', 'Applications'),
+            BaseUpload::TYPE_TEXT  => Module::t('album', 'Documents'),
+            BaseUpload::TYPE_OTHER => Module::t('album', 'Other files'),
+        ];
+
+        if (null !== $key){
+            return $types[$key];
+        }
+
+        return $types;
     }
 
     /**

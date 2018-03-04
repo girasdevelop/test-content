@@ -1,8 +1,9 @@
 <?php
 
-use yii\helpers\Html;
+use yii\helpers\{Html, Url};
 use yii\grid\GridView;
 use app\modules\files\Module;
+use app\modules\files\models\Album;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\files\models\AlbumSearch */
@@ -23,10 +24,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
-            'id',
             [
-                'attribute' => 'title',
-                'label' =>  Module::t('album', 'Title'),
+                'label' => Module::t('main', 'ID'),
+                'value' => function($data) {
+                    return Html::a(
+                        Html::encode($data->id),
+                        Url::to(['view', 'id' => $data->id])
+                    );
+                },
+                'format' => 'raw',
+            ],
+            [
+                'label' => Module::t('album', 'Title'),
+                'value' => function($data) {
+                    return Html::a(
+                        Html::encode($data->title),
+                        Url::to(['view', 'id' => $data->id])
+                    );
+                },
+                'format' => 'raw',
             ],
             [
                 'attribute' => 'description',
@@ -35,6 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'type',
                 'label' =>  Module::t('album', 'Type'),
+                'value' => function($data) {
+                    return Album::getTypes($data->type);
+                }
             ],
             [
                 'attribute' => 'created_at',

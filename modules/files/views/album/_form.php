@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\files\Module;
+use app\modules\files\models\Album;
+use Itstructure\FieldWidgets\{Fields, FieldType};
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\files\models\Album */
@@ -15,11 +18,28 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-md-4">
 
-            <?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-            <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-            <?php echo $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+            <?php echo Fields::widget([
+                'fields' => [
+                    [
+                        'name' => 'title',
+                        'type' => FieldType::FIELD_TYPE_TEXT,
+                        'label' => Module::t('album', 'Title')
+                    ],
+                    [
+                        'name' => 'description',
+                        'type' => FieldType::FIELD_TYPE_TEXT_AREA,
+                        'label' => Module::t('album', 'Description')
+                    ],
+                    [
+                        'name' => 'type',
+                        'type' => FieldType::FIELD_TYPE_DROPDOWN,
+                        'data' => Album::getTypes(),
+                        'label' => Module::t('album', 'Type'),
+                    ],
+                ],
+                'model' => $model,
+                'form'  => $form,
+            ]) ?>
 
         </div>
     </div>

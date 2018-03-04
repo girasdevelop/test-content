@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\files\Module;
+use app\modules\files\models\Album;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\files\models\Album */
@@ -41,7 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'type',
-                'label' => Module::t('album', 'Type')
+                'label' => Module::t('album', 'Type'),
+                'value' => function($data) {
+                    return Album::getTypes($data->type);
+                }
             ],
             [
                 'attribute' => 'created_at',

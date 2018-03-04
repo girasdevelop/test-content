@@ -4,7 +4,8 @@ namespace app\modules\files\components;
 
 use Yii;
 use yii\base\{Component, InvalidConfigException};
-use app\modules\files\models\{Mediafile, LocalUpload};
+use app\modules\files\models\Mediafile;
+use app\modules\files\models\upload\LocalUpload;
 use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface};
 
 /**
@@ -136,7 +137,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      *
      * @return UploadModelInterface
      */
-    public function setModelForUpload(Mediafile $mediafileModel): UploadModelInterface
+    public function setModelForSave(Mediafile $mediafileModel): UploadModelInterface
     {
         /* @var UploadModelInterface $object */
         $object = Yii::createObject([

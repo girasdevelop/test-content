@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\files\models;
+namespace app\modules\files\models\upload;
 
 use Yii;
 use yii\imagine\Image;
@@ -53,7 +53,7 @@ class LocalUpload extends BaseUpload
      *
      * @return void
      */
-    protected function setParamsForUpload(): void
+    protected function setParamsForSave(): void
     {
         $uploadDir = $this->getUploadDirConfig($this->file->type);
 

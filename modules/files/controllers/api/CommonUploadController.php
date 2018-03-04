@@ -99,7 +99,7 @@ abstract class CommonUploadController extends CommonRestController
 
             $request = Yii::$app->request;
 
-            $this->uploadModel = $this->getUploadComponent()->setModelForUpload(
+            $this->uploadModel = $this->getUploadComponent()->setModelForSave(
                 $this->setMediafileModel(!empty($request->post('id')) ? $request->post('id') : null)
             );
 

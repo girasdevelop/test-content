@@ -18,7 +18,7 @@ interface UploadComponentInterface
      *
      * @return UploadModelInterface
      */
-    public function setModelForUpload(Mediafile $mediafileModel): UploadModelInterface;
+    public function setModelForSave(Mediafile $mediafileModel): UploadModelInterface;
 
     /**
      * Sets a mediafile model for delete file.

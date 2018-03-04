@@ -1,11 +1,12 @@
 <?php
 
-namespace app\modules\files\models;
+namespace app\modules\files\models\upload;
 
 use yii\base\{Model, InvalidConfigException};
 use yii\web\UploadedFile;
 use yii\imagine\Image;
 use app\modules\files\Module;
+use app\modules\files\models\Mediafile;
 use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
 
 /**
@@ -183,7 +184,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      *
      * @return void
      */
-    abstract protected function setParamsForUpload(): void;
+    abstract protected function setParamsForSave(): void;
 
     /**
      * Set some params for delete.
@@ -310,7 +311,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             return false;
         }
 
-        $this->setParamsForUpload();
+        $this->setParamsForSave();
 
         if (!$this->sendFile()){
             throw new \Exception('Error save file in to directory.', 500);

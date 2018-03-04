@@ -10,7 +10,7 @@ use app\modules\files\models\Mediafile;
 use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
 
 /**
- * Class LocalUpload
+ * Class BaseUpload
  *
  * @property string $alt
  * @property string $description

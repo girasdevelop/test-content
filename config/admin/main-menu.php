@@ -34,5 +34,10 @@ return [
                 ]
             ]
         ],
+        'albums' => [
+            'title' => 'Albums',
+            'icon' => 'fa fa-image',
+            'url' => '/files/album',
+        ],
     ],
 ];

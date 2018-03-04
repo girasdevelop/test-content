@@ -6,7 +6,8 @@ use Yii;
 use yii\base\{InvalidConfigException, UnknownMethodException};
 use yii\web\{UploadedFile, BadRequestHttpException, NotFoundHttpException};
 use app\modules\files\components\LocalUploadComponent;
-use app\modules\files\models\{Mediafile, LocalUpload};
+use app\modules\files\models\Mediafile;
+use app\modules\files\models\upload\LocalUpload;
 use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
 /**

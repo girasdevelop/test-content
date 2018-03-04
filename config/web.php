@@ -15,14 +15,17 @@ $config = [
     'modules' => [
         'files' => [
             'class' => app\modules\files\Module::class,
+            'layout' => '@admin/views/layouts/main-admin.php',
             'controllerMap' => [
                 'api/local-upload' => app\modules\files\controllers\api\LocalUploadController::class,
+                'album' => app\modules\files\controllers\AlbumController::class,
             ],
             'components' => [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
                     //'fileExtensions' => ['ext']
-                ]
+                ],
+                'view' => require __DIR__ . '/admin/view-component.php',
             ],
             /*'authenticator' => [
                 'class' => yii\filters\auth\HttpBearerAuth::class,

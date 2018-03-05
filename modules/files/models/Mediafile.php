@@ -129,66 +129,6 @@ class Mediafile extends ActiveRecord
     }
 
     /**
-     * Get all mediafiles by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return ActiveRecord|Mediafile[]
-     */
-    public static function getAllByOwner(string $owner, int $ownerId, string $ownerAttribute): ActiveRecord
-    {
-        return static::find()
-            ->where(
-                [
-                    'id' =>  static::getIdsByOwner($owner, $ownerId, $ownerAttribute)->asArray()
-                ]
-            )->all();
-    }
-
-    /**
-     * Get one mediafile by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return array|null|Mediafile
-     */
-    public static function getOneByOwner(string $owner, int $ownerId, string $ownerAttribute): Mediafile
-    {
-        return static::find()
-            ->where(
-                [
-                    'id' =>  static::getIdsByOwner($owner, $ownerId, $ownerAttribute)->one()->mediafileId
-                ]
-            )->one();
-    }
-
-    /**
-     * Get Id's by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return ActiveQuery|Mediafile[]
-     */
-    private static function getIdsByOwner(string $owner, int $ownerId, string $ownerAttribute): ActiveQuery
-    {
-        return OwnersMediafiles::find()
-            ->select('mediafileId')
-            ->where(
-                [
-                    'owner' => $owner,
-                    'ownerId' => $ownerId,
-                    'ownerAttribute' => $ownerAttribute,
-                ]
-            );
-    }
-
-    /**
      * Add owner to mediafiles table.
      *
      * @param int    $ownerId
@@ -231,7 +171,7 @@ class Mediafile extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOwnersMediafiles()
+    public function getOwners()
     {
         return $this->hasMany(OwnersMediafiles::class, ['mediafileId' => 'id']);
     }

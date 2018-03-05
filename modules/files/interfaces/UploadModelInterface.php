@@ -18,6 +18,7 @@ interface UploadModelInterface
     const FILE_TYPE_APP = 'application';
     const FILE_TYPE_TEXT = 'text';
     const FILE_TYPE_OTHER = 'other';
+    const FILE_TYPE_THUMB = 'thumbnail';
 
     /**
      * Set mediafile model.

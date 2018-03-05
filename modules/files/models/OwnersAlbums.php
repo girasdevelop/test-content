@@ -104,7 +104,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
     }
 
     /**
-     * Get all mediafiles by owner.
+     * Get all albums by owner.
      *
      * @param string $owner
      * @param int    $ownerId
@@ -120,28 +120,6 @@ class OwnersAlbums extends \yii\db\ActiveRecord
                     'id' =>  static::getAlbumIds($owner, $ownerId, $ownerAttribute)->asArray()
                 ]
             )->all();
-    }
-
-    /**
-     * Get Id's by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return ActiveQuery
-     */
-    private static function getAlbumIds(string $owner, int $ownerId, string $ownerAttribute):ActiveQuery
-    {
-        return static::find()
-            ->select('albumId')
-            ->where(
-                [
-                    'owner' => $owner,
-                    'ownerId' => $ownerId,
-                    'ownerAttribute' => $ownerAttribute,
-                ]
-            );
     }
 
     /**
@@ -220,5 +198,27 @@ class OwnersAlbums extends \yii\db\ActiveRecord
     public static function getOtherAlbums(string $owner, int $ownerId)
     {
         return static::getAlbums($owner, $ownerId, Album::ALBUM_TYPE_OTHER);
+    }
+
+    /**
+     * Get Id's by owner.
+     *
+     * @param string $owner
+     * @param int    $ownerId
+     * @param string $ownerAttribute
+     *
+     * @return ActiveQuery
+     */
+    private static function getAlbumIds(string $owner, int $ownerId, string $ownerAttribute):ActiveQuery
+    {
+        return static::find()
+            ->select('albumId')
+            ->where(
+                [
+                    'owner' => $owner,
+                    'ownerId' => $ownerId,
+                    'ownerAttribute' => $ownerAttribute,
+                ]
+            );
     }
 }

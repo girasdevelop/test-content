@@ -168,23 +168,23 @@ class LocalUpload extends BaseUpload
             throw new InvalidConfigException('The localUploadDirs is not defined.');
         }
 
-        if (strpos($type, self::TYPE_IMAGE) !== false) {
-            return $this->uploadDirs[self::TYPE_IMAGE];
+        if (strpos($type, self::FILE_TYPE_IMAGE) !== false) {
+            return $this->uploadDirs[self::FILE_TYPE_IMAGE];
 
-        } elseif (strpos($type, self::TYPE_AUDIO) !== false) {
-            return $this->uploadDirs[self::TYPE_AUDIO];
+        } elseif (strpos($type, self::FILE_TYPE_AUDIO) !== false) {
+            return $this->uploadDirs[self::FILE_TYPE_AUDIO];
 
-        } elseif (strpos($type, self::TYPE_VIDEO) !== false) {
-            return $this->uploadDirs[self::TYPE_VIDEO];
+        } elseif (strpos($type, self::FILE_TYPE_VIDEO) !== false) {
+            return $this->uploadDirs[self::FILE_TYPE_VIDEO];
 
-        } elseif (strpos($type, self::TYPE_APP) !== false) {
-            return $this->uploadDirs[self::TYPE_APP];
+        } elseif (strpos($type, self::FILE_TYPE_APP) !== false) {
+            return $this->uploadDirs[self::FILE_TYPE_APP];
 
-        } elseif (strpos($type, self::TYPE_TEXT) !== false) {
-            return $this->uploadDirs[self::TYPE_TEXT];
+        } elseif (strpos($type, self::FILE_TYPE_TEXT) !== false) {
+            return $this->uploadDirs[self::FILE_TYPE_TEXT];
 
         } else {
-            return $this->uploadDirs[self::TYPE_OTHER];
+            return $this->uploadDirs[self::FILE_TYPE_OTHER];
         }
     }
 }

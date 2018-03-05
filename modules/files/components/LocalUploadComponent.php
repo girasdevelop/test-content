@@ -41,12 +41,12 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var string
      */
     public $uploadDirs = [
-        LocalUpload::TYPE_IMAGE => 'uploads'.DIRECTORY_SEPARATOR.'images',
-        LocalUpload::TYPE_AUDIO => 'uploads'.DIRECTORY_SEPARATOR.'audio',
-        LocalUpload::TYPE_VIDEO => 'uploads'.DIRECTORY_SEPARATOR.'video',
-        LocalUpload::TYPE_APP => 'uploads'.DIRECTORY_SEPARATOR.'application',
-        LocalUpload::TYPE_TEXT => 'uploads'.DIRECTORY_SEPARATOR.'text',
-        LocalUpload::TYPE_OTHER => 'uploads'.DIRECTORY_SEPARATOR.'other',
+        LocalUpload::FILE_TYPE_IMAGE => 'uploads'.DIRECTORY_SEPARATOR.'images',
+        LocalUpload::FILE_TYPE_AUDIO => 'uploads'.DIRECTORY_SEPARATOR.'audio',
+        LocalUpload::FILE_TYPE_VIDEO => 'uploads'.DIRECTORY_SEPARATOR.'video',
+        LocalUpload::FILE_TYPE_APP => 'uploads'.DIRECTORY_SEPARATOR.'application',
+        LocalUpload::FILE_TYPE_TEXT => 'uploads'.DIRECTORY_SEPARATOR.'text',
+        LocalUpload::FILE_TYPE_OTHER => 'uploads'.DIRECTORY_SEPARATOR.'other',
     ];
 
     /**

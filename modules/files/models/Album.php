@@ -3,7 +3,6 @@
 namespace app\modules\files\models;
 
 use Yii;
-use yii\db\ActiveQuery;
 use app\modules\files\Module;
 use app\modules\files\models\upload\BaseUpload;
 
@@ -23,6 +22,13 @@ use app\modules\files\models\upload\BaseUpload;
  */
 class Album extends ActiveRecord
 {
+    const ALBUM_TYPE_IMAGE = BaseUpload::FILE_TYPE_IMAGE . 'Album';
+    const ALBUM_TYPE_AUDIO = BaseUpload::FILE_TYPE_AUDIO . 'Album';
+    const ALBUM_TYPE_VIDEO = BaseUpload::FILE_TYPE_VIDEO . 'Album';
+    const ALBUM_TYPE_APP   = BaseUpload::FILE_TYPE_APP . 'Album';
+    const ALBUM_TYPE_TEXT  = BaseUpload::FILE_TYPE_TEXT . 'Album';
+    const ALBUM_TYPE_OTHER = BaseUpload::FILE_TYPE_OTHER . 'Album';
+
     /**
      * {@inheritdoc}
      */
@@ -91,12 +97,12 @@ class Album extends ActiveRecord
     public static function getTypes(string $key = null)
     {
         $types = [
-            BaseUpload::TYPE_IMAGE => Module::t('album', 'Image album'),
-            BaseUpload::TYPE_AUDIO => Module::t('album', 'Audio album'),
-            BaseUpload::TYPE_VIDEO => Module::t('album', 'Video album'),
-            BaseUpload::TYPE_APP   => Module::t('album', 'Applications'),
-            BaseUpload::TYPE_TEXT  => Module::t('album', 'Documents'),
-            BaseUpload::TYPE_OTHER => Module::t('album', 'Other files'),
+            self::ALBUM_TYPE_IMAGE => Module::t('album', 'Image album'),
+            self::ALBUM_TYPE_AUDIO => Module::t('album', 'Audio album'),
+            self::ALBUM_TYPE_VIDEO => Module::t('album', 'Video album'),
+            self::ALBUM_TYPE_APP   => Module::t('album', 'Applications'),
+            self::ALBUM_TYPE_TEXT  => Module::t('album', 'Documents'),
+            self::ALBUM_TYPE_OTHER => Module::t('album', 'Other files'),
         ];
 
         if (null !== $key){
@@ -115,67 +121,7 @@ class Album extends ActiveRecord
      */
     public static function findByTypes(array $types): ActiveRecord
     {
-        return self::find()->filterWhere(['in', 'type', $types])->all();
-    }
-
-    /**
-     * Get all mediafiles by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return ActiveRecord|Mediafile[]
-     */
-    public static function getAllByOwner(string $owner, int $ownerId, string $ownerAttribute): ActiveRecord
-    {
-        return static::find()
-            ->where(
-                [
-                    'id' =>  static::getIdsByOwner($owner, $ownerId, $ownerAttribute)->asArray()
-                ]
-            )->all();
-    }
-
-    /**
-     * Get one mediafile by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return array|null|Mediafile
-     */
-    public static function getOneByOwner(string $owner, int $ownerId, string $ownerAttribute): Mediafile
-    {
-        return static::find()
-            ->where(
-                [
-                    'id' =>  static::getIdsByOwner($owner, $ownerId, $ownerAttribute)->one()->albumId
-                ]
-            )->one();
-    }
-
-    /**
-     * Get Id's by owner.
-     *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
-     *
-     * @return ActiveQuery|Album[]
-     */
-    private static function getIdsByOwner(string $owner, int $ownerId, string $ownerAttribute): ActiveQuery
-    {
-        return OwnersAlbums::find()
-            ->select('albumId')
-            ->where(
-                [
-                    'owner' => $owner,
-                    'ownerId' => $ownerId,
-                    'ownerAttribute' => $ownerAttribute,
-                ]
-            );
+        return static::find()->filterWhere(['in', 'type', $types])->all();
     }
 
     /**
@@ -221,7 +167,7 @@ class Album extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOwnersAlbums()
+    public function getOwners()
     {
         return $this->hasMany(OwnersAlbums::class, ['albumId' => 'id']);
     }

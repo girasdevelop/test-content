@@ -12,12 +12,12 @@ use app\modules\files\models\Mediafile;
  */
 interface UploadModelInterface
 {
-    const TYPE_IMAGE = 'image';
-    const TYPE_AUDIO = 'audio';
-    const TYPE_VIDEO = 'video';
-    const TYPE_APP = 'application';
-    const TYPE_TEXT = 'text';
-    const TYPE_OTHER = 'other';
+    const FILE_TYPE_IMAGE = 'image';
+    const FILE_TYPE_AUDIO = 'audio';
+    const FILE_TYPE_VIDEO = 'video';
+    const FILE_TYPE_APP = 'application';
+    const FILE_TYPE_TEXT = 'text';
+    const FILE_TYPE_OTHER = 'other';
 
     /**
      * Set mediafile model.

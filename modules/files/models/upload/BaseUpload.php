@@ -384,7 +384,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      */
     public function isImage(): bool
     {
-        return strpos($this->mediafileModel->type, self::TYPE_IMAGE) !== false;
+        return strpos($this->mediafileModel->type, self::FILE_TYPE_IMAGE) !== false;
     }
 
     /**

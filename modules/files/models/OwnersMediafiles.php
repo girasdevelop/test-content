@@ -99,7 +99,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMediafile()
+    public function getMediaFile()
     {
         return $this->hasOne(Mediafile::class, ['id' => 'mediafileId']);
     }
@@ -109,11 +109,11 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      *
      * @param string $owner
      * @param int    $ownerId
-     * @param string $ownerAttribute
+     * @param null|string $ownerAttribute
      *
      * @return ActiveRecord[]
      */
-    public static function getMediafiles(string $owner, int $ownerId, string $ownerAttribute)
+    public static function getMediaFiles(string $owner, int $ownerId, string $ownerAttribute = null)
     {
         return Mediafile::find()
             ->where(
@@ -121,6 +121,11 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
                     'id' =>  static::getMediafileIds($owner, $ownerId, $ownerAttribute)->asArray()
                 ]
             )->all();
+    }
+
+    public static function getThumbnail()
+    {
+
     }
 
     /**
@@ -133,19 +138,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getImageFiles(string $owner, int $ownerId)
     {
-        return static::getMediafiles($owner, $ownerId, BaseUpload::FILE_TYPE_IMAGE);
-    }
-
-    /**
-     * Get album image files by albumId.
-     *
-     * @param int    $albumId
-     *
-     * @return ActiveRecord[]
-     */
-    public static function getAlbumImageFiles(int $albumId)
-    {
-        return static::getImageFiles(Album::ALBUM_TYPE_IMAGE, $albumId);
+        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_IMAGE);
     }
 
     /**
@@ -158,19 +151,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getAudioFiles(string $owner, int $ownerId)
     {
-        return static::getMediafiles($owner, $ownerId, BaseUpload::FILE_TYPE_AUDIO);
-    }
-
-    /**
-     * Get album audio files by albumId.
-     *
-     * @param int    $albumId
-     *
-     * @return ActiveRecord[]
-     */
-    public static function getAlbumAudioFiles(int $albumId)
-    {
-        return static::getAudioFiles(Album::ALBUM_TYPE_AUDIO, $albumId);
+        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_AUDIO);
     }
 
     /**
@@ -183,19 +164,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getVideoFiles(string $owner, int $ownerId)
     {
-        return static::getMediafiles($owner, $ownerId, BaseUpload::FILE_TYPE_VIDEO);
-    }
-
-    /**
-     * Get album video files by albumId.
-     *
-     * @param int    $albumId
-     *
-     * @return ActiveRecord[]
-     */
-    public static function getAlbumVideoFiles(int $albumId)
-    {
-        return static::getVideoFiles(Album::ALBUM_TYPE_VIDEO, $albumId);
+        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_VIDEO);
     }
 
     /**
@@ -208,19 +177,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getAppFiles(string $owner, int $ownerId)
     {
-        return static::getMediafiles($owner, $ownerId, BaseUpload::FILE_TYPE_APP);
-    }
-
-    /**
-     * Get album app files by albumId.
-     *
-     * @param int    $albumId
-     *
-     * @return ActiveRecord[]
-     */
-    public static function getAlbumAppFiles(int $albumId)
-    {
-        return static::getAppFiles(Album::ALBUM_TYPE_APP, $albumId);
+        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_APP);
     }
 
     /**
@@ -233,19 +190,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getTextFiles(string $owner, int $ownerId)
     {
-        return static::getMediafiles($owner, $ownerId, BaseUpload::FILE_TYPE_TEXT);
-    }
-
-    /**
-     * Get album text files by albumId.
-     *
-     * @param int    $albumId
-     *
-     * @return ActiveRecord[]
-     */
-    public static function getAlbumTextFiles(int $albumId)
-    {
-        return static::getTextFiles(Album::ALBUM_TYPE_TEXT, $albumId);
+        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_TEXT);
     }
 
     /**
@@ -258,19 +203,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getOtherFiles(string $owner, int $ownerId)
     {
-        return static::getMediafiles($owner, $ownerId, BaseUpload::FILE_TYPE_OTHER);
-    }
-
-    /**
-     * Get album other files by albumId.
-     *
-     * @param int    $albumId
-     *
-     * @return ActiveRecord[]
-     */
-    public static function getAlbumOtherFiles(int $albumId)
-    {
-        return static::getOtherFiles(Album::ALBUM_TYPE_OTHER, $albumId);
+        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_OTHER);
     }
 
     /**

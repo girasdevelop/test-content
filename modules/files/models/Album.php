@@ -171,4 +171,75 @@ class Album extends ActiveRecord
     {
         return $this->hasMany(OwnersAlbums::class, ['albumId' => 'id']);
     }
+
+    public function getMediaFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id);
+    }
+
+    public function getThumbnail()
+    {
+        return Mediafile::find()
+            ->where(
+                [
+                    'id' =>  OwnersMediafiles::find()
+                        ->select('mediafileId')
+                        ->where(
+                            [
+                                'owner' => $this->type,
+                                'ownerId' => $this->id,
+                                'ownerAttribute' => BaseUpload::FILE_TYPE_THUMB,
+                            ]
+                        )
+                ]
+            )->one();
+    }
+
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getImageFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_IMAGE);
+    }
+
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getAudioFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_AUDIO);
+    }
+
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getVideoFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_VIDEO);
+    }
+
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getAppFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_APP);
+    }
+
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getTextFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_TEXT);
+    }
+
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getOtherFiles()
+    {
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_OTHER);
+    }
 }

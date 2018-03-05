@@ -123,9 +123,22 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
             )->all();
     }
 
-    public static function getThumbnail()
+    /**
+     * Get one owner thumbnail file by owner.
+     *
+     * @param string $owner
+     * @param int    $ownerId
+     *
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function getOwnerThumbnail(string $owner, int $ownerId)
     {
-
+        return Mediafile::find()
+            ->where(
+                [
+                    'id' =>  static::getMediafileIds($owner, $ownerId, BaseUpload::FILE_TYPE_THUMB)->one()->mediafileId
+                ]
+            )->one();
     }
 
     /**
@@ -211,20 +224,23 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      *
      * @param string $owner
      * @param int    $ownerId
-     * @param string $ownerAttribute
+     * @param null|string $ownerAttribute
      *
      * @return ActiveQuery
      */
-    private static function getMediafileIds(string $owner, int $ownerId, string $ownerAttribute): ActiveQuery
+    private static function getMediafileIds(string $owner, int $ownerId, string $ownerAttribute = null): ActiveQuery
     {
+        $conditions = [
+            'owner' => $owner,
+            'ownerId' => $ownerId
+        ];
+
+        if (null !== $ownerAttribute){
+            $conditions['ownerAttribute'] = $ownerAttribute;
+        }
+
         return static::find()
             ->select('mediafileId')
-            ->where(
-                [
-                    'owner' => $owner,
-                    'ownerId' => $ownerId,
-                    'ownerAttribute' => $ownerAttribute,
-                ]
-            );
+            ->where($conditions);
     }
 }

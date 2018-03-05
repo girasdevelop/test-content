@@ -165,6 +165,8 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's owners.
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getOwners()
@@ -172,30 +174,29 @@ class Album extends ActiveRecord
         return $this->hasMany(OwnersAlbums::class, ['albumId' => 'id']);
     }
 
+    /**
+     * Get album's mediafiles.
+     *
+     * @return ActiveRecord[]
+     */
     public function getMediaFiles()
     {
         return OwnersMediafiles::getMediaFiles($this->type, $this->id);
     }
 
+    /**
+     * Get album's thumbnail.
+     *
+     * @return array|null|\yii\db\ActiveRecord
+     */
     public function getThumbnail()
     {
-        return Mediafile::find()
-            ->where(
-                [
-                    'id' =>  OwnersMediafiles::find()
-                        ->select('mediafileId')
-                        ->where(
-                            [
-                                'owner' => $this->type,
-                                'ownerId' => $this->id,
-                                'ownerAttribute' => BaseUpload::FILE_TYPE_THUMB,
-                            ]
-                        )
-                ]
-            )->one();
+        return OwnersMediafiles::getOwnerThumbnail($this->type, $this->id);
     }
 
     /**
+     * Get album's images.
+     *
      * @return ActiveRecord[]
      */
     public function getImageFiles()
@@ -204,6 +205,8 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's audio.
+     *
      * @return ActiveRecord[]
      */
     public function getAudioFiles()
@@ -212,6 +215,8 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's video.
+     *
      * @return ActiveRecord[]
      */
     public function getVideoFiles()
@@ -220,6 +225,8 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's application files.
+     *
      * @return ActiveRecord[]
      */
     public function getAppFiles()
@@ -228,6 +235,8 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's text files.
+     *
      * @return ActiveRecord[]
      */
     public function getTextFiles()
@@ -236,6 +245,8 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's other files.
+     *
      * @return ActiveRecord[]
      */
     public function getOtherFiles()

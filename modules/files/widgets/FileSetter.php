@@ -2,13 +2,12 @@
 namespace app\modules\files\widgets;
 
 use Yii;
-use yii\helpers\Html;
+use yii\helpers\{Html, Url};
 use yii\widgets\InputWidget;
-use pendalf89\filemanager\assets\FileInputAsset;
-use yii\helpers\Url;
+use app\modules\files\assets\FileSetterAsset;
 
 /**
- * Class FileInput
+ * Class FileSetter
  *
  * Basic example of usage:
  *
@@ -40,7 +39,7 @@ use yii\helpers\Url;
  * @package pendalf89\filemanager\widgets
  * @author Zabolotskikh Boris <zabolotskich@bk.ru>
  */
-class FileInput extends InputWidget
+class FileSetter extends InputWidget
 {
     /**
      * @var string widget template
@@ -50,7 +49,7 @@ class FileInput extends InputWidget
     /**
      * @var string button tag
      */
-    public $buttonTag = 'button';
+    public $buttonHtmlTag = 'button';
 
     /**
      * @var string button name
@@ -65,7 +64,7 @@ class FileInput extends InputWidget
     /**
      * @var string reset button tag
      */
-    public $resetButtonTag = 'button';
+    public $resetButtonHtmlTag = 'button';
 
     /**
      * @var string reset button name
@@ -97,7 +96,7 @@ class FileInput extends InputWidget
     /**
      * @var string This data will be inserted in input field
      */
-    public $pasteData = self::DATA_URL;
+    public $insertedData = self::INSERTED_DATA_URL;
 
     /**
      * @var array widget html options
@@ -110,10 +109,10 @@ class FileInput extends InputWidget
      */
     public $frameSrc  = ['/filemanager/file/filemanager'];
 
-    const DATA_ID = 'id';
-    const DATA_URL = 'url';
-    const DATA_ALT = 'alt';
-    const DATA_DESCRIPTION = 'description';
+    const INSERTED_DATA_ID = 'id';
+    const INSERTED_DATA_URL = 'url';
+    const INSERTED_DATA_ALT = 'alt';
+    const INSERTED_DATA_DESCRIPTION = 'description';
 
     /**
      * @inheritdoc
@@ -143,10 +142,10 @@ class FileInput extends InputWidget
             $replace['{input}'] = Html::textInput($this->name, $this->value, $this->options);
         }
 
-        $replace['{button}'] = Html::tag($this->buttonTag, $this->buttonName, $this->buttonOptions);
-        $replace['{reset-button}'] = Html::tag($this->resetButtonTag, $this->resetButtonName, $this->resetButtonOptions);
+        $replace['{button}'] = Html::tag($this->buttonHtmlTag, $this->buttonName, $this->buttonOptions);
+        $replace['{reset-button}'] = Html::tag($this->resetButtonHtmlTag, $this->resetButtonName, $this->resetButtonOptions);
 
-        FileInputAsset::register($this->view);
+        FileSetterAsset::register($this->view);
 
         if (!empty($this->callbackBeforeInsert)) {
             $this->view->registerJs('
@@ -154,7 +153,7 @@ class FileInput extends InputWidget
             );
         }
 
-        $modal = $this->renderFile('@vendor/pendalf89/yii2-filemanager/views/file/modal.php', [
+        $modal = $this->renderFile('@app/modules/files/views/file/modal.php', [
             'inputId' => $this->options['id'],
             'btnId' => $this->buttonOptions['id'],
             'frameId' => $this->options['id'] . '-frame',
@@ -165,5 +164,21 @@ class FileInput extends InputWidget
         ]);
 
         return strtr($this->template, $replace) . $modal;
+    }
+
+    /**
+     * Give ability of configure view to the module class.
+     *
+     * @return \yii\base\View|\yii\web\View
+     */
+    public function getView()
+    {
+        $module = \Yii::$app->controller->module;
+
+        if (method_exists($module, 'getView')) {
+            return $module->getView();
+        }
+
+        return parent::getView();
     }
 }

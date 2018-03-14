@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\files\Module;
 use app\modules\files\models\Album;
+use app\modules\files\widgets\FileSetter;
 use Itstructure\FieldWidgets\{Fields, FieldType};
 
 /* @var $this yii\web\View */
@@ -39,6 +40,14 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 ],
                 'model' => $model,
                 'form'  => $form,
+            ]) ?>
+
+            <?php echo $form->field($model, 'thumbnail')->widget(FileSetter::class, [
+                'thumb' => 'original',
+                'template' => '<div class="input-group">{input}<span class="btn-group">{button}{reset-button}</span></div>',
+                'insertedData' => FileSetter::INSERTED_DATA_ID,
+                'buttonName' => Module::t('main', 'Set thumbnail'),
+                'imageContainer' => '#thumbnail-container',
             ]) ?>
 
         </div>

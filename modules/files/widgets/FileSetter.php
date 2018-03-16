@@ -160,7 +160,7 @@ class FileSetter extends InputWidget
             'frameSrc' => Url::to($this->frameSrc), 
             'thumb' => $this->thumb,
             'imageContainer' => $this->imageContainer,
-            'pasteData' => $this->pasteData,
+            'insertedData' => $this->insertedData,
         ]);
 
         return strtr($this->template, $replace) . $modal;

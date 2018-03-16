@@ -4,17 +4,15 @@ namespace app\modules\files\assets;
 
 use yii\web\AssetBundle;
 
-class FileSetterAsset extends AssetBundle
+class ModalAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/files/assets/source';
 
-    public $js = [
-        'js/filesetter.js',
+    public $css = [
+        'css/modal.css',
     ];
 
     public $depends = [
         'yii\bootstrap\BootstrapAsset',
-        'yii\web\JqueryAsset',
-        'app\modules\files\assets\ModalAsset',
     ];
 }

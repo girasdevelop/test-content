@@ -107,7 +107,7 @@ class FileSetter extends InputWidget
      *
      * @var array selecte the frameSrc in case you use a different module name
      */
-    public $frameSrc  = ['/filemanager/file/filemanager'];
+    public $frameSrc  = ['/files/api/managers/filemanager'];
 
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';
@@ -153,7 +153,7 @@ class FileSetter extends InputWidget
             );
         }
 
-        $modal = $this->renderFile('@app/modules/files/views/file/modal.php', [
+        $modal = $this->renderFile('@app/modules/files/views/layouts/modal.php', [
             'inputId' => $this->options['id'],
             'btnId' => $this->buttonOptions['id'],
             'frameId' => $this->options['id'] . '-frame',

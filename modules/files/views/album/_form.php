@@ -42,14 +42,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'form'  => $form,
             ]) ?>
 
-            <?php /*echo $form->field($model, 'thumbnail')->widget(FileSetter::class, [
-                'thumb' => 'original',
-                'template' => '<div class="input-group">{input}<span class="btn-group">{button}{reset-button}</span></div>',
-                'insertedData' => FileSetter::INSERTED_DATA_ID,
-                'buttonName' => Module::t('main', 'Set thumbnail'),
-                'imageContainer' => '#thumbnail-container',
-            ])*/ ?>
-
             <?php echo FileSetter::widget([
                 'name' => 'thumbnail',
                 'thumb' => 'original',

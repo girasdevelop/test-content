@@ -4,6 +4,7 @@ namespace app\modules\files\controllers\api;
 
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\interfaces\UploadComponentInterface;
+use app\modules\files\controllers\api\common\CommonUploadController;
 
 /**
  * Class LocalUploadController

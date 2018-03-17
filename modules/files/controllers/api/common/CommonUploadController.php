@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\files\controllers\api;
+namespace app\modules\files\controllers\api\common;
 
 use Yii;
 use yii\base\{InvalidConfigException, UnknownMethodException};
@@ -17,7 +17,7 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * @property UploadComponentInterface|LocalUploadComponent $uploadComponent
  * @property UploadModelInterface|LocalUpload $uploadModel
  *
- * @package Itstructure\FilesModule\controllers
+ * @package Itstructure\FilesModule\controllers\api\common
  */
 abstract class CommonUploadController extends CommonRestController
 {

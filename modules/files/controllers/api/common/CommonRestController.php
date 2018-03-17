@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\files\controllers\api;
+namespace app\modules\files\controllers\api\common;
 
 use Yii;
 use yii\rest\Controller;
@@ -15,7 +15,7 @@ use yii\base\InvalidConfigException;
  * @property array|null $rateLimiter
  * @property array|null $contentNegotiator
  *
- * @package Itstructure\FilesModule\controllers
+ * @package Itstructure\FilesModule\controllers\api\common
  */
 class CommonRestController extends Controller
 {

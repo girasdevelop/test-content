@@ -18,6 +18,7 @@ $config = [
             'layout' => '@admin/views/layouts/main-admin.php',
             'controllerMap' => [
                 'api/local-upload' => app\modules\files\controllers\api\LocalUploadController::class,
+                'api/managers' => app\modules\files\controllers\api\ManagersController::class,
                 'album' => app\modules\files\controllers\AlbumController::class,
             ],
             'components' => [

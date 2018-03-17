@@ -70,7 +70,7 @@ $(document).ready(function() {
     $('[role="filemanager-launch"]').on("click", function(e) {
         e.preventDefault();
 
-        var modal = $('[data-btn-id="' + $(this).attr("id") + '"]'),
+        var modal = $('div[role="filemanager-modal"]'),
             iframe = $('<iframe src="' + modal.attr("data-frame-src")
                 + '" id="' + modal.attr("data-frame-id") + '" frameborder="0" role="filemanager-frame"></iframe>');
 

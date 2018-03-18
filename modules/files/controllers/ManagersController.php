@@ -38,12 +38,6 @@ class ManagersController extends Controller
 
     public function actionFilemanager()
     {
-        /*FilemanagerAsset::register($this->getView());
-
-        $model = new MediafileSearch();
-        $dataProvider = $model->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->defaultPageSize = 15;*/
-
         $owner = \Yii::$app->request->get('owner');
         $ownerId = \Yii::$app->request->get('ownerId');
 
@@ -51,7 +45,7 @@ class ManagersController extends Controller
             $ownerAttribute = \Yii::$app->request->get('ownerAttribute');
             $query = OwnersMediafiles::getMediaFiles($owner, $ownerId, $ownerAttribute);
         } else {
-            $query = Mediafile::find()->all();
+            $query = Mediafile::find();
         }
 
         $dataProvider = new ActiveDataProvider([

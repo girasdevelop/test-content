@@ -167,7 +167,7 @@ abstract class CommonUploadController extends RestController
         return [
             'id'            => $this->uploadModel->id,
             'url'           => $this->uploadModel->mediafileModel->url,
-            'thumbnailUrl'  => $this->uploadModel->getDefaultThumbUrl(),
+            'thumbnailUrl'  => $this->uploadModel->mediafileModel->getDefaultThumbUrl(),
             'name'          => $this->uploadModel->mediafileModel->filename,
             'type'          => $this->uploadModel->mediafileModel->type,
             'size'          => $this->uploadModel->mediafileModel->size,

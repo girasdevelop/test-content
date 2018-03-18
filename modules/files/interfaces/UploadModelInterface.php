@@ -72,13 +72,6 @@ interface UploadModelInterface
     public function getId();
 
     /**
-     * Check if the file is image.
-     *
-     * @return bool
-     */
-    public function isImage(): bool;
-
-    /**
      * Load data.
      * Used from the parent model yii\base\Model.
      *

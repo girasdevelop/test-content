@@ -22,6 +22,7 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
  * @property bool $enableCsrfValidation
+ * @property string $directorySeparator
  * @property View $_view
  *
  * @package Itstructure\FilesModule
@@ -72,10 +73,6 @@ class Module extends BaseModule
      * @var array of thumbnails.
      */
     public $thumbsConfig = [
-        self::DEFAULT_THUMB_ALIAS => [
-            'name' => 'Default size',
-            'size' => [128, 128],
-        ],
         self::SMALL_THUMB_ALIAS => [
             'name' => 'Small size',
             'size' => [120, 80],
@@ -111,6 +108,13 @@ class Module extends BaseModule
      * @var bool
      */
     public $enableCsrfValidation = false;
+
+    /**
+     * Directory separator.
+     *
+     * @var string
+     */
+    public $directorySeparator = DIRECTORY_SEPARATOR;
 
     /**
      * View component to render content.
@@ -233,6 +237,19 @@ class Module extends BaseModule
     }
 
     /**
+     * Default thumb config
+     *
+     * @return array
+     */
+    public static function getDefaultThumbConfig(): array
+    {
+        return [
+            'name' => 'Default size',
+            'size' => [128, 128],
+        ];
+    }
+
+    /**
      * Set i18N component.
      *
      * @return void
@@ -270,7 +287,8 @@ class Module extends BaseModule
                 'class' => LocalUploadComponent::class,
                 'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
-                'thumbStubUrl' => $this->thumbStubUrl
+                'thumbStubUrl' => $this->thumbStubUrl,
+                'directorySeparator' => $this->directorySeparator,
             ]
         ];
     }

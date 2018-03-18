@@ -1,29 +1,3 @@
-function filemanagerTinyMCE(callback, value, meta) {
-    var inputId = tinymce.activeEditor.settings.id,
-        modal = $('[data-btn-id="' + inputId + '-btn"]'),
-        iframe = $('<iframe src="' + modal.attr("data-frame-src")
-            + '" id="' + modal.attr("data-frame-id") + '" frameborder="0" role="filemanager-frame"></iframe>');
-
-    iframe.on("load", function() {
-        var modal = $(this).parents('[role="filemanager-modal"]'),
-            input = $("#" + modal.attr("data-input-id"));
-
-        $(this).contents().find(".dashboard").on("click", "#insert-btn", function(e) {
-            e.preventDefault();
-
-            var data = getFormData($(this).parents("#control-form"));
-
-            input.trigger("fileInsert", [data]);
-
-            callback(data.url, {alt: data.alt});
-            modal.modal("hide");
-        });
-    });
-
-    modal.find(".modal-body").html(iframe);
-    modal.modal("show");
-}
-
 function getFormData(form) {
     var formArray = form.serializeArray(),
         modelMap = {
@@ -70,13 +44,23 @@ $(document).ready(function() {
     $('[role="filemanager-launch"]').on("click", function(e) {
         e.preventDefault();
 
-        var modal = $('div[role="filemanager-modal"]'),
-            iframe = $('<iframe src="' + modal.attr("data-frame-src")
-                + '" id="' + modal.attr("data-frame-id") + '" frameborder="0" role="filemanager-frame"></iframe>');
+        var modal = $('div[role="filemanager-modal"]');
+            //iframe = $('<iframe src="' + modal.attr("data-frame-src") + '" id="' + modal.attr("data-frame-id") + '" frameborder="0" role="filemanager-frame"></iframe>');
 
-        iframe.on("load", frameHandler);
-        modal.find(".modal-body").html(iframe);
-        modal.modal("show");
+        //iframe.on("load", frameHandler);
+
+        $.ajax({
+            type: "POST",
+            url: modal.attr("data-frame-src"),
+            data: "owner='post'",
+            success: function(data) {
+                modal.find(".modal-body").html(data);
+                modal.modal("show");
+            },
+            error: function(data){
+                alert('Status code: ' + data.status);
+            }
+        });
     });
 
     $('[role="clear-input"]').on("click", function(e) {

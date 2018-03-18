@@ -379,16 +379,6 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     }
 
     /**
-     * Check if the file is image.
-     *
-     * @return bool
-     */
-    public function isImage(): bool
-    {
-        return strpos($this->mediafileModel->type, self::FILE_TYPE_IMAGE) !== false;
-    }
-
-    /**
      * Create thumbs for this image
      *
      * @throws InvalidConfigException
@@ -405,36 +395,19 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             $thumbs[$alias] = $this->createThumb(Module::configureThumb($alias, $preset));
         }
 
+        // Create default thumb.
+        if (!array_key_exists(Module::DEFAULT_THUMB_ALIAS, $this->thumbsConfig)){
+            $thumbs[Module::DEFAULT_THUMB_ALIAS] = $this->createThumb(
+                Module::configureThumb(
+                    Module::DEFAULT_THUMB_ALIAS,
+                    Module::getDefaultThumbConfig()
+                )
+            );
+        }
+
         $this->mediafileModel->thumbs = serialize($thumbs);
 
         return $this->mediafileModel->save();
-    }
-
-    /**
-     * Get default thumbnail url.
-     *
-     * @throws InvalidConfigException
-     *
-     * @return string
-     */
-    public function getDefaultThumbUrl(): string
-    {
-        if ($this->mediafileModel->isImage()) {
-
-            /* @var ThumbConfigInterface|ThumbConfig $thumbConfig */
-            $thumbConfig = Module::configureThumb(Module::DEFAULT_THUMB_ALIAS, $this->thumbsConfig[Module::DEFAULT_THUMB_ALIAS]);
-
-            $originalFile = pathinfo($this->mediafileModel->url);
-            $dirname = $originalFile['dirname'];
-            $filename = $originalFile['filename'];
-            $extension = $originalFile['extension'];
-
-            return $dirname .
-                   $this->directorySeparator .
-                   $this->getThumbFilename($filename, $extension, Module::DEFAULT_THUMB_ALIAS, $thumbConfig->width, $thumbConfig->height);
-        }
-
-        return $this->thumbStubUrl;
     }
 
     /**
@@ -448,7 +421,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      *
      * @return string
      */
-    protected function getThumbFilename($original, $extension, $alias, $width, $height)
+    public function getThumbFilename($original, $extension, $alias, $width, $height)
     {
         return strtr($this->thumbFilenameTemplate, [
             '{width}'     => $width,

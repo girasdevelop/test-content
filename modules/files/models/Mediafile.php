@@ -22,6 +22,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property string $advance
  * @property int $created_at
  * @property int $updated_at
+ * @property Module $_module
  *
  * @property OwnersMediafiles[] $ownersMediafiles
  *
@@ -29,6 +30,11 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  */
 class Mediafile extends ActiveRecord
 {
+    /**
+     * @var null|Module
+     */
+    public $_module = null;
+
     /**
      * {@inheritdoc}
      */
@@ -104,6 +110,19 @@ class Mediafile extends ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return Module|null|static
+     */
+    public function getModule(): Module
+    {
+
+        if ($this->_module === null){
+            $this->_module = Module::getInstance();
+        }
+
+        return $this->_module;
     }
 
     /**
@@ -248,21 +267,12 @@ class Mediafile extends ActiveRecord
      */
     public function getDefaultThumbUrl(): string
     {
+        $module = $this->getModule();
+
         if ($this->isImage()) {
-
-            /* @var ThumbConfigInterface|ThumbConfig $thumbConfig */
-            $thumbConfig = Module::configureThumb(Module::DEFAULT_THUMB_ALIAS, $this->thumbsConfig[Module::DEFAULT_THUMB_ALIAS]);
-
-            $originalFile = pathinfo($this->mediafileModel->url);
-            $dirname = $originalFile['dirname'];
-            $filename = $originalFile['filename'];
-            $extension = $originalFile['extension'];
-
-            return $dirname .
-            $this->directorySeparator .
-            $this->getThumbFilename($filename, $extension, Module::DEFAULT_THUMB_ALIAS, $thumbConfig->width, $thumbConfig->height);
+            return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
         }
 
-        return $this->thumbStubUrl;
+        return $module->thumbStubUrl;
     }
 }

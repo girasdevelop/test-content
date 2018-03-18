@@ -3,11 +3,14 @@
 namespace app\modules\files\controllers\api\common;
 
 use Yii;
+use yii\rest\Controller as RestController;
 use yii\base\{InvalidConfigException, UnknownMethodException};
 use yii\web\{UploadedFile, BadRequestHttpException, NotFoundHttpException};
+use app\modules\files\Module;
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\LocalUpload;
+use app\modules\files\traits\{BehaviorsTrait, ResponseTrait};
 use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
 /**
@@ -16,11 +19,14 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  *
  * @property UploadComponentInterface|LocalUploadComponent $uploadComponent
  * @property UploadModelInterface|LocalUpload $uploadModel
+ * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\api\common
  */
-abstract class CommonUploadController extends CommonRestController
+abstract class CommonUploadController extends RestController
 {
+    use BehaviorsTrait, ResponseTrait;
+
     /**
      * @var null|UploadComponentInterface|LocalUploadComponent
      */
@@ -41,11 +47,10 @@ abstract class CommonUploadController extends CommonRestController
      */
     public function init()
     {
-        $this->enableCsrfValidation = $this->getUploadComponent()->enableCsrfValidation;
-
-        $this->authenticator     = $this->module->authenticator;
-        $this->rateLimiter       = $this->module->rateLimiter;
-        $this->contentNegotiator = $this->module->contentNegotiator;
+        $this->enableCsrfValidation = $this->module->enableCsrfValidation;
+        $this->authenticator        = $this->module->authenticator;
+        $this->rateLimiter          = $this->module->rateLimiter;
+        $this->contentNegotiator    = $this->module->contentNegotiator;
     }
 
     /**

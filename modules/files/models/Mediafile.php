@@ -2,9 +2,11 @@
 
 namespace app\modules\files\models;
 
-use Yii;
 use yii\helpers\Html;
-use yii\db\ActiveQuery;
+use yii\base\InvalidConfigException;
+use app\modules\files\Module;
+use app\modules\files\components\ThumbConfig;
+use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 
 /**
  * This is the model class for table "mediafiles".
@@ -225,5 +227,42 @@ class Mediafile extends ActiveRecord
         }
 
         return Html::img($url, $options);
+    }
+
+    /**
+     * Check if the file is image.
+     *
+     * @return bool
+     */
+    public function isImage(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_IMAGE) !== false;
+    }
+
+    /**
+     * Get default thumbnail url.
+     *
+     * @throws InvalidConfigException
+     *
+     * @return string
+     */
+    public function getDefaultThumbUrl(): string
+    {
+        if ($this->isImage()) {
+
+            /* @var ThumbConfigInterface|ThumbConfig $thumbConfig */
+            $thumbConfig = Module::configureThumb(Module::DEFAULT_THUMB_ALIAS, $this->thumbsConfig[Module::DEFAULT_THUMB_ALIAS]);
+
+            $originalFile = pathinfo($this->mediafileModel->url);
+            $dirname = $originalFile['dirname'];
+            $filename = $originalFile['filename'];
+            $extension = $originalFile['extension'];
+
+            return $dirname .
+            $this->directorySeparator .
+            $this->getThumbFilename($filename, $extension, Module::DEFAULT_THUMB_ALIAS, $thumbConfig->width, $thumbConfig->height);
+        }
+
+        return $this->thumbStubUrl;
     }
 }

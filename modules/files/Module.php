@@ -18,9 +18,10 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property array|null $authenticator
  * @property array|null $rateLimiter
  * @property array|null $contentNegotiator
- * @property array $thumbs
+ * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
+ * @property bool $enableCsrfValidation
  * @property View $_view
  *
  * @package Itstructure\FilesModule
@@ -70,7 +71,7 @@ class Module extends BaseModule
     /**
      * @var array of thumbnails.
      */
-    public $thumbs = [
+    public $thumbsConfig = [
         self::DEFAULT_THUMB_ALIAS => [
             'name' => 'Default size',
             'size' => [128, 128],
@@ -103,6 +104,13 @@ class Module extends BaseModule
      * @var string
      */
     public $thumbStubUrl;
+
+    /**
+     * Csrf validation.
+     *
+     * @var bool
+     */
+    public $enableCsrfValidation = false;
 
     /**
      * View component to render content.
@@ -260,7 +268,7 @@ class Module extends BaseModule
         return [
             'local-upload-component' => [
                 'class' => LocalUploadComponent::class,
-                'thumbs' => $this->thumbs,
+                'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
                 'thumbStubUrl' => $this->thumbStubUrl
             ]

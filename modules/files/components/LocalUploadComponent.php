@@ -19,10 +19,9 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property array $fileExtensions
  * @property int $fileMaxSize
  * @property string $fileAttributeName
- * @property array $thumbs
+ * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
- * @property bool $enableCsrfValidation
  *
  * @package Itstructure\FilesModule\components
  */
@@ -92,7 +91,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     /**
      * @var array
      */
-    public $thumbs = [];
+    public $thumbsConfig = [];
 
     /**
      * Thumbnails name template.
@@ -108,13 +107,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var string
      */
     public $thumbStubUrl;
-
-    /**
-     * Csrf validation.
-     *
-     * @var bool
-     */
-    public $enableCsrfValidation = false;
 
     /**
      * Initialize.
@@ -149,7 +141,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'directorySeparator' => $this->directorySeparator,
             'fileExtensions' => $this->fileExtensions,
             'fileMaxSize' => $this->fileMaxSize,
-            'thumbs' => $this->thumbs,
+            'thumbsConfig' => $this->thumbsConfig,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
             'thumbStubUrl' => $this->thumbStubUrl
         ]);

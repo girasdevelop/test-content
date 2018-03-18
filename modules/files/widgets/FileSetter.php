@@ -107,7 +107,7 @@ class FileSetter extends InputWidget
      *
      * @var array selecte the frameSrc in case you use a different module name
      */
-    public $frameSrc  = ['/files/api/managers/filemanager'];
+    public $frameSrc  = ['/files/managers/filemanager'];
 
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';

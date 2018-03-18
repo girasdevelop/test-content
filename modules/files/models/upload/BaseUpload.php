@@ -7,6 +7,7 @@ use yii\web\UploadedFile;
 use yii\imagine\Image;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
+use app\modules\files\components\ThumbConfig;
 use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
 
 /**
@@ -20,7 +21,7 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  * @property string $directorySeparator
  * @property array $fileExtensions
  * @property int $fileMaxSize
- * @property array $thumbs
+ * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
  * @property string $uploadRoot
@@ -100,7 +101,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     /**
      * @var array
      */
-    public $thumbs = [];
+    public $thumbsConfig = [];
 
     /**
      * Thumbnails name template.
@@ -400,7 +401,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
 
         Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
 
-        foreach ($this->thumbs as $alias => $preset) {
+        foreach ($this->thumbsConfig as $alias => $preset) {
             $thumbs[$alias] = $this->createThumb(Module::configureThumb($alias, $preset));
         }
 
@@ -418,9 +419,10 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      */
     public function getDefaultThumbUrl(): string
     {
-        if ($this->isImage()) {
+        if ($this->mediafileModel->isImage()) {
 
-            $thumbConfig = Module::configureThumb(Module::DEFAULT_THUMB_ALIAS, $this->thumbs[Module::DEFAULT_THUMB_ALIAS]);
+            /* @var ThumbConfigInterface|ThumbConfig $thumbConfig */
+            $thumbConfig = Module::configureThumb(Module::DEFAULT_THUMB_ALIAS, $this->thumbsConfig[Module::DEFAULT_THUMB_ALIAS]);
 
             $originalFile = pathinfo($this->mediafileModel->url);
             $dirname = $originalFile['dirname'];

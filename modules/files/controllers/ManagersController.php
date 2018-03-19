@@ -2,7 +2,7 @@
 
 namespace app\modules\files\controllers;
 
-use yii\data\ActiveDataProvider;
+use yii\data\{ActiveDataProvider, Pagination};
 use yii\web\Controller;
 use app\modules\files\Module;
 use app\modules\files\models\{OwnersMediafiles, Mediafile};
@@ -52,10 +52,15 @@ class ManagersController extends Controller
             'query' => $query,
         ]);
 
-        $dataProvider->pagination->defaultPageSize = 5;
+        $pagination = new Pagination([
+            'defaultPageSize' => 3,
+            'totalCount' => 5,
+        ]);
+        //$dataProvider->pagination->defaultPageSize = 3;
 
         return $this->render('filemanager', [
             'dataProvider' => $dataProvider,
+            'pagination' => $pagination
         ]);
     }
 

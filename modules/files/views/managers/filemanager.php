@@ -1,8 +1,8 @@
 <?php
 
-use yii\widgets\ListView;
+use yii\widgets\{ListView, LinkPager};
 use yii\helpers\{Html, Url};
-use yii\data\ActiveDataProvider;
+use yii\data\{ActiveDataProvider, Pagination};
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 use app\modules\files\assets\FilemanagerAsset;
@@ -10,6 +10,7 @@ use app\modules\files\assets\FilemanagerAsset;
 /* @var $this yii\web\View */
 /* @var $dataProvider ActiveDataProvider */
 /* @var $model Mediafile */
+/* @var $pagination Pagination */
 
 FilemanagerAsset::register($this);
 ?>
@@ -30,7 +31,7 @@ FilemanagerAsset::register($this);
     ]) ?>
 
     <?php
-    //var_dump($dataProvider);
+    echo LinkPager::widget(['pagination' => $pagination])
     ?>
 
     <div class="dashboard">

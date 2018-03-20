@@ -17,13 +17,14 @@ $(document).ready(function() {
 
         $(".item a").removeClass("active");
         $(this).addClass("active");
-        var id = $(this).attr("data-key"),
+        var _csrf = yii.getCsrfToken(),
+            id = $(this).attr("data-key"),
             url = $("#filemanager").attr("data-url-info");
 
         ajaxRequest = $.ajax({
-            type: "GET",
+            type: "POST",
             url: url,
-            data: "id=" + id + "&strictThumb=" + strictThumb,
+            data: "_csrf=" + _csrf + "&id=" + id + "&strictThumb=" + strictThumb,
             beforeSend: function() {
                 setAjaxLoader();
             },

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\files\components;
+namespace app\modules\files\widgets;
 
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
@@ -34,7 +34,7 @@ class FilesLinkPager extends LinkPager
 
         $linkOptions              = $this->linkOptions;
         $linkOptions['data-page'] = $page;
-        $linkOptions['onclick']   = 'getFiles("'.($page + 1).'","'.$owner.'","'.$ownerId.'","'.$ownerAttribute.'")';
+        $linkOptions['onclick']   = 'getFiles("'.($page + 1).'","'.$owner.'","'.$ownerId.'","' .$ownerAttribute.'")';
 
         return Html::tag('li', Html::a($label, '#pagination', $linkOptions), $options);
     }

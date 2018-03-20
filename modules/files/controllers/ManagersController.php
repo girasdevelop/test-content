@@ -22,13 +22,15 @@ class ManagersController extends Controller
 {
     use BehaviorsTrait;
 
+    const FILE_MANAGER_SRC = '/files/managers/filemanager';
+    const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
+
     /**
      * Initialize.
      */
     public function init()
     {
         $this->layout               = '@app/modules/files/views/layouts/main';
-        $this->viewPath             = '@app/modules/files/views/managers';
         $this->enableCsrfValidation = $this->module->enableCsrfValidation;
         $this->authenticator        = $this->module->authenticator;
         $this->rateLimiter          = $this->module->rateLimiter;
@@ -63,7 +65,7 @@ class ManagersController extends Controller
             'pagination' => $pagination
         ]);
 
-        return $this->render('filemanager', [
+        return $this->renderAjax('filemanager', [
             'dataProvider' => $dataProvider,
             'pagination' => $pagination
         ]);

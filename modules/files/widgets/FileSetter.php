@@ -5,6 +5,7 @@ use Yii;
 use yii\helpers\{Html, Url};
 use yii\widgets\InputWidget;
 use app\modules\files\assets\FileSetterAsset;
+use app\modules\files\controllers\ManagersController;
 
 /**
  * Class FileSetter
@@ -105,9 +106,9 @@ class FileSetter extends InputWidget
     
     /**
      *
-     * @var array selecte the frameSrc in case you use a different module name
+     * @var string
      */
-    public $srcToFiles  = ['/files/managers/filemanager'];
+    public $srcToFiles  = ManagersController::FILE_MANAGER_SRC;
 
     /**
      * Owner name (post, article, page e.t.c.).
@@ -178,7 +179,7 @@ class FileSetter extends InputWidget
             'inputId' => $this->options['id'],
             'btnId' => $this->buttonOptions['id'],
             'frameId' => $this->options['id'] . '-frame',
-            'srcToFiles' => Url::to($this->srcToFiles),
+            'srcToFiles' => Url::to([$this->srcToFiles]),
             'thumb' => $this->thumb,
             'imageContainer' => $this->imageContainer,
             'insertedData' => $this->insertedData,

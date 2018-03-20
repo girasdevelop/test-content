@@ -12,6 +12,6 @@ FilemanagerAsset::register($this);
 <div class="item">
     <?php echo Html::a(Html::img(DIRECTORY_SEPARATOR.$model->getDefaultThumbUrl()) . '<span class="checked glyphicon glyphicon-check"></span>',
         '#mediafile',
-        ['data-key' => $key]
+        ['data-key' => $model->id]
     ); ?>
 </div>

@@ -107,7 +107,21 @@ class FileSetter extends InputWidget
      *
      * @var array selecte the frameSrc in case you use a different module name
      */
-    public $frameSrc  = ['/files/managers/filemanager'];
+    public $srcToFiles  = ['/files/managers/filemanager'];
+
+    /**
+     * Owner name (post, article, page e.t.c.).
+     *
+     * @var string|null
+     */
+    public $owner = null;
+
+    /**
+     * Owner id.
+     *
+     * @var int|null
+     */
+    public $ownerId = null;
 
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';
@@ -157,10 +171,12 @@ class FileSetter extends InputWidget
             'inputId' => $this->options['id'],
             'btnId' => $this->buttonOptions['id'],
             'frameId' => $this->options['id'] . '-frame',
-            'frameSrc' => Url::to($this->frameSrc), 
+            'srcToFiles' => Url::to($this->srcToFiles),
             'thumb' => $this->thumb,
             'imageContainer' => $this->imageContainer,
             'insertedData' => $this->insertedData,
+            'owner' => $this->owner,
+            'ownerId' => $this->ownerId,
         ]);
 
         return strtr($this->template, $replace) . $modal;

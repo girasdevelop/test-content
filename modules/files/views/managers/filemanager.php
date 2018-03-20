@@ -6,6 +6,7 @@ use yii\data\{ActiveDataProvider, Pagination};
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 use app\modules\files\assets\FilemanagerAsset;
+use app\modules\files\components\FilesLinkPager;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider ActiveDataProvider */
@@ -19,21 +20,15 @@ FilemanagerAsset::register($this);
 
 <div id="filemanager" data-url-info="<?php echo Url::to(['file/info']) ?>">
 
-    <?php echo ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::img(DIRECTORY_SEPARATOR.$model->getDefaultThumbUrl()) . '<span class="checked glyphicon glyphicon-check"></span>',
-                '#mediafile',
-                ['data-key' => $key]
-            );
-        },
-    ]) ?>
+    <div class="items">
+        <?php echo ListView::widget([
+            'dataProvider' => $dataProvider,
+            'itemView' => '_fileItem',
+            'layout' => '{summary}{items}'
+        ]) ?>
 
-    <?php
-    echo LinkPager::widget(['pagination' => $pagination])
-    ?>
-
+        <?php echo FilesLinkPager::widget(['pagination' => $pagination]) ?>
+    </div>
     <div class="dashboard">
         <p><?php echo Html::a('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('main', 'Upload manager'),
                 ['file/uploadmanager'], ['class' => 'btn btn-default']) ?></p>

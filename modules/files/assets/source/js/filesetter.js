@@ -44,23 +44,7 @@ $(document).ready(function() {
     $('[role="filemanager-launch"]').on("click", function(e) {
         e.preventDefault();
 
-        var modal = $('div[role="filemanager-modal"]');
-            //iframe = $('<iframe src="' + modal.attr("data-frame-src") + '" id="' + modal.attr("data-frame-id") + '" frameborder="0" role="filemanager-frame"></iframe>');
-
-        //iframe.on("load", frameHandler);
-
-        $.ajax({
-            type: "POST",
-            url: modal.attr("data-frame-src"),
-            data: "owner='post'",
-            success: function(data) {
-                modal.find(".modal-body").html(data);
-                modal.modal("show");
-            },
-            error: function(data){
-                alert('Status code: ' + data.status);
-            }
-        });
+        getFiles();
     });
 
     $('[role="clear-input"]').on("click", function(e) {
@@ -70,3 +54,38 @@ $(document).ready(function() {
         $($(this).attr("data-image-container")).empty();
     });
 });
+
+function getFiles(page) {
+
+    if (!page || null === page){
+        page = 1;
+    }
+
+    var modal = getModal();
+
+    var params = 'page=' + page;
+
+    var owner = modal.attr("data-owner");
+    var ownerId = modal.attr("data-owner-id");
+
+    //if (null !== owner && null !== ownerId){
+    params = params + 'owner=' + 'fdsfdsgf' + '&ownerId=' + ownerId;
+    //}
+
+    $.ajax({
+        type: "GET",
+        url: modal.attr("data-src-to-files"),
+        data: params,
+        success: function(data) {
+            modal.find(".modal-body").html(data);
+            modal.modal("show");
+        },
+        error: function(data){
+            alert('Status code: ' + data.status);
+        }
+    });
+}
+
+function getModal() {
+    return $('div[role="filemanager-modal"]');
+}

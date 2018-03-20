@@ -13,46 +13,52 @@
 /*------------------------------------*\
     #ITEMS
 \*------------------------------------*/
-.list-view {
+.items {
   float: left;
   width: 660px;
+  overflow: hidden;
 }
-.list-view .items {
-  border-right: 1px solid #e5e5e5;
-  border-bottom: 1px solid #e5e5e5;
+.items .list-view {
+  clear: both;
+  overflow: hidden;
 }
-.list-view .items .item {
+.list-view .item {
+  float: left;
+  border-right: 3px solid #e5e5e5;
+  border-bottom: 3px solid #e5e5e5;
+}
+.list-view .item {
   display: inline-block;
   margin-bottom: 3px;
 }
-.list-view .items .item a {
+.list-view .item a {
   position: relative;
   display: inline-block;
   color: #5ba6f7;
 }
-.list-view .items .item a img {
+.list-view .item a img {
   min-width: 128px;
   min-height: 128px;
   opacity: .8;
 }
-.list-view .items .item a img:hover {
+.list-view .item a img:hover {
   opacity: 1;
 }
-.list-view .items .item a .checked {
+.list-view .item a .checked {
   display: none;
   position: absolute;
   top: 5px;
   right: 6px;
   font-size: 3em;
 }
-.list-view .items .item .active {
+.list-view .item .active {
   outline: 5px solid #5ba6f7;
   outline-offset: -5px;
 }
-.list-view .items .item .active img {
+.list-view .item .active img {
   opacity: 1;
 }
-.list-view .items .item .active .checked {
+.list-view .item .active .checked {
   display: inline-block;
 }
 /*------------------------------------*\

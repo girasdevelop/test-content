@@ -115,12 +115,26 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getMediaFiles(string $owner, int $ownerId, string $ownerAttribute = null)
     {
+        return static::getMediaFilesQuery($owner, $ownerId, $ownerAttribute)->all();
+    }
+
+    /**
+     * Get all mediafiles Query by owner.
+     *
+     * @param string $owner
+     * @param int    $ownerId
+     * @param null|string $ownerAttribute
+     *
+     * @return ActiveQuery
+     */
+    public static function getMediaFilesQuery(string $owner, int $ownerId, string $ownerAttribute = null)
+    {
         return Mediafile::find()
             ->where(
                 [
                     'id' =>  static::getMediafileIds($owner, $ownerId, $ownerAttribute)->asArray()
                 ]
-            )->all();
+            );
     }
 
     /**

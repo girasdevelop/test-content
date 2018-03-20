@@ -117,7 +117,7 @@ abstract class CommonUploadController extends RestController
                 return $this->getFailResponse('Error to upload file.', $this->uploadModel->errors);
             }
 
-            if ($this->uploadModel->isImage()){
+            if ($this->uploadModel->mediafileModel->isImage()){
                 $this->uploadModel->createThumbs();
             }
 

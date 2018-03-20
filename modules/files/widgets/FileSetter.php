@@ -123,6 +123,13 @@ class FileSetter extends InputWidget
      */
     public $ownerId = null;
 
+    /**
+     * Owner attribute (thumbnail, image e.t.c.).
+     *
+     * @var string|null
+     */
+    public $ownerAttribute = null;
+
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';
     const INSERTED_DATA_ALT = 'alt';
@@ -177,6 +184,7 @@ class FileSetter extends InputWidget
             'insertedData' => $this->insertedData,
             'owner' => $this->owner,
             'ownerId' => $this->ownerId,
+            'ownerAttribute' => $this->ownerAttribute,
         ]);
 
         return strtr($this->template, $replace) . $modal;

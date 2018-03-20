@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use app\modules\files\Module;
 use app\modules\files\models\Album;
 use app\modules\files\widgets\FileSetter;
+use app\modules\files\interfaces\UploadModelInterface;
 use Itstructure\FieldWidgets\{Fields, FieldType};
 
 /* @var $this yii\web\View */
@@ -43,14 +44,15 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
             ]) ?>
 
             <?php echo FileSetter::widget([
-                'name' => 'thumbnail',
+                'name' => UploadModelInterface::FILE_TYPE_IMAGE,
                 'thumb' => 'original',
                 'template' => '<div class="input-group">{input}<span class="btn-group">{button}{reset-button}</span></div>',
                 'insertedData' => FileSetter::INSERTED_DATA_ID,
                 'buttonName' => Module::t('main', 'Set thumbnail'),
                 'imageContainer' => '#thumbnail-container',
                 'owner' => 'post',
-                'ownerId' => 1
+                'ownerId' => 1,
+                'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE
             ]); ?>
 
         </div>

@@ -9,6 +9,7 @@
 /** @var string $thumb */
 /** @var string $owner */
 /** @var int $ownerId */
+/** @var string $ownerAttribute */
 ?>
 
 <div role="filemanager-modal" class="modal" tabindex="-1"
@@ -20,7 +21,8 @@
      data-inserted-data="<?php echo isset($insertedData) ? $insertedData : '' ?>"
      data-thumb="<?php echo $thumb ?>"
      data-owner="<?php echo $owner ?>"
-     data-owner-id="<?php echo $ownerId ?>">
+     data-owner-id="<?php echo $ownerId ?>"
+     data-owner-attribute="<?php echo $ownerAttribute ?>">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body"></div>

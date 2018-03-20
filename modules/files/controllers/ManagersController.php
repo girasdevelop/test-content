@@ -37,20 +37,25 @@ class ManagersController extends Controller
     }
 
     public function actionFilemanager()
-    {var_dump(\Yii::$app->request->get('owner'));
+    {
         $owner = \Yii::$app->request->get('owner');
         $ownerId = \Yii::$app->request->get('ownerId');
+        $ownerAttribute = \Yii::$app->request->get('ownerAttribute');
 
         if (null !== $owner && null !== $ownerId) {
-            $ownerAttribute = \Yii::$app->request->get('ownerAttribute');
-            $query = OwnersMediafiles::getMediaFilesQuery($owner, $ownerId, $ownerAttribute);
+            $query = OwnersMediafiles::getMediaFilesQuery($owner, (int)$ownerId, $ownerAttribute);
         } else {
             $query = Mediafile::find();
         }
 
         $pagination = new Pagination([
-            'defaultPageSize' => 15,
+            'defaultPageSize' => 2,
             'totalCount' => $query->count(),
+            'params' => array_merge($_GET, [
+                'owner' => $owner,
+                'ownerId' => (int)$ownerId,
+                'ownerAttribute' => $ownerAttribute,
+            ])
         ]);
 
         $dataProvider = new ActiveDataProvider([

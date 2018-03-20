@@ -44,7 +44,12 @@ $(document).ready(function() {
     $('[role="filemanager-launch"]').on("click", function(e) {
         e.preventDefault();
 
-        getFiles();
+        var modal = getModal();
+        var owner = modal.attr("data-owner");
+        var ownerId = modal.attr("data-owner-id");
+        var ownerAttribute = modal.attr("data-owner-attribute");
+
+        getFiles(1, owner, ownerId, ownerAttribute);
     });
 
     $('[role="clear-input"]').on("click", function(e) {
@@ -55,7 +60,7 @@ $(document).ready(function() {
     });
 });
 
-function getFiles(page) {
+function getFiles(page, owner, ownerId, ownerAttribute) {
 
     if (!page || null === page){
         page = 1;
@@ -65,12 +70,13 @@ function getFiles(page) {
 
     var params = 'page=' + page;
 
-    var owner = modal.attr("data-owner");
-    var ownerId = modal.attr("data-owner-id");
+    if (owner && ownerId){
+        params += '&owner=' + owner + '&ownerId=' + ownerId;
+    }
 
-    //if (null !== owner && null !== ownerId){
-    params = params + 'owner=' + 'fdsfdsgf' + '&ownerId=' + ownerId;
-    //}
+    if (ownerAttribute){
+        params += '&ownerAttribute=' + ownerAttribute;
+    }
 
     $.ajax({
         type: "GET",

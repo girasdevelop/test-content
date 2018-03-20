@@ -27,9 +27,14 @@ class FilesLinkPager extends LinkPager
             Html::addCssClass($options, $this->disabledPageCssClass);
             return Html::tag('li', Html::tag('span', $label), $options);
         }
+        $params = $this->pagination->params;
+        $owner = isset($params['owner']) ? $params['owner'] : null;
+        $ownerId = isset($params['ownerId']) ? (int)$params['ownerId'] : null;
+        $ownerAttribute = isset($params['ownerAttribute']) ? $params['ownerAttribute'] : null;
+
         $linkOptions              = $this->linkOptions;
         $linkOptions['data-page'] = $page;
-        $linkOptions['onclick']   = 'getFiles(' . ($page + 1) . ')';
+        $linkOptions['onclick']   = 'getFiles("'.($page + 1).'","'.$owner.'","'.$ownerId.'","'.$ownerAttribute.'")';
 
         return Html::tag('li', Html::a($label, '#pagination', $linkOptions), $options);
     }

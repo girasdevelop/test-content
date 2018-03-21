@@ -2,7 +2,7 @@
 
 namespace app\modules\files\assets;
 
-use yii\web\AssetBundle;
+use yii\web\{AssetBundle};
 
 class FilemanagerAsset extends AssetBundle
 {
@@ -16,5 +16,6 @@ class FilemanagerAsset extends AssetBundle
     public $depends = [
         'yii\bootstrap\BootstrapAsset',
         'yii\web\JqueryAsset',
+        'yii\web\YiiAsset',
     ];
 }

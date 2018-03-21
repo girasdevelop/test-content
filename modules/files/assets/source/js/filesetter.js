@@ -45,11 +45,24 @@ $(document).ready(function() {
         e.preventDefault();
 
         var modal = getModal();
+        var srcToFiles = modal.attr("data-src-to-files");
         var owner = modal.attr("data-owner");
         var ownerId = modal.attr("data-owner-id");
         var ownerAttribute = modal.attr("data-owner-attribute");
 
-        getFiles(1, owner, ownerId, ownerAttribute);
+        if (owner && ownerId){
+            srcToFiles += '?owner=' + owner + '&ownerId=' + ownerId;
+
+            if (ownerAttribute){
+                srcToFiles += '&ownerAttribute=' + ownerAttribute;
+            }
+        }
+
+        var iframe = $('<iframe src="' + srcToFiles + '" frameborder="0" role="filemanager-frame"></iframe>');
+
+        iframe.on("load", frameHandler);
+        modal.find(".modal-body").html(iframe);
+        modal.modal("show");
     });
 
     $('[role="clear-input"]').on("click", function(e) {
@@ -59,38 +72,6 @@ $(document).ready(function() {
         $($(this).attr("data-image-container")).empty();
     });
 });
-
-function getFiles(page, owner, ownerId, ownerAttribute) {
-
-    if (!page || null === page){
-        page = 1;
-    }
-
-    var modal = getModal();
-
-    var params = 'page=' + page;
-
-    if (owner && ownerId){
-        params += '&owner=' + owner + '&ownerId=' + ownerId;
-    }
-
-    if (ownerAttribute){
-        params += '&ownerAttribute=' + ownerAttribute;
-    }
-
-    $.ajax({
-        type: "GET",
-        url: modal.attr("data-src-to-files"),
-        data: params,
-        success: function(data) {
-            modal.find(".modal-body").html(data);
-            modal.modal("show");
-        },
-        error: function(data){
-            alert('Status code: ' + data.status);
-        }
-    });
-}
 
 function getModal() {
     return $('div[role="filemanager-modal"]');

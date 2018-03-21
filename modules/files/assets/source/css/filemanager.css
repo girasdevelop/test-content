@@ -24,8 +24,7 @@
 }
 .list-view .item {
   float: left;
-  border-right: 3px solid #e5e5e5;
-  border-bottom: 3px solid #e5e5e5;
+  border: 3px solid #e5e5e5;
 }
 .list-view .item {
   display: inline-block;
@@ -34,7 +33,7 @@
 .list-view .item a {
   position: relative;
   display: inline-block;
-  color: #5ba6f7;
+  color: #00d6b2;
 }
 .list-view .item a img {
   min-width: 128px;
@@ -49,11 +48,11 @@
   position: absolute;
   top: 5px;
   right: 6px;
-  font-size: 3em;
+  font-size: 2em;
 }
 .list-view .item .active {
-  outline: 5px solid #5ba6f7;
-  outline-offset: -5px;
+  outline: 3px solid #00d6b2;
+  outline-offset: -3px;
 }
 .list-view .item .active img {
   opacity: 1;
@@ -80,7 +79,7 @@
   width: 298px;
   margin-top: 50px;
   font-size: 5em;
-  color: #5ba6f7;
+  color: #00d6b2;
   text-align: center;
 }
 /*------------------------------------*\
@@ -97,7 +96,7 @@
 \*------------------------------------*/
 #fileinfo img {
   float: left;
-  max-width: 82px;
+  max-width: 100px;
 }
 #fileinfo .detail {
   float: left;

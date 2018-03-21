@@ -31,7 +31,6 @@ class ManagersController extends Controller
     public function init()
     {
         $this->layout               = '@app/modules/files/views/layouts/main';
-        $this->enableCsrfValidation = $this->module->enableCsrfValidation;
         $this->authenticator        = $this->module->authenticator;
         $this->rateLimiter          = $this->module->rateLimiter;
 
@@ -53,11 +52,6 @@ class ManagersController extends Controller
         $pagination = new Pagination([
             'defaultPageSize' => 2,
             'totalCount' => $query->count(),
-            'params' => array_merge($_GET, [
-                'owner' => $owner,
-                'ownerId' => (int)$ownerId,
-                'ownerAttribute' => $ownerAttribute,
-            ])
         ]);
 
         $dataProvider = new ActiveDataProvider([
@@ -65,7 +59,7 @@ class ManagersController extends Controller
             'pagination' => $pagination
         ]);
 
-        return $this->renderAjax('filemanager', [
+        return $this->render('filemanager', [
             'dataProvider' => $dataProvider,
             'pagination' => $pagination
         ]);

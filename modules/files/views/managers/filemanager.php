@@ -1,12 +1,11 @@
 <?php
 
+use yii\helpers\Html;
 use yii\widgets\{ListView, LinkPager};
-use yii\helpers\{Html, Url};
 use yii\data\{ActiveDataProvider, Pagination};
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 use app\modules\files\assets\FilemanagerAsset;
-use app\modules\files\widgets\FilesLinkPager;
 use app\modules\files\controllers\FileinfoController;
 
 /* @var $this yii\web\View */
@@ -17,7 +16,7 @@ use app\modules\files\controllers\FileinfoController;
 FilemanagerAsset::register($this);
 ?>
 
-<header id="header"><span class="glyphicon glyphicon-picture"></span> <?php echo Module::t('main', 'File manager') ?></header>
+<header id="header"><span class="glyphicon glyphicon-file"></span> <?php echo Module::t('filemanager', 'File manager') ?></header>
 
 <div id="filemanager" data-url-info="<?php echo FileinfoController::FILE_INFO_SRC ?>">
 
@@ -28,10 +27,10 @@ FilemanagerAsset::register($this);
             'layout' => '{summary}{items}'
         ]) ?>
 
-        <?php echo FilesLinkPager::widget(['pagination' => $pagination]) ?>
+        <?php echo LinkPager::widget(['pagination' => $pagination]) ?>
     </div>
     <div class="dashboard">
-        <p><?php echo Html::a('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('main', 'Upload manager'),
+        <p><?php echo Html::a('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload manager'),
                 ['file/uploadmanager'], ['class' => 'btn btn-default']) ?></p>
         <div id="fileinfo">
 

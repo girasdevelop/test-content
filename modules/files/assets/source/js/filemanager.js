@@ -17,9 +17,9 @@ $(document).ready(function() {
 
         $(".item a").removeClass("active");
         $(this).addClass("active");
-        var _csrf = yii.getCsrfToken(),
-            id = $(this).attr("data-key"),
-            url = $("#filemanager").attr("data-url-info");
+        var _csrf = yii.getCsrfToken();
+        var id = $(this).attr("data-key");
+        var url = $("#filemanager").attr("data-url-info");
 
         ajaxRequest = $.ajax({
             type: "POST",

@@ -275,4 +275,13 @@ class Mediafile extends ActiveRecord
 
         return $module->thumbStubUrl;
     }
+
+    /**
+     * @return string file size
+     */
+    public function getFileSize()
+    {
+        \Yii::$app->formatter->sizeFormatBase = 1000;
+        return \Yii::$app->formatter->asShortSize($this->size, 0);
+    }
 }

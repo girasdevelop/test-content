@@ -15,7 +15,5 @@ return [
     'Updated date' => 'Updated date',
     'Not chosen' => 'Not chosen',
     'Are you sure you want to do this action?' => 'Are you sure you want to do this action?',
-    'File manager' => 'File manager',
-    'Upload manager' => 'Upload manager',
     'Set thumbnail' => 'Set thumbnail',
 ];

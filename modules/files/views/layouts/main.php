@@ -1,12 +1,9 @@
 <?php
 
-//use app\modules\files\assets\FilemanagerAsset;
 use yii\helpers\Html;
 
 /** @var $this yii\web\View */
 /** @var $content string */
-
-//FilemanagerAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>

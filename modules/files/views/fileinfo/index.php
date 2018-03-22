@@ -1,7 +1,7 @@
 <?php
 
 use yii\widgets\ActiveForm;
-use yii\helpers\{Html, ArrayHelper};
+use yii\helpers\Html;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 use app\modules\files\assets\FilemanagerAsset;
@@ -29,12 +29,12 @@ $bundle = FilemanagerAsset::register($this);
     </div>
 </div>
 
-<div class="inputs">
+<div class="inputs" role="file-inputs" data-file-id="<?php echo $model->id ?>">
 
     <?php $form = ActiveForm::begin([
         'action' => [Module::LOCAL_SAVE_SRC, 'id' => $model->id],
         'enableClientValidation' => false,
-        'options' => ['id' => 'control-form'],
+        'options' => ['id' => 'control-form', 'enctype' => 'multipart/form-data'],
     ]); ?>
 
     <?php if ($model->isImage()): ?>

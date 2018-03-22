@@ -279,7 +279,6 @@ abstract class BaseUpload extends Model implements UploadModelInterface
                 'file',
                 'on' => [
                     self::SCENARIO_UPLOAD,
-                    self::SCENARIO_UPDATE,
                 ],
                 'skipOnEmpty' => false,
                 'extensions' => $this->fileExtensions,

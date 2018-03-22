@@ -17,7 +17,7 @@ FilemanagerAsset::register($this);
 
 <header id="header"><span class="glyphicon glyphicon-file"></span> <?php echo Module::t('filemanager', 'File manager') ?></header>
 
-<div id="filemanager" data-url-info="<?php echo Module::FILE_INFO_SRC ?>">
+<div id="filemanager" role="filemanager" data-url-info="<?php echo Module::FILE_INFO_SRC ?>">
 
     <div class="items">
         <?php echo ListView::widget([
@@ -31,7 +31,7 @@ FilemanagerAsset::register($this);
     <div class="redactor">
         <p><?php echo Html::a('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload manager'),
                 ['file/uploadmanager'], ['class' => 'btn btn-default']) ?></p>
-        <div id="fileinfo">
+        <div id="fileinfo" role="fileinfo">
 
         </div>
     </div>

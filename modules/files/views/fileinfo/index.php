@@ -34,7 +34,7 @@ $bundle = FilemanagerAsset::register($this);
     <?php $form = ActiveForm::begin([
         'action' => [Module::LOCAL_SAVE_SRC, 'id' => $model->id],
         'enableClientValidation' => false,
-        'options' => ['id' => 'control-form', 'enctype' => 'multipart/form-data'],
+        'options' => ['id' => 'inputsForm', 'enctype' => 'multipart/form-data'],
     ]); ?>
 
     <?php if ($model->isImage()): ?>

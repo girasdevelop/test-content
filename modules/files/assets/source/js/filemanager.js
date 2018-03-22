@@ -75,24 +75,32 @@ $(document).ready(function() {
         });
     });
 
-    window.fileInfoContainer.on("submit", "#control-form", function(e) {
+    window.fileInfoContainer.on("submit", "#inputsForm", function(e) {
         e.preventDefault();
 
         var url = $(this).attr("action"),
-            data = $(this).serialize(),
-            id = $('[role="file-inputs"]').attr("data-file-id");
+            id = $('[role="file-inputs"]').attr("data-file-id"),
+            formData = new FormData(document.forms.inputsForm);
 
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: data,
-            beforeSend: function() {
-                setAjaxLoader();
-            },
-            success: function(json) {
-                //alert(json.meta.message);
-                getFileInfo(id);
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+
+            if (xhr.readyState == 4) {
+
+                var response_text = xhr.responseText;
+
+                response_text = JSON.parse(response_text);
+
+                if(xhr.status == 200) {
+
+                    alert(response_text.meta.message);
+                    getFileInfo(id);
+                }
             }
-        });
+        };
+
+        xhr.open("POST", url);
+        xhr.send(formData);
     });
 });

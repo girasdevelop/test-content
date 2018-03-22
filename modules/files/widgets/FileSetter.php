@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\files\widgets;
 
+use app\modules\files\Module;
 use Yii;
 use yii\helpers\{Html, Url};
 use yii\widgets\InputWidget;
@@ -108,7 +109,7 @@ class FileSetter extends InputWidget
      *
      * @var string
      */
-    public $srcToFiles  = ManagersController::FILE_MANAGER_SRC;
+    public $srcToFiles  = Module::FILE_MANAGER_SRC;
 
     /**
      * Owner name (post, article, page e.t.c.).

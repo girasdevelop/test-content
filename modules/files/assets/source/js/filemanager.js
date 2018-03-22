@@ -4,7 +4,12 @@ $(document).ready(function() {
         strictThumb = $(window.frameElement).parents('[role="filemanager-modal"]').attr("data-thumb");
 
     function setAjaxLoader() {
-        $("#fileinfo").html('<div class="loading"><span class="glyphicon glyphicon-refresh spin"></span></div>');
+        $("#fileinfo").html(
+            '<div class="progress">' +
+            '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 50px;">' +
+            '<span class="sr-only">45% Complete</span>' +
+            '</div>' +
+            '</div>');
     }
 
     $('[href="#mediafile"]').on("click", function(e) {

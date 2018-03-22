@@ -7,4 +7,7 @@ return [
     'File size' => 'File size',
     'Created' => 'Created',
     'Updated' => 'Updated',
+    'Alt' => 'Alt',
+    'Description' => 'Description',
+    'New file' => 'New file',
 ];

@@ -7,4 +7,7 @@ return [
     'File size' => 'Размер файла',
     'Created' => 'Создан',
     'Updated' => 'Обновлён',
+    'Alt' => 'Альт. текст',
+    'Description' => 'Описание',
+    'New file' => 'Новый файл',
 ];

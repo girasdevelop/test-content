@@ -8,6 +8,7 @@ return [
     'Update' => 'Update',
     'Delete' => 'Delete',
     'Save' => 'Save',
+    'Insert' => 'Insert',
     'Active' => 'Active',
     'Blocked' => 'Blocked',
     'Default' => 'Default',

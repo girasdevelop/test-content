@@ -97,7 +97,7 @@ abstract class CommonUploadController extends RestController
     {
         try {
 
-            $file = UploadedFile::getInstanceByName($this->getUploadComponent()->fileAttributeName);
+            $file = UploadedFile::getInstanceByName($this->module->fileAttributeName);
 
             if (!$file){
                 return $this->getFailResponse('File is absent.');

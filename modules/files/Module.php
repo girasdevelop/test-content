@@ -18,6 +18,7 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property array|null $authenticator
  * @property array|null $rateLimiter
  * @property array|null $contentNegotiator
+ * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
@@ -30,9 +31,15 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
 class Module extends BaseModule
 {
     const DEFAULT_THUMB_ALIAS = 'default';
-    const SMALL_THUMB_ALIAS = 'small';
-    const MEDIUM_THUMB_ALIAS = 'medium';
-    const LARGE_THUMB_ALIAS = 'large';
+    const SMALL_THUMB_ALIAS   = 'small';
+    const MEDIUM_THUMB_ALIAS  = 'medium';
+    const LARGE_THUMB_ALIAS   = 'large';
+
+    const FILE_MANAGER_SRC   = '/files/managers/filemanager';
+    const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
+    const FILE_INFO_SRC      = '/files/fileinfo/index';
+    const LOCAL_UPLOAD_SRC   = '/files/api/local-upload/upload';
+    const LOCAL_UPDATE_SRC   = '/files/api/local-upload/update';
 
     /**
      * Login url.
@@ -68,6 +75,13 @@ class Module extends BaseModule
      * @var array|null
      */
     public $contentNegotiator = null;
+
+    /**
+     * Name of the file field.
+     *
+     * @var string
+     */
+    public $fileAttributeName = 'file';
 
     /**
      * @var array of thumbnails.

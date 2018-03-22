@@ -22,9 +22,6 @@ class ManagersController extends Controller
 {
     use BehaviorsTrait;
 
-    const FILE_MANAGER_SRC = '/files/managers/filemanager';
-    const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
-
     /**
      * Initialize.
      */

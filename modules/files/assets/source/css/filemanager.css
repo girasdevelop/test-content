@@ -33,7 +33,7 @@
 .list-view .item a {
   position: relative;
   display: inline-block;
-  color: #00d6b2;
+  color: #56bb5c;
 }
 .list-view .item a img {
   min-width: 128px;
@@ -51,7 +51,7 @@
   font-size: 2em;
 }
 .list-view .item .active {
-  outline: 3px solid #00d6b2;
+  outline: 3px solid #56bb5c;
   outline-offset: -3px;
 }
 .list-view .item .active img {
@@ -67,20 +67,12 @@
   display: block;
   margin-top: 10px;
 }
-/*------------------------------------*\
-    #DASHBOARD
-\*------------------------------------*/
-.dashboard {
+
+/* Redactor */
+.redactor {
   width: 290px;
   float: left;
   padding-left: 10px;
-}
-.dashboard .loading {
-  width: 298px;
-  margin-top: 50px;
-  font-size: 5em;
-  color: #00d6b2;
-  text-align: center;
 }
 /*------------------------------------*\
     #UPLOAD MANAGER
@@ -98,12 +90,8 @@
   float: left;
   max-width: 100px;
 }
-#fileinfo .detail {
-  float: left;
-  margin: 0 0 0 10px;
-  padding: 0;
-  list-style: none;
-  font-size: .85em;
+#fileinfo .inputs .input-group {
+  margin-bottom: 5px;
 }
 #fileinfo .filename {
   clear: both;
@@ -119,41 +107,4 @@
 }
 #fileinfo #control-form textarea {
   max-width: 100%;
-}
-/*------------------------------------*\
-    #SPIN ICONS
-\*------------------------------------*/
-.spin {
-  -webkit-animation: spin 1s infinite linear;
-  -moz-animation: spin 1s infinite linear;
-  -o-animation: spin 1s infinite linear;
-  animation: spin 1s infinite linear;
-  -webkit-transform-origin: 50% 50%;
-  transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  /* IE 9 */
-}
-@-moz-keyframes spin {
-  from {
-    -moz-transform: rotate(0deg);
-  }
-  to {
-    -moz-transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

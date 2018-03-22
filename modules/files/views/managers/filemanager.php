@@ -6,7 +6,6 @@ use yii\data\{ActiveDataProvider, Pagination};
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 use app\modules\files\assets\FilemanagerAsset;
-use app\modules\files\controllers\FileinfoController;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider ActiveDataProvider */
@@ -18,7 +17,7 @@ FilemanagerAsset::register($this);
 
 <header id="header"><span class="glyphicon glyphicon-file"></span> <?php echo Module::t('filemanager', 'File manager') ?></header>
 
-<div id="filemanager" data-url-info="<?php echo FileinfoController::FILE_INFO_SRC ?>">
+<div id="filemanager" data-url-info="<?php echo Module::FILE_INFO_SRC ?>">
 
     <div class="items">
         <?php echo ListView::widget([
@@ -29,7 +28,7 @@ FilemanagerAsset::register($this);
 
         <?php echo LinkPager::widget(['pagination' => $pagination]) ?>
     </div>
-    <div class="dashboard">
+    <div class="redactor">
         <p><?php echo Html::a('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload manager'),
                 ['file/uploadmanager'], ['class' => 'btn btn-default']) ?></p>
         <div id="fileinfo">

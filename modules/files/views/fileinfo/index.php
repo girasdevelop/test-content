@@ -57,6 +57,8 @@ $bundle = FilemanagerAsset::register($this);
                aria-describedby="file-new" name="<?php echo $fileAttributeName ?>">
     </div>
 
+    <?php echo Html::hiddenInput('id', $model->id) ?>
+
     <?php echo Html::submitButton(Module::t('main', 'Update'), ['class' => 'btn btn-warning btn-sm']) ?>
 
     <?php echo Html::button(Module::t('main', 'Insert'), ['id' => 'insert-btn', 'class' => 'btn btn-success btn-sm']) ?>

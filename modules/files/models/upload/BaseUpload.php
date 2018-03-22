@@ -382,35 +382,26 @@ abstract class BaseUpload extends Model implements UploadModelInterface
         }
 
         if (null !== $this->file){
+
             $this->setParamsForSave();
-        }
 
-        if (null !== $this->file && !$this->sendFile()){
-            throw new \Exception('Error save file in to directory.', 500);
-        }
+            if (!$this->sendFile()){
+                throw new \Exception('Error save file in to directory.', 500);
+            }
 
-        if (null !== $this->file && $this->getScenario() == self::SCENARIO_UPDATE){
-            $this->setParamsForDelete();
-            $this->deleteFiles();
-        }
+            if ($this->getScenario() == self::SCENARIO_UPDATE){
+                $this->setParamsForDelete();
+                $this->deleteFiles();
+            }
 
-        if (null !== $this->file){
             $this->mediafileModel->url = $this->databaseDir;
             $this->mediafileModel->filename = $this->outFileName;
             $this->mediafileModel->size = $this->file->size;
         }
 
-        if (!empty($this->alt)){
-            $this->mediafileModel->alt = $this->alt;
-        }
-
-        if (!empty($this->description)){
-            $this->mediafileModel->description = $this->description;
-        }
-
-        if (!empty($this->advance)){
-            $this->mediafileModel->advance = $this->advance;
-        }
+        $this->mediafileModel->alt = $this->alt;
+        $this->mediafileModel->description = $this->description;
+        $this->mediafileModel->advance = $this->advance;
 
         if (!$this->mediafileModel->save()){
             throw new \Exception('Error save file data in database.', 500);

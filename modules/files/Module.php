@@ -38,8 +38,7 @@ class Module extends BaseModule
     const FILE_MANAGER_SRC   = '/files/managers/filemanager';
     const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
     const FILE_INFO_SRC      = '/files/fileinfo/index';
-    const LOCAL_UPLOAD_SRC   = '/files/api/local-upload/upload';
-    const LOCAL_UPDATE_SRC   = '/files/api/local-upload/update';
+    const LOCAL_SAVE_SRC     = '/files/api/local-upload/save';
 
     /**
      * Login url.
@@ -299,6 +298,7 @@ class Module extends BaseModule
         return [
             'local-upload-component' => [
                 'class' => LocalUploadComponent::class,
+                'fileAttributeName' => $this->fileAttributeName,
                 'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
                 'thumbStubUrl' => $this->thumbStubUrl,

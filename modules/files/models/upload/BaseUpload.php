@@ -21,6 +21,7 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  * @property string $directorySeparator
  * @property array $fileExtensions
  * @property int $fileMaxSize
+ * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
@@ -37,6 +38,13 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  */
 abstract class BaseUpload extends Model implements UploadModelInterface
 {
+    /**
+     * Scripts Constants.
+     * Required for certain validation rules to work for specific scenarios.
+     */
+    const SCENARIO_UPLOAD = 'upload';
+    const SCENARIO_UPDATE = 'update';
+
     /**
      * Alt text for the file.
      *
@@ -97,6 +105,13 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      * @var int
      */
     public $fileMaxSize = 1024*1024*5;
+
+    /**
+     * Name of the file field.
+     *
+     * @var string
+     */
+    public $fileAttributeName = 'file';
 
     /**
      * @var array
@@ -217,6 +232,19 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      */
     abstract protected function createThumb(ThumbConfigInterface $thumbConfig): string;
 
+    /**
+     * Scenarios.
+     *
+     * @return array
+     */
+    public function scenarios(): array
+    {
+        return [
+            self::SCENARIO_UPLOAD => $this->attributes(),
+            self::SCENARIO_UPDATE => $this->attributes(),
+        ];
+    }
+
         /**
      * {@inheritdoc}
      */
@@ -224,12 +252,19 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     {
         return [
             [
-                'file',
+                $this->fileAttributeName,
                 'required',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                ],
             ],
             [
+                $this->fileAttributeName,
                 'file',
-                'file',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                    self::SCENARIO_UPDATE,
+                ],
                 'skipOnEmpty' => false,
                 'extensions' => $this->fileExtensions,
                 'maxSize' => $this->fileMaxSize
@@ -237,11 +272,19 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             [
                 'subDir',
                 'string',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                    self::SCENARIO_UPDATE,
+                ],
                 'max' => 24,
             ],
             [
                 'subDir',
                 'filter',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                    self::SCENARIO_UPDATE,
+                ],
                 'filter' => function($value){
                     return trim($value, $this->directorySeparator);
                 }
@@ -253,6 +296,10 @@ abstract class BaseUpload extends Model implements UploadModelInterface
                     'advance'
                 ],
                 'string',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                    self::SCENARIO_UPDATE,
+                ],
             ],
         ];
     }
@@ -292,9 +339,9 @@ abstract class BaseUpload extends Model implements UploadModelInterface
     /**
      * Set file.
      *
-     * @return UploadedFile
+     * @return mixed
      */
-    public function getFile(): UploadedFile
+    public function getFile()
     {
         return $this->file;
     }
@@ -308,6 +355,12 @@ abstract class BaseUpload extends Model implements UploadModelInterface
      */
     public function save(): bool
     {
+        if ($this->mediafileModel->isNewRecord){
+            $this->setScenario(self::SCENARIO_UPLOAD);
+        } else {
+            $this->setScenario(self::SCENARIO_UPDATE);
+        }
+
         if (!$this->validate()){
             return false;
         }
@@ -318,7 +371,7 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             throw new \Exception('Error save file in to directory.', 500);
         }
 
-        if (!$this->mediafileModel->isNewRecord){
+        if ($this->getScenario() == self::SCENARIO_UPDATE){
             $this->setParamsForDelete();
             $this->deleteFiles();
         }

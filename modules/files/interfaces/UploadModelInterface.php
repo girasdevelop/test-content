@@ -37,18 +37,18 @@ interface UploadModelInterface
     /**
      * Set file.
      *
-     * @param UploadedFile $file
+     * @param UploadedFile $file|null
      *
      * @return void
      */
-    public function setFile(UploadedFile $file): void;
+    public function setFile(UploadedFile $file = null): void;
 
     /**
      * Get file.
      *
-     * @return UploadedFile
+     * @return mixed
      */
-    public function getFile(): UploadedFile;
+    public function getFile();
 
     /**
      * Save file in storage and database.

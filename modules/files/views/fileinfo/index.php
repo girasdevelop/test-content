@@ -32,7 +32,7 @@ $bundle = FilemanagerAsset::register($this);
 <div class="inputs">
 
     <?php $form = ActiveForm::begin([
-        'action' => [Module::LOCAL_UPDATE_SRC, 'id' => $model->id],
+        'action' => [Module::LOCAL_SAVE_SRC, 'id' => $model->id],
         'enableClientValidation' => false,
         'options' => ['id' => 'control-form'],
     ]); ?>

@@ -93,16 +93,9 @@ abstract class CommonUploadController extends RestController
      *
      * @return array
      */
-    public function actionUpload()
+    public function actionSave()
     {
         try {
-
-            $file = UploadedFile::getInstanceByName($this->module->fileAttributeName);
-
-            if (!$file){
-                return $this->getFailResponse('File is absent.');
-            }
-
             $request = Yii::$app->request;
 
             $this->uploadModel = $this->getUploadComponent()->setModelForSave(
@@ -110,11 +103,10 @@ abstract class CommonUploadController extends RestController
             );
 
             $this->uploadModel->setAttributes($request->post(), false);
-            $this->uploadModel->setFile($file);
-
+            $this->uploadModel->setFile(UploadedFile::getInstanceByName($this->module->fileAttributeName));
 
             if (!$this->uploadModel->save()){
-                return $this->getFailResponse('Error to upload file.', $this->uploadModel->errors);
+                return $this->getFailResponse('Error to save file.', $this->uploadModel->errors);
             }
 
             if ($this->uploadModel->mediafileModel->isImage()){
@@ -123,7 +115,7 @@ abstract class CommonUploadController extends RestController
 
             $response['files'][] = $this->getUploadResponse();
 
-            return $this->getSuccessResponse('File uploaded.', $response);
+            return $this->getSuccessResponse('File saved.', $response);
 
         } catch (\Exception|InvalidConfigException|UnknownMethodException|NotFoundHttpException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());

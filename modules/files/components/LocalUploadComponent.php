@@ -18,6 +18,7 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property string $directorySeparator
  * @property array $fileExtensions
  * @property int $fileMaxSize
+ * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $thumbStubUrl
@@ -81,6 +82,13 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     public $fileMaxSize = 1024*1024*5;
 
     /**
+     * Name of the file field.
+     *
+     * @var string
+     */
+    public $fileAttributeName = 'file';
+
+    /**
      * @var array
      */
     public $thumbsConfig = [];
@@ -133,6 +141,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'directorySeparator' => $this->directorySeparator,
             'fileExtensions' => $this->fileExtensions,
             'fileMaxSize' => $this->fileMaxSize,
+            'fileAttributeName' => $this->fileAttributeName,
             'thumbsConfig' => $this->thumbsConfig,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
             'thumbStubUrl' => $this->thumbStubUrl

@@ -245,6 +245,22 @@ abstract class BaseUpload extends Model implements UploadModelInterface
         ];
     }
 
+    /**
+     * Attributes.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            $this->fileAttributeName,
+            'subDir',
+            'alt',
+            'description',
+            'advance'
+        ];
+    }
+
         /**
      * {@inheritdoc}
      */
@@ -365,20 +381,24 @@ abstract class BaseUpload extends Model implements UploadModelInterface
             return false;
         }
 
-        $this->setParamsForSave();
+        if (null !== $this->file){
+            $this->setParamsForSave();
+        }
 
-        if (!$this->sendFile()){
+        if (null !== $this->file && !$this->sendFile()){
             throw new \Exception('Error save file in to directory.', 500);
         }
 
-        if ($this->getScenario() == self::SCENARIO_UPDATE){
+        if (null !== $this->file && $this->getScenario() == self::SCENARIO_UPDATE){
             $this->setParamsForDelete();
             $this->deleteFiles();
         }
 
-        $this->mediafileModel->url = $this->databaseDir;
-        $this->mediafileModel->filename = $this->outFileName;
-        $this->mediafileModel->size = $this->file->size;
+        if (null !== $this->file){
+            $this->mediafileModel->url = $this->databaseDir;
+            $this->mediafileModel->filename = $this->outFileName;
+            $this->mediafileModel->size = $this->file->size;
+        }
 
         if (!empty($this->alt)){
             $this->mediafileModel->alt = $this->alt;

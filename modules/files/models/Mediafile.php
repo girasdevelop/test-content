@@ -5,8 +5,7 @@ namespace app\modules\files\models;
 use yii\helpers\Html;
 use yii\base\InvalidConfigException;
 use app\modules\files\Module;
-use app\modules\files\components\ThumbConfig;
-use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * This is the model class for table "mediafiles".

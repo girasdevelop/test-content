@@ -2,9 +2,8 @@
 
 namespace app\modules\files\models;
 
-use Yii;
 use yii\db\ActiveQuery;
-use app\modules\files\models\upload\BaseUpload;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * This is the model class for table "owners_mediafiles".
@@ -150,7 +149,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
         return Mediafile::find()
             ->where(
                 [
-                    'id' =>  static::getMediafileIds($owner, $ownerId, BaseUpload::FILE_TYPE_THUMB)->one()->mediafileId
+                    'id' =>  static::getMediafileIds($owner, $ownerId, UploadModelInterface::FILE_TYPE_THUMB)->one()->mediafileId
                 ]
             )->one();
     }
@@ -165,7 +164,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getImageFiles(string $owner, int $ownerId)
     {
-        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_IMAGE);
+        return static::getMediaFiles($owner, $ownerId, UploadModelInterface::FILE_TYPE_IMAGE);
     }
 
     /**
@@ -178,7 +177,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getAudioFiles(string $owner, int $ownerId)
     {
-        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_AUDIO);
+        return static::getMediaFiles($owner, $ownerId, UploadModelInterface::FILE_TYPE_AUDIO);
     }
 
     /**
@@ -191,7 +190,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getVideoFiles(string $owner, int $ownerId)
     {
-        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_VIDEO);
+        return static::getMediaFiles($owner, $ownerId, UploadModelInterface::FILE_TYPE_VIDEO);
     }
 
     /**
@@ -204,7 +203,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getAppFiles(string $owner, int $ownerId)
     {
-        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_APP);
+        return static::getMediaFiles($owner, $ownerId, UploadModelInterface::FILE_TYPE_APP);
     }
 
     /**
@@ -217,7 +216,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getTextFiles(string $owner, int $ownerId)
     {
-        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_TEXT);
+        return static::getMediaFiles($owner, $ownerId, UploadModelInterface::FILE_TYPE_TEXT);
     }
 
     /**
@@ -230,7 +229,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getOtherFiles(string $owner, int $ownerId)
     {
-        return static::getMediaFiles($owner, $ownerId, BaseUpload::FILE_TYPE_OTHER);
+        return static::getMediaFiles($owner, $ownerId, UploadModelInterface::FILE_TYPE_OTHER);
     }
 
     /**

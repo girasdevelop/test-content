@@ -2,9 +2,8 @@
 
 namespace app\modules\files\models;
 
-use Yii;
 use app\modules\files\Module;
-use app\modules\files\models\upload\BaseUpload;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * This is the model class for table "albums".
@@ -22,12 +21,12 @@ use app\modules\files\models\upload\BaseUpload;
  */
 class Album extends ActiveRecord
 {
-    const ALBUM_TYPE_IMAGE = BaseUpload::FILE_TYPE_IMAGE . 'Album';
-    const ALBUM_TYPE_AUDIO = BaseUpload::FILE_TYPE_AUDIO . 'Album';
-    const ALBUM_TYPE_VIDEO = BaseUpload::FILE_TYPE_VIDEO . 'Album';
-    const ALBUM_TYPE_APP   = BaseUpload::FILE_TYPE_APP . 'Album';
-    const ALBUM_TYPE_TEXT  = BaseUpload::FILE_TYPE_TEXT . 'Album';
-    const ALBUM_TYPE_OTHER = BaseUpload::FILE_TYPE_OTHER . 'Album';
+    const ALBUM_TYPE_IMAGE = UploadModelInterface::FILE_TYPE_IMAGE . 'Album';
+    const ALBUM_TYPE_AUDIO = UploadModelInterface::FILE_TYPE_AUDIO . 'Album';
+    const ALBUM_TYPE_VIDEO = UploadModelInterface::FILE_TYPE_VIDEO . 'Album';
+    const ALBUM_TYPE_APP   = UploadModelInterface::FILE_TYPE_APP . 'Album';
+    const ALBUM_TYPE_TEXT  = UploadModelInterface::FILE_TYPE_TEXT . 'Album';
+    const ALBUM_TYPE_OTHER = UploadModelInterface::FILE_TYPE_OTHER . 'Album';
 
     /**
      * {@inheritdoc}
@@ -201,7 +200,7 @@ class Album extends ActiveRecord
      */
     public function getImageFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_IMAGE);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_IMAGE);
     }
 
     /**
@@ -211,7 +210,7 @@ class Album extends ActiveRecord
      */
     public function getAudioFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_AUDIO);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_AUDIO);
     }
 
     /**
@@ -221,7 +220,7 @@ class Album extends ActiveRecord
      */
     public function getVideoFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_VIDEO);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_VIDEO);
     }
 
     /**
@@ -231,7 +230,7 @@ class Album extends ActiveRecord
      */
     public function getAppFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_APP);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_APP);
     }
 
     /**
@@ -241,7 +240,7 @@ class Album extends ActiveRecord
      */
     public function getTextFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_TEXT);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_TEXT);
     }
 
     /**
@@ -251,6 +250,6 @@ class Album extends ActiveRecord
      */
     public function getOtherFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, BaseUpload::FILE_TYPE_OTHER);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_OTHER);
     }
 }

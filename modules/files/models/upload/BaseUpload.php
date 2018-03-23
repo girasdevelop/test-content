@@ -7,8 +7,7 @@ use yii\web\UploadedFile;
 use yii\imagine\Image;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
-use app\modules\files\components\ThumbConfig;
-use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
+use app\modules\files\interfaces\ThumbConfigInterface;
 
 /**
  * Class BaseUpload
@@ -36,7 +35,7 @@ use app\modules\files\interfaces\{UploadModelInterface, ThumbConfigInterface};
  *
  * @package Itstructure\FilesModule\models
  */
-abstract class BaseUpload extends Model implements UploadModelInterface
+abstract class BaseUpload extends Model
 {
     /**
      * Scripts Constants.

@@ -7,7 +7,7 @@ use yii\imagine\Image;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
 use app\modules\files\components\ThumbConfig;
-use app\modules\files\interfaces\ThumbConfigInterface;
+use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 
 /**
  * Class LocalUpload
@@ -16,7 +16,7 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  *
  * @package Itstructure\FilesModule\models
  */
-class LocalUpload extends BaseUpload
+class LocalUpload extends BaseUpload implements UploadModelInterface
 {
     const DIR_LENGTH_FIRST = 2;
     const DIR_LENGTH_SECOND = 4;

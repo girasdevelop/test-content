@@ -2,7 +2,6 @@
 
 namespace app\modules\files\models;
 
-use Yii;
 use yii\db\ActiveQuery;
 
 /**

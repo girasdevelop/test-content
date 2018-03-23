@@ -64,6 +64,8 @@ class ManagersController extends Controller
 
     public function actionUploadmanager()
     {
-        //return $this->render('uploadmanager', ['model' => new Mediafile()]);
+        return $this->render('uploadmanager', [
+            'model' => new Mediafile()
+        ]);
     }
 }

@@ -29,8 +29,14 @@ FilemanagerAsset::register($this);
         <?php echo LinkPager::widget(['pagination' => $pagination]) ?>
     </div>
     <div class="redactor">
-        <p><?php echo Html::a('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload manager'),
-                ['file/uploadmanager'], ['class' => 'btn btn-default']) ?></p>
+        <p><?php echo Html::a(
+            '<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload manager'),
+            [
+                Module::UPLOAD_MANAGER_SRC
+            ],
+            [
+                'class' => 'btn btn-default'
+            ]) ?></p>
         <div id="fileinfo" role="fileinfo">
 
         </div>

@@ -1,13 +1,11 @@
 <?php
 
-use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 use app\modules\files\assets\FilemanagerAsset;
 
 /** @var $this yii\web\View */
-/** @var $form yii\widgets\ActiveForm */
 /** @var $model Mediafile */
 /** @var $fileAttributeName string */
 
@@ -29,13 +27,10 @@ $bundle = FilemanagerAsset::register($this);
     </div>
 </div>
 
-<div class="inputs" role="file-inputs" data-file-id="<?php echo $model->id ?>">
-
-    <?php $form = ActiveForm::begin([
-        'action' => [Module::LOCAL_SAVE_SRC, 'id' => $model->id],
-        'enableClientValidation' => false,
-        'options' => ['id' => 'inputsForm', 'enctype' => 'multipart/form-data'],
-    ]); ?>
+<div class="inputs" role="file-inputs"
+     data-file-id="<?php echo $model->id ?>"
+     data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
+     data-is-image="<?php echo $model->isImage() ?>">
 
     <?php if ($model->isImage()): ?>
         <div class="input-group input-group-sm">
@@ -54,18 +49,14 @@ $bundle = FilemanagerAsset::register($this);
     <div class="input-group input-group-sm">
         <span class="input-group-addon" id="file-new"><?php echo Module::t('filemanager', 'New file') ?></span>
         <input type="file" class="form-control" placeholder="<?php echo Module::t('filemanager', 'New file') ?>"
-               aria-describedby="file-new" name="<?php echo $fileAttributeName ?>">
+               aria-describedby="file-new" name="<?php echo $fileAttributeName ?>" multiple>
     </div>
 
-    <?php echo Html::hiddenInput('id', $model->id) ?>
+    <?php echo Html::button(Module::t('main', 'Update'), ['role' => 'update', 'class' => 'btn btn-warning btn-sm']) ?>
 
-    <?php echo Html::submitButton(Module::t('main', 'Update'), ['class' => 'btn btn-warning btn-sm']) ?>
+    <?php echo Html::button(Module::t('main', 'Insert'), ['role' => 'insert', 'id' => 'insert-btn', 'class' => 'btn btn-success btn-sm']) ?>
 
-    <?php echo Html::button(Module::t('main', 'Insert'), ['id' => 'insert-btn', 'class' => 'btn btn-success btn-sm']) ?>
-
-    <?php echo Html::button(Module::t('main', 'Delete'), ['id' => 'delete-btn', 'class' => 'btn btn-danger btn-sm']) ?>
-
-    <?php ActiveForm::end(); ?>
+    <?php echo Html::button(Module::t('main', 'Delete'), ['role' => 'delete', 'id' => 'delete-btn', 'class' => 'btn btn-danger btn-sm']) ?>
 
 </div>
 

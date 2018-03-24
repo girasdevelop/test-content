@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    window.ajaxRequest = null;
     window.fileInfoContainer = $('[role="fileinfo"]');
     window.fileManagerContainer = $('[role="filemanager"]');
     window.filemanagerModalContainer = $('[role="filemanager-modal"]');
@@ -15,26 +14,23 @@ $(document).ready(function() {
 
     function getFileInfo(id) {
 
-        if (window.ajaxRequest) {
-            window.ajaxRequest.abort();
-            window.ajaxRequest = null;
-        }
-
         var strictThumb = window.filemanagerModalContainer.attr("data-thumb");
-
-        var _csrf = yii.getCsrfToken();
         var url = window.fileManagerContainer.attr("data-url-info");
+        var params = {
+            _csrf: yii.getCsrfToken(),
+            id: id,
+            strictThumb: strictThumb
+        };
 
-        window.ajaxRequest = $.ajax({
-            type: "POST",
-            url: url,
-            data: "_csrf=" + _csrf + "&id=" + id + "&strictThumb=" + strictThumb,
-            beforeSend: function() {
-                setAjaxLoader();
-            },
-            success: function(html) {
-                window.fileInfoContainer.html(html);
-            }
+        AJAX(url, 'POST', params, false, function () {
+            setAjaxLoader();
+
+        }, function(data) {
+            window.fileInfoContainer.html(data);
+
+        }, function(data, xhr) {
+            alert('Server Error!');
+
         });
     }
 
@@ -75,32 +71,38 @@ $(document).ready(function() {
         });
     });
 
-    window.fileInfoContainer.on("submit", "#inputsForm", function(e) {
+    fileInfoContainer.on("click", '[role="update"]', function(e) {
         e.preventDefault();
 
-        var url = $(this).attr("action"),
-            id = $('[role="file-inputs"]').attr("data-file-id"),
-            formData = new FormData(document.forms.inputsForm);
+        var url = $('[role="file-inputs"]').attr("data-save-src");
 
-        var xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function() {
-
-            if (xhr.readyState == 4) {
-
-                var response_text = xhr.responseText;
-
-                response_text = JSON.parse(response_text);
-
-                if(xhr.status == 200) {
-
-                    alert(response_text.meta.message);
-                    getFileInfo(id);
-                }
-            }
+        var params = {
+            _csrf: yii.getCsrfToken(),
+            id: $('[role="file-inputs"]').attr("data-file-id"),
+            description: $('[name="description"]').val()
         };
 
-        xhr.open("POST", url);
-        xhr.send(formData);
+        if ($('[role="file-inputs"]').attr("data-is-image") == true){
+            params.alt = $('[name="alt"]').val();
+        }
+
+        var fileInput = $('[name="file"]');
+        if (fileInput[0].files[0]) {
+            params.files = {
+                file: fileInput[0].files[0]
+            }
+        }
+
+        AJAX(url, 'POST', params, true, function () {
+            setAjaxLoader();
+
+        }, function(data) {
+            alert(data.meta.message);
+            getFileInfo(params.id);
+
+        }, function(data, xhr) {
+            alert('Server Error!');
+
+        });
     });
 });

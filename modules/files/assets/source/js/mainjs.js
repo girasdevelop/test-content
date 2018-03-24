@@ -14,12 +14,13 @@ function serializeParams(obj) {
  * @param {string} url           - Request URL
  * @param {string} method        - Request type ('post' || 'get')
  * @param {object} params        - Object with params (for files { name: 'vasya' (sended to $_POST[]), files: { custom_filename: element.files[0] } (sended to $_FILES[]))
+ * @param {bool}   response_json - Type of response (JSON or not)
  * @param {func}   func_waiting  - Function while waiting
  * @param {func}   func_callback - Function on success
  * @param {func}   func_error    - Function on error
  * @param {func}   func_progress - Function on uploading progress
  */
-function AJAX(url, method, params, func_waiting, func_callback, func_error, func_progress) {
+function AJAX(url, method, params, response_json, func_waiting, func_callback, func_error, func_progress) {
     var xhr = null;
 
     try { // For: chrome, firefox, safari, opera, yandex, ...
@@ -46,9 +47,11 @@ function AJAX(url, method, params, func_waiting, func_callback, func_error, func
 
             var response_text = xhr.responseText;
 
-            try {
-                response_text = JSON.parse(response_text);
-            } catch (e) { }
+            if (response_json){
+                try {
+                    response_text = JSON.parse(response_text);
+                } catch (e) { }
+            }
 
             if (xhr.status === 200) { // on success
                 if (typeof func_callback == 'function') {

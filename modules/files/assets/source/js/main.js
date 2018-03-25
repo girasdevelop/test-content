@@ -1,5 +1,5 @@
 /**
- * Serialize object to string
+ * Serialize object to string.
  *
  * @param   {object} obj    - Object incoming
  * @returns {string}        - Object as Get params string
@@ -9,7 +9,7 @@ function serializeParams(obj) {
 }
 
 /**
- * AJAX function
+ * AJAX function.
  *
  * @param {string} url           - Request URL
  * @param {string} method        - Request type ('post' || 'get')
@@ -110,4 +110,54 @@ function AJAX(url, method, params, response_json, func_waiting, func_callback, f
 
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhr.send(data);
+}
+
+/**
+ * Show status messages by popup.
+ *
+ * @param {element} container - Block container in which the text message will be inserted.
+ * @param {string} text       - Text message.
+ * @param {bool} error        - Status of message (true - error, false - success).
+ * @param {int} time (ms)     - Time delay before close popup (ms).
+ */
+function showPopup(container, text, error, time)
+{
+    var classPopup;
+
+    if (error){
+        classPopup = 'popup error';
+    } else {
+        classPopup = 'popup success';
+    }
+
+    container.html(
+        '<div class="' + classPopup + '" role="alert">' + text + '</div>'
+    );
+
+    if (!time){
+        time = 2000;
+    }
+
+    setTimeout(function () {
+        closeContainer(container);
+    }, time);
+}
+
+/**
+ * Close popup message.
+ *
+ * @param {element} container
+ */
+function closeContainer(container)
+{
+    container.html('');
+}
+
+function setAjaxLoader(container) {
+    container.html(
+        '<div class="progress">' +
+        '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 50px;">' +
+        '<span class="sr-only">45% Complete</span>' +
+        '</div>' +
+        '</div>');
 }

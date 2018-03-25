@@ -1,0 +1,37 @@
+#header {
+  position: relative;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 5px;
+  clear: both;
+  overflow: hidden;
+  height: 42px;
+}
+#header .left, #header .right {
+  position: absolute;
+  color: #2b2922;
+}
+#header .left {
+  left: 0;
+}
+#header .right {
+  right: 0;
+  width: 650px;
+}
+#header .right .popup {
+  width: 100%;
+  padding: 6px;
+  font-size: medium;
+  border-radius: 5px;
+  text-align: center;
+}
+#header .right .success {
+  background-color: #def0d8;
+}
+#header .right .error {
+  background-color: #f2dedf;
+}
+#header .right .progress {
+  margin-top: 6px;
+}

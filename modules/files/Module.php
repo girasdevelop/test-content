@@ -40,6 +40,8 @@ class Module extends BaseModule
     const FILE_INFO_SRC      = '/files/fileinfo/index';
     const LOCAL_SAVE_SRC     = '/files/api/local-upload/save';
 
+    const BACK_URL_PARAM = '__backUrl';
+
     /**
      * Login url.
      *

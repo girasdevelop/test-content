@@ -3,17 +3,9 @@ $(document).ready(function() {
     window.fileManagerContainer = $('[role="filemanager"]');
     window.filemanagerModalContainer = $('[role="filemanager-modal"]');
 
-    function setAjaxLoader() {
-        window.fileInfoContainer.html(
-            '<div class="progress">' +
-            '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 50px;">' +
-            '<span class="sr-only">45% Complete</span>' +
-            '</div>' +
-            '</div>');
-    }
+    function getFileInfo(id, isAjaxLoader) {
 
-    function getFileInfo(id) {
-
+        var popupElement = $('[role="popup"]');
         var strictThumb = window.filemanagerModalContainer.attr("data-thumb");
         var url = window.fileManagerContainer.attr("data-url-info");
         var params = {
@@ -23,14 +15,17 @@ $(document).ready(function() {
         };
 
         AJAX(url, 'POST', params, false, function () {
-            setAjaxLoader();
-
+            if (isAjaxLoader){
+                setAjaxLoader(popupElement);
+            }
         }, function(data) {
             window.fileInfoContainer.html(data);
+            if (isAjaxLoader){
+                closeContainer(popupElement);
+            }
 
         }, function(data, xhr) {
-            alert('Server Error!');
-
+            showPopup(popupElement, 'Server Error!', true);
         });
     }
 
@@ -42,7 +37,7 @@ $(document).ready(function() {
 
         var id = $(this).attr("data-key");
 
-        getFileInfo(id);
+        getFileInfo(id, true);
     });
 
     fileInfoContainer.on("click", '[role="delete"]', function(e) {
@@ -75,18 +70,19 @@ $(document).ready(function() {
         e.preventDefault();
 
         var url = $('[role="file-inputs"]').attr("data-save-src");
+        var popupElement = $('[role="popup"]');
 
         var params = {
             _csrf: yii.getCsrfToken(),
             id: $('[role="file-inputs"]').attr("data-file-id"),
-            description: $('[name="description"]').val()
+            description: $('[role="file-description"]').val()
         };
 
         if ($('[role="file-inputs"]').attr("data-is-image") == true){
-            params.alt = $('[name="alt"]').val();
+            params.alt = $('[role="file-alt"]').val();
         }
 
-        var fileInput = $('[name="file"]');
+        var fileInput = $('[role="file-new"]');
         if (fileInput[0].files[0]) {
             params.files = {
                 file: fileInput[0].files[0]
@@ -94,15 +90,21 @@ $(document).ready(function() {
         }
 
         AJAX(url, 'POST', params, true, function () {
-            setAjaxLoader();
+            setAjaxLoader(popupElement);
 
         }, function(data) {
-            alert(data.meta.message);
-            getFileInfo(params.id);
+
+            if (data.meta.status == 'success'){
+                showPopup(popupElement, data.meta.message, false);
+            } else {
+                showPopup(popupElement, data.meta.message, true);
+            }
+
+            getFileInfo(params.id, false);
 
         }, function(data, xhr) {
-            alert('Server Error!');
-
+            showPopup(popupElement, 'Server Error!', true);
+            getFileInfo(params.id);
         });
     });
 });

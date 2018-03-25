@@ -1,18 +1,4 @@
-/*------------------------------------*\
-    #VARIABLES
-\*------------------------------------*/
-/*------------------------------------*\
-    #MAIN
-\*------------------------------------*/
-#header {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 5px;
-}
-/*------------------------------------*\
-    #ITEMS
-\*------------------------------------*/
+/* ITEMS */
 .items {
   float: left;
   width: 660px;
@@ -24,7 +10,8 @@
 }
 .list-view .item {
   float: left;
-  border: 3px solid #e5e5e5;
+  border-right: 3px solid #e5e5e5;
+  border-bottom: 3px solid #e5e5e5;
 }
 .list-view .item {
   display: inline-block;
@@ -60,32 +47,29 @@
 .list-view .item .active .checked {
   display: inline-block;
 }
-/*------------------------------------*\
-    #PAGINATION
-\*------------------------------------*/
+
+/* PAGINATION */
 .pagination {
   display: block;
   margin-top: 10px;
 }
 
-/* Redactor */
+/* REDACTOR */
 .redactor {
   width: 290px;
   float: left;
   padding-left: 10px;
 }
-/*------------------------------------*\
-    #UPLOAD MANAGER
-\*------------------------------------*/
+
+/* UPLOAD MANAGER */
 #uploadmanager {
   padding: 0 15px 0 0;
 }
 #uploadmanager .progress {
   margin-top: 10px;
 }
-/*------------------------------------*\
-    #FILEINFO
-\*------------------------------------*/
+
+/* FILEINFO */
 #fileinfo img {
   float: left;
   max-width: 100px;

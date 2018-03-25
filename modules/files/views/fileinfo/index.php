@@ -36,20 +36,20 @@ $bundle = FilemanagerAsset::register($this);
         <div class="input-group input-group-sm">
             <span class="input-group-addon" id="file-alt"><?php echo Module::t('filemanager', 'Alt') ?></span>
             <input type="text" class="form-control" placeholder="<?php echo Module::t('filemanager', 'Alt') ?>"
-                   aria-describedby="file-alt" name="alt" value="<?php echo $model->alt ?>">
+                   aria-describedby="file-alt" name="alt" role="file-alt" value="<?php echo $model->alt ?>">
         </div>
     <?php endif; ?>
 
     <div class="input-group input-group-sm">
         <span class="input-group-addon" id="file-description"><?php echo Module::t('filemanager', 'Description') ?></span>
-        <input type="text" class="form-control" placeholder="<?php echo Module::t('filemanager', 'Description') ?>"
-               aria-describedby="file-description" name="description" value="<?php echo $model->description ?>">
+        <textarea style="height: 100px;" class="form-control" placeholder="<?php echo Module::t('filemanager', 'Description') ?>"
+               aria-describedby="file-description" name="description" role="file-description"><?php echo $model->description ?></textarea>
     </div>
 
     <div class="input-group input-group-sm">
         <span class="input-group-addon" id="file-new"><?php echo Module::t('filemanager', 'New file') ?></span>
         <input type="file" class="form-control" placeholder="<?php echo Module::t('filemanager', 'New file') ?>"
-               aria-describedby="file-new" name="<?php echo $fileAttributeName ?>" multiple>
+               aria-describedby="file-new" name="<?php echo $fileAttributeName ?>" role="file-new" multiple>
     </div>
 
     <?php echo Html::button(Module::t('main', 'Update'), ['role' => 'update', 'class' => 'btn btn-warning btn-sm']) ?>

@@ -4,6 +4,7 @@ namespace app\modules\files\controllers;
 
 use yii\data\{ActiveDataProvider, Pagination};
 use yii\web\Controller;
+use yii\helpers\BaseUrl;
 use app\modules\files\Module;
 use app\modules\files\models\{OwnersMediafiles, Mediafile};
 use app\modules\files\traits\BehaviorsTrait;
@@ -34,20 +35,21 @@ class ManagersController extends Controller
         parent::init();
     }
 
+    /**
+     * @return string
+     */
     public function actionFilemanager()
     {
-        $owner = \Yii::$app->request->get('owner');
-        $ownerId = \Yii::$app->request->get('ownerId');
-        $ownerAttribute = \Yii::$app->request->get('ownerAttribute');
+        $request = \Yii::$app->request;
 
-        if (null !== $owner && null !== $ownerId) {
-            $query = OwnersMediafiles::getMediaFilesQuery($owner, (int)$ownerId, $ownerAttribute);
+        if (null !== $request->get('owner') && null !== $request->get('ownerId')) {
+            $query = OwnersMediafiles::getMediaFilesQuery($request->get('owner'), (int)$request->get('ownerId'), $request->get('ownerAttribute'));
         } else {
             $query = Mediafile::find();
         }
 
         $pagination = new Pagination([
-            'defaultPageSize' => 2,
+            'defaultPageSize' => 10,
             'totalCount' => $query->count(),
         ]);
 
@@ -56,16 +58,23 @@ class ManagersController extends Controller
             'pagination' => $pagination
         ]);
 
+        BaseUrl::remember($request->getAbsoluteUrl(), Module::BACK_URL_PARAM);
+
         return $this->render('filemanager', [
             'dataProvider' => $dataProvider,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'manager' => 'filemanager',
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function actionUploadmanager()
     {
         return $this->render('uploadmanager', [
-            'model' => new Mediafile()
+            'model' => new Mediafile(),
+            'manager' => 'uploadmanager',
         ]);
     }
 }

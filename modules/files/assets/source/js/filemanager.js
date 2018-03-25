@@ -101,6 +101,7 @@ $(document).ready(function() {
             }
 
             getFileInfo(params.id, false);
+            //$('[data-key="' + params.id + '"] img:first').attr('src', '');
 
         }, function(data, xhr) {
             showPopup(popupElement, 'Server Error!', true);

@@ -5,7 +5,6 @@
   border-bottom: 1px solid #e5e5e5;
   padding-bottom: 5px;
   clear: both;
-  overflow: hidden;
   height: 42px;
 }
 #header .left, #header .right {
@@ -17,14 +16,16 @@
 }
 #header .right {
   right: 0;
-  width: 650px;
+  width: 600px;
 }
 #header .right .popup {
+  position: absolute;
   width: 100%;
   padding: 6px;
   font-size: medium;
   border-radius: 5px;
   text-align: center;
+  z-index: 80000;
 }
 #header .right .success {
   background-color: #def0d8;
@@ -33,5 +34,5 @@
   background-color: #f2dedf;
 }
 #header .right .progress {
-  margin-top: 6px;
+  margin-top: 7px;
 }

@@ -19,7 +19,7 @@ trait ResponseTrait
      */
     protected function getSuccessResponse(string $message, array $data = null): array
     {
-        return $this->getStatusResponse($message, 200, $data);
+        return $this->getStatusResponse($message, 'success', $data);
     }
 
     /**
@@ -32,19 +32,20 @@ trait ResponseTrait
      */
     protected function getFailResponse(string $message, array $data = null): array
     {
-        return $this->getStatusResponse($message, 400, $data);
+        return $this->getStatusResponse($message, 'fail', $data);
     }
 
     /**
      * Returns status, message and code.
      *
      * @param string     $message
+     * @param string     $status
      * @param int        $statusCode
      * @param array|null $data
      *
      * @return array
      */
-    private function getStatusResponse(string $message, int $statusCode, array $data = null): array
+    protected function getStatusResponse(string $message, string $status, array $data = null, int $statusCode = 200): array
     {
         if (null === $data) {
             $data = (object)[];
@@ -54,7 +55,7 @@ trait ResponseTrait
 
         return [
             'meta' => [
-                'status' => $statusCode == 200 ? 'success' : 'fail',
+                'status' => $status,
                 'message' => $message,
             ],
             'data' => $data,

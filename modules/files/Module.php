@@ -279,7 +279,10 @@ class Module extends BaseModule
                 'basePath'       => '@files/messages',
                 'fileMap'        => [
                     'modules/files/main' => 'main.php',
-                    'modules/files/files' => 'files.php',
+                    'modules/files/album' => 'album.php',
+                    'modules/files/filemanager' => 'filemanager.php',
+                    'modules/files/uploadmanager' => 'uploadmanager.php',
+                    'modules/files/actions' => 'actions.php',
                 ],
             ]
         ];

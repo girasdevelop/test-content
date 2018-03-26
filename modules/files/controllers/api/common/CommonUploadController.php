@@ -106,7 +106,9 @@ abstract class CommonUploadController extends RestController
             $this->uploadModel->setFile(UploadedFile::getInstanceByName($this->module->fileAttributeName));
 
             if (!$this->uploadModel->save()){
-                return $this->getFailResponse('Error to save file.', $this->uploadModel->errors);
+                return $this->getFailResponse(Module::t('actions', 'Error to save file.'), [
+                    'errors' => $this->uploadModel->errors
+                ]);
             }
 
             if ($this->uploadModel->mediafileModel->isImage()){
@@ -115,7 +117,7 @@ abstract class CommonUploadController extends RestController
 
             $response['files'][] = $this->getUploadResponse();
 
-            return $this->getSuccessResponse('File saved.', $response);
+            return $this->getSuccessResponse(Module::t('actions', 'File saved.'), $response);
 
         } catch (\Exception|InvalidConfigException|UnknownMethodException|NotFoundHttpException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
@@ -136,12 +138,12 @@ abstract class CommonUploadController extends RestController
 
             if (!$deleted){
                 return $this->getFailResponse(
-                    'Error to delete file.'
+                    Module::t('actions', 'Error to delete file.')
                 );
             }
 
             return $this->getSuccessResponse(
-                'Deleted '.$deleted.' files.'
+                Module::t('actions', 'Deleted {0} files.', $deleted)
             );
 
         } catch (\Exception $e) {

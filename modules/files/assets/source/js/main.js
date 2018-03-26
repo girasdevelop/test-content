@@ -116,11 +116,11 @@ function AJAX(url, method, params, response_json, func_waiting, func_callback, f
  * Show status messages by popup.
  *
  * @param {element} container - Block container in which the text message will be inserted.
- * @param {string} text       - Text message.
+ * @param {string|array} data - Data with text message.
  * @param {bool} error        - Status of message (true - error, false - success).
  * @param {int} time (ms)     - Time delay before close popup (ms).
  */
-function showPopup(container, text, error, time)
+function showPopup(container, data, error, time)
 {
     var classPopup;
 
@@ -130,8 +130,26 @@ function showPopup(container, text, error, time)
         classPopup = 'popup success';
     }
 
+    var content = '';
+
+    if (jQuery.type(data) === 'string'){
+        content = data;
+    }
+
+    if (jQuery.type(data) === 'object'){
+        for (var key in data) {
+            if (jQuery.type(data[key]) == 'array'){
+                for (var index in data[key]) {
+                    content += data[key][index] + '</br>';
+                }
+            } else {
+                content += data[key] + '</br>';
+            }
+        }
+    }
+
     container.html(
-        '<div class="' + classPopup + '" role="alert">' + text + '</div>'
+        '<div class="' + classPopup + '">' + content + '</div>'
     );
 
     if (!time){
@@ -139,16 +157,16 @@ function showPopup(container, text, error, time)
     }
 
     setTimeout(function () {
-        closeContainer(container);
+        clearContainer(container);
     }, time);
 }
 
 /**
- * Close popup message.
+ * Clear popup message.
  *
  * @param {element} container
  */
-function closeContainer(container)
+function clearContainer(container)
 {
     container.html('');
 }
@@ -157,7 +175,7 @@ function setAjaxLoader(container) {
     container.html(
         '<div class="progress">' +
         '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 50px;">' +
-        '<span class="sr-only">45% Complete</span>' +
+        '<span class="sr-only">100% Complete</span>' +
         '</div>' +
         '</div>');
 }

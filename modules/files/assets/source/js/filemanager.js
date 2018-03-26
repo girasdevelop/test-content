@@ -21,7 +21,7 @@ $(document).ready(function() {
         }, function(data) {
             window.fileInfoContainer.html(data);
             if (isAjaxLoader){
-                closeContainer(popupElement);
+                clearContainer(popupElement);
             }
 
         }, function(data, xhr) {
@@ -96,15 +96,16 @@ $(document).ready(function() {
 
             if (data.meta.status == 'success'){
                 showPopup(popupElement, data.meta.message, false);
+                getFileInfo(params.id, false);
+                if (data.data.files && data.data.files[0]){
+                    $('[data-key="' + params.id + '"] img:first').attr('src', '/' + data.data.files[0].thumbnailUrl);
+                }
             } else {
-                showPopup(popupElement, data.meta.message, true);
+                showPopup(popupElement, data.data.errors, true, 4000);
             }
 
-            getFileInfo(params.id, false);
-            //$('[data-key="' + params.id + '"] img:first').attr('src', '');
-
         }, function(data, xhr) {
-            showPopup(popupElement, 'Server Error!', true);
+            showPopup(popupElement, data.message, true);
             getFileInfo(params.id);
         });
     });

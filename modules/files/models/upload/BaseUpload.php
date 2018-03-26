@@ -278,8 +278,9 @@ abstract class BaseUpload extends Model
                 'file',
                 'on' => [
                     self::SCENARIO_UPLOAD,
+                    self::SCENARIO_UPDATE,
                 ],
-                'skipOnEmpty' => false,
+                'skipOnEmpty' => true,
                 'extensions' => $this->fileExtensions,
                 'maxSize' => $this->fileMaxSize
             ],

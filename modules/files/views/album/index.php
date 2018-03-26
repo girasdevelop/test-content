@@ -9,7 +9,7 @@ use app\modules\files\models\Album;
 /* @var $searchModel app\modules\files\models\AlbumSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Albums';
+$this->title = Module::t('album', 'Albums');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="album-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php echo Html::a(Module::t('album', 'Create Album'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a(Module::t('album', 'Create album'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php echo GridView::widget([

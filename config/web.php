@@ -7,31 +7,10 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'language' => 'en-US',
+    'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-    ],
-    'modules' => [
-        'files' => [
-            'class' => app\modules\files\Module::class,
-            'layout' => '@admin/views/layouts/main-admin.php',
-            'controllerMap' => [
-                'api/local-upload' => app\modules\files\controllers\api\LocalUploadController::class,
-                'api/managers' => app\modules\files\controllers\api\ManagersController::class,
-                'album' => app\modules\files\controllers\AlbumController::class,
-            ],
-            'components' => [
-                'local-upload-component' => [
-                    'class' => app\modules\files\components\LocalUploadComponent::class,
-                    //'fileExtensions' => ['ext']
-                ],
-                'view' => require __DIR__ . '/admin/view-component.php',
-            ],
-            /*'authenticator' => [
-                'class' => yii\filters\auth\HttpBearerAuth::class,
-            ],*/
-        ]
     ],
     'components' => [
         'request' => [
@@ -103,6 +82,27 @@ $config = [
     ],
     'defaultRoute' => 'site',
     'params' => $params,
+    'modules' => [
+        'files' => [
+            'class' => app\modules\files\Module::class,
+            'layout' => '@admin/views/layouts/main-admin.php',
+            'controllerMap' => [
+                'api/local-upload' => app\modules\files\controllers\api\LocalUploadController::class,
+                'api/managers' => app\modules\files\controllers\ManagersController::class,
+                'album' => app\modules\files\controllers\AlbumController::class,
+            ],
+            'components' => [
+                'local-upload-component' => [
+                    'class' => app\modules\files\components\LocalUploadComponent::class,
+                    //'fileExtensions' => ['ext']
+                ],
+                'view' => require __DIR__ . '/admin/view-component.php',
+            ],
+            /*'authenticator' => [
+                'class' => yii\filters\auth\HttpBearerAuth::class,
+            ],*/
+        ]
+    ],
 ];
 
 if (YII_ENV_DEV) {

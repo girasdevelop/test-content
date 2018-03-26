@@ -29,6 +29,7 @@ $bundle = FilemanagerAsset::register($this);
 
 <div class="inputs" role="file-inputs"
      data-file-id="<?php echo $model->id ?>"
+     data-file-url="<?php echo $model->url ?>"
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"

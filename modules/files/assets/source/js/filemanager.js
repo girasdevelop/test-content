@@ -49,13 +49,79 @@ $(document).ready(function() {
     });
 
     /**
+     * Update file information.
+     */
+    window.fileInfoContainer.on("click", '[role="update"]', function(e) {
+        e.preventDefault();
+
+        var fileInputs = $('[role="file-inputs"]'),
+            url = fileInputs.attr("data-save-src"),
+            popupElement = $('[role="popup"]'),
+            params = {
+                _csrf: yii.getCsrfToken(),
+                id: fileInputs.attr("data-file-id"),
+                description: $('[role="file-description"]').val()
+            };
+
+        if (fileInputs.attr("data-is-image") == true){
+            params.alt = $('[role="file-alt"]').val();
+        }
+
+        var fileInputField = $('[role="file-new"]');
+        if (fileInputField[0].files[0]) {
+            params.files = {
+                file: fileInputField[0].files[0]
+            }
+        }
+
+        AJAX(url, 'POST', params, true, function () {
+            setAjaxLoader(popupElement);
+
+        }, function(data) {
+
+            if (data.meta.status == 'success'){
+                showPopup(popupElement, data.meta.message, false);
+                getFileInfo(params.id, false);
+                if (data.data.files && data.data.files[0]){
+                    $('[data-key="' + params.id + '"] img:first').attr('src', '/' + data.data.files[0].thumbnailUrl);
+                }
+            } else {
+                showPopup(popupElement, data.data.errors, true, 4000);
+            }
+
+        }, function(data, xhr) {
+            showPopup(popupElement, data.message, true);
+            getFileInfo(params.id);
+        });
+    });
+
+    window.fileManagerContainer.find(".redactor").on('click', '[role="insert"]', function(e) {
+        e.preventDefault();
+
+        var modal = getModal(),
+            imageContainer = $(modal.attr("data-image-container")),
+            insertedData = modal.attr("data-inserted-data"),
+            mainInput = $("#" + modal.attr("data-input-id")),
+            fileInputs = window.fileManagerContainer.find('[role="file-inputs"]');
+
+        mainInput.trigger("fileInsert", [insertedData]);
+
+        if (imageContainer) {
+            imageContainer.html('<img src="/' + fileInputs.attr("data-file-url") + '">');
+        }
+
+        mainInput.val(fileInputs.attr("data-file-" + insertedData));
+        modal.modal("hide");
+    });
+
+    /**
      * Delete file.
      */
     window.fileInfoContainer.on("click", '[role="delete"]', function(e) {
         e.preventDefault();
 
-        var fileInputs = $('[role="file-inputs"]');
-        var url = fileInputs.attr("data-delete-src"),
+        var fileInputs = $('[role="file-inputs"]'),
+            url = fileInputs.attr("data-delete-src"),
             confirmMessage = fileInputs.attr("data-confirm-message"),
             popupElement = $('[role="popup"]'),
             params = {
@@ -81,52 +147,5 @@ $(document).ready(function() {
                 showPopup(popupElement, data.message, true);
             });
         }
-    });
-
-    /**
-     * Update file information.
-     */
-    window.fileInfoContainer.on("click", '[role="update"]', function(e) {
-        e.preventDefault();
-
-        var url = $('[role="file-inputs"]').attr("data-save-src");
-        var popupElement = $('[role="popup"]');
-
-        var params = {
-            _csrf: yii.getCsrfToken(),
-            id: $('[role="file-inputs"]').attr("data-file-id"),
-            description: $('[role="file-description"]').val()
-        };
-
-        if ($('[role="file-inputs"]').attr("data-is-image") == true){
-            params.alt = $('[role="file-alt"]').val();
-        }
-
-        var fileInput = $('[role="file-new"]');
-        if (fileInput[0].files[0]) {
-            params.files = {
-                file: fileInput[0].files[0]
-            }
-        }
-
-        AJAX(url, 'POST', params, true, function () {
-            setAjaxLoader(popupElement);
-
-        }, function(data) {
-
-            if (data.meta.status == 'success'){
-                showPopup(popupElement, data.meta.message, false);
-                getFileInfo(params.id, false);
-                if (data.data.files && data.data.files[0]){
-                    $('[data-key="' + params.id + '"] img:first').attr('src', '/' + data.data.files[0].thumbnailUrl);
-                }
-            } else {
-                showPopup(popupElement, data.data.errors, true, 4000);
-            }
-
-        }, function(data, xhr) {
-            showPopup(popupElement, data.message, true);
-            getFileInfo(params.id);
-        });
     });
 });

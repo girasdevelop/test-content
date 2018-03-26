@@ -16,5 +16,6 @@ class FileSetterAsset extends AssetBundle
         'yii\bootstrap\BootstrapAsset',
         'yii\web\JqueryAsset',
         'app\modules\files\assets\ModalAsset',
+        'app\modules\files\assets\MainAsset',
     ];
 }

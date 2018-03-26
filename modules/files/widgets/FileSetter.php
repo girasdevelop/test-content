@@ -134,8 +134,6 @@ class FileSetter extends InputWidget
 
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';
-    const INSERTED_DATA_ALT = 'alt';
-    const INSERTED_DATA_DESCRIPTION = 'description';
 
     /**
      * @inheritdoc

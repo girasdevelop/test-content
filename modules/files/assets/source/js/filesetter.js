@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+    /**
+     * Handler to catch press on insert button.
+     *
+     * @param e
+     */
     function frameInsertHandler(e) {
 
         var modal = $(this).parents('[role="filemanager-modal"]');
@@ -23,6 +28,9 @@ $(document).ready(function() {
         });
     }
 
+    /**
+     * Load file manager.
+     */
     $('[role="filemanager-load"]').on("click", function(e) {
         e.preventDefault();
 
@@ -47,6 +55,9 @@ $(document).ready(function() {
         modal.modal("show");
     });
 
+    /**
+     * Clear value in main input.
+     */
     $('[role="clear-input"]').on("click", function(e) {
         e.preventDefault();
 

@@ -171,6 +171,11 @@ function clearContainer(container)
     container.html('');
 }
 
+/**
+ * Ajax loader using progress-bar style.
+ *
+ * @param container
+ */
 function setAjaxLoader(container) {
     container.html(
         '<div class="progress">' +

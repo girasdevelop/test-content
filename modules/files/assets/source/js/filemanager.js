@@ -5,6 +5,7 @@ $(document).ready(function() {
 
     /**
      * Get file information function.
+     *
      * @param id
      * @param isAjaxLoader
      */

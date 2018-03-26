@@ -158,9 +158,9 @@ class FileSetter extends InputWidget
     public function run()
     {
         if ($this->hasModel()) {
-            $replace['{input}'] = Html::activeTextInput($this->model, $this->attribute, $this->options);
+            $replace['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $this->options);
         } else {
-            $replace['{input}'] = Html::textInput($this->name, $this->value, $this->options);
+            $replace['{input}'] = Html::hiddenInput($this->name, $this->value, $this->options);
         }
 
         $replace['{button}'] = Html::tag($this->buttonHtmlTag, $this->buttonName, $this->buttonOptions);

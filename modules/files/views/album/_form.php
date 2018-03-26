@@ -13,6 +13,12 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<style>
+    #thumbnail-container img {
+        width: 300px;
+    }
+</style>
+
 <div class="album-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -42,6 +48,8 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'model' => $model,
                 'form'  => $form,
             ]) ?>
+
+            <div id="thumbnail-container"></div>
 
             <?php echo FileSetter::widget([
                 'name' => UploadModelInterface::FILE_TYPE_IMAGE,

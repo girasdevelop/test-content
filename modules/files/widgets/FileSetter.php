@@ -146,7 +146,7 @@ class FileSetter extends InputWidget
             $this->buttonOptions['id'] = $this->options['id'] . '-btn';
         }
 
-        $this->buttonOptions['role'] = 'filemanager-launch';
+        $this->buttonOptions['role'] = 'filemanager-load';
         $this->resetButtonOptions['role'] = 'clear-input';
         $this->resetButtonOptions['data-clear-element-id'] = $this->options['id'];
         $this->resetButtonOptions['data-image-container'] = $this->imageContainer;

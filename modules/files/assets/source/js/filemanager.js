@@ -1,7 +1,7 @@
 $(document).ready(function() {
     window.fileInfoContainer = $('[role="fileinfo"]');
     window.fileManagerContainer = $('[role="filemanager"]');
-    window.filemanagerModalContainer = $('[role="filemanager-modal"]');
+    window.fileManagerModalContainer = $(window.frameElement).parents('[role="filemanager-modal"]');
 
     /**
      * Get file information function.
@@ -11,7 +11,7 @@ $(document).ready(function() {
     function getFileInfo(id, isAjaxLoader) {
 
         var popupElement = $('[role="popup"]');
-        var strictThumb = window.filemanagerModalContainer.attr("data-thumb");
+        var strictThumb = window.fileManagerModalContainer.attr("data-thumb");
         var url = window.fileManagerContainer.attr("data-url-info");
         var params = {
             _csrf: yii.getCsrfToken(),
@@ -93,25 +93,6 @@ $(document).ready(function() {
             showPopup(popupElement, data.message, true);
             getFileInfo(params.id);
         });
-    });
-
-    window.fileManagerContainer.find(".redactor").on('click', '[role="insert"]', function(e) {
-        e.preventDefault();
-
-        var modal = getModal(),
-            imageContainer = $(modal.attr("data-image-container")),
-            insertedData = modal.attr("data-inserted-data"),
-            mainInput = $("#" + modal.attr("data-input-id")),
-            fileInputs = window.fileManagerContainer.find('[role="file-inputs"]');
-
-        mainInput.trigger("fileInsert", [insertedData]);
-
-        if (imageContainer) {
-            imageContainer.html('<img src="/' + fileInputs.attr("data-file-url") + '">');
-        }
-
-        mainInput.val(fileInputs.attr("data-file-" + insertedData));
-        modal.modal("hide");
     });
 
     /**

@@ -179,11 +179,3 @@ function setAjaxLoader(container) {
         '</div>' +
         '</div>');
 }
-
-/**
- * Get modal window.
- * @returns {*|jQuery|HTMLElement}
- */
-function getModal() {
-    return $('div[role="filemanager-modal"]');
-}

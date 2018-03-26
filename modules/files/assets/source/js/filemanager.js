@@ -3,6 +3,11 @@ $(document).ready(function() {
     window.fileManagerContainer = $('[role="filemanager"]');
     window.filemanagerModalContainer = $('[role="filemanager-modal"]');
 
+    /**
+     * Get file information function.
+     * @param id
+     * @param isAjaxLoader
+     */
     function getFileInfo(id, isAjaxLoader) {
 
         var popupElement = $('[role="popup"]');
@@ -29,6 +34,9 @@ $(document).ready(function() {
         });
     }
 
+    /**
+     * Get file information by click on the media file item.
+     */
     $('[href="#mediafile"]').on("click", function(e) {
         e.preventDefault();
 
@@ -40,33 +48,45 @@ $(document).ready(function() {
         getFileInfo(id, true);
     });
 
-    fileInfoContainer.on("click", '[role="delete"]', function(e) {
+    /**
+     * Delete file.
+     */
+    window.fileInfoContainer.on("click", '[role="delete"]', function(e) {
         e.preventDefault();
 
-        var url = $(this).attr("href"),
-            id = $(this).attr("data-id"),
-            confirmMessage = $(this).attr("data-message");
+        var fileInputs = $('[role="file-inputs"]');
+        var url = fileInputs.attr("data-delete-src"),
+            confirmMessage = fileInputs.attr("data-confirm-message"),
+            popupElement = $('[role="popup"]'),
+            params = {
+                _csrf: yii.getCsrfToken(),
+                id: fileInputs.attr("data-file-id")
+            };
 
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: "id=" + id,
-            beforeSend: function() {
-                if (!confirm(confirmMessage)) {
-                    return false;
+        if (confirm(confirmMessage)) {
+            AJAX(url, 'POST', params, true, function () {
+                setAjaxLoader(popupElement);
+
+            }, function(data) {
+
+                if (data.meta.status == 'success'){
+                    $('[data-key="' + params.id + '"]').fadeOut();
+                    clearContainer(window.fileInfoContainer);
+                    showPopup(popupElement, data.meta.message, false);
+                } else {
+                    showPopup(popupElement, data.meta.message, true, 4000);
                 }
-                window.fileInfoContainer.html('<div class="loading"><span class="glyphicon glyphicon-refresh spin"></span></div>');
-            },
-            success: function(json) {
-                if (json.success) {
-                    window.fileInfoContainer.html('');
-                    $('[data-key="' + id + '"]').fadeOut();
-                }
-            }
-        });
+
+            }, function(data, xhr) {
+                showPopup(popupElement, data.message, true);
+            });
+        }
     });
 
-    fileInfoContainer.on("click", '[role="update"]', function(e) {
+    /**
+     * Update file information.
+     */
+    window.fileInfoContainer.on("click", '[role="update"]', function(e) {
         e.preventDefault();
 
         var url = $('[role="file-inputs"]').attr("data-save-src");

@@ -73,6 +73,10 @@ $(document).ready(function() {
     });
 });
 
+/**
+ * Get modal window.
+ * @returns {*|jQuery|HTMLElement}
+ */
 function getModal() {
     return $('div[role="filemanager-modal"]');
 }

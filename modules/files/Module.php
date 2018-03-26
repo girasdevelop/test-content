@@ -39,6 +39,7 @@ class Module extends BaseModule
     const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
     const FILE_INFO_SRC      = '/files/fileinfo/index';
     const LOCAL_SAVE_SRC     = '/files/api/local-upload/save';
+    const DELETE_SRC         = '/files/api/local-upload/delete';
 
     const BACK_URL_PARAM = '__backUrl';
 

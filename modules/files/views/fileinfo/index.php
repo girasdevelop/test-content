@@ -15,9 +15,7 @@ $bundle = FilemanagerAsset::register($this);
 <div class="media">
     <div class="media-left">
         <a href="#">
-            <?php echo Html::img(DIRECTORY_SEPARATOR.$model->getDefaultThumbUrl(), [
-
-            ]) ?>
+            <?php echo Html::img(DIRECTORY_SEPARATOR.$model->getDefaultThumbUrl()) ?>
         </a>
     </div>
     <div class="media-body">
@@ -32,6 +30,8 @@ $bundle = FilemanagerAsset::register($this);
 <div class="inputs" role="file-inputs"
      data-file-id="<?php echo $model->id ?>"
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
+     data-delete-src="<?php echo Module::DELETE_SRC ?>"
+     data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
      data-is-image="<?php echo $model->isImage() ?>">
 
     <?php if ($model->isImage()): ?>
@@ -54,11 +54,20 @@ $bundle = FilemanagerAsset::register($this);
                aria-describedby="file-new" name="<?php echo $fileAttributeName ?>" role="file-new" multiple>
     </div>
 
-    <?php echo Html::button(Module::t('main', 'Update'), ['role' => 'update', 'class' => 'btn btn-warning btn-sm']) ?>
+    <?php echo Html::button(Module::t('main', 'Update'), [
+        'role' => 'update',
+        'class' => 'btn btn-warning btn-sm'
+    ]) ?>
 
-    <?php echo Html::button(Module::t('main', 'Insert'), ['role' => 'insert', 'id' => 'insert-btn', 'class' => 'btn btn-success btn-sm']) ?>
+    <?php echo Html::button(Module::t('main', 'Insert'), [
+        'role' => 'insert',
+        'class' => 'btn btn-success btn-sm'
+    ]) ?>
 
-    <?php echo Html::button(Module::t('main', 'Delete'), ['role' => 'delete', 'id' => 'delete-btn', 'class' => 'btn btn-danger btn-sm']) ?>
+    <?php echo Html::button(Module::t('main', 'Delete'), [
+        'role' => 'delete',
+        'class' => 'btn btn-danger btn-sm'
+    ]) ?>
 
 </div>
 

@@ -8,10 +8,10 @@ class UploadmanagerAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/files/assets/source';
     public $css = [
-        'css/filemanager.css',
+        'css/uploadmanager.css',
     ];
     public $js = [
-        'js/filemanager.js',
+        'js/uploadmanager.js',
     ];
     public $depends = [
         'yii\bootstrap\BootstrapAsset',

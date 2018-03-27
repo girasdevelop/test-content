@@ -1,6 +1,9 @@
 <?php
 
 return [
-    'File manager' => 'File manager',
     'Upload manager' => 'Upload manager',
+    'Add' => 'Add',
+    'Upload' => 'Upload',
+    'Cancel' => 'Cancel',
+    'Delete' => 'Delete',
 ];

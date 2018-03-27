@@ -7,7 +7,7 @@ use yii\web\View;
 use yii\helpers\ArrayHelper;
 use yii\base\{Module as BaseModule, InvalidConfigException};
 use Imagine\Image\ImageInterface;
-use app\modules\files\interfaces\ThumbConfigInterface;
+use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
 
 /**
@@ -21,7 +21,7 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
- * @property string $thumbStubUrl
+ * @property array $thumbStubUrls
  * @property bool $enableCsrfValidation
  * @property string $directorySeparator
  * @property View $_view
@@ -112,11 +112,18 @@ class Module extends BaseModule
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
 
     /**
-     * Default thumbnail stub url.
+     * Default thumbnail stub urls according with file type.
      *
      * @var string
      */
-    public $thumbStubUrl;
+    public $thumbStubUrls = [
+        UploadModelInterface::FILE_TYPE_IMAGE => 'images'.DIRECTORY_SEPARATOR.'file.png',
+        UploadModelInterface::FILE_TYPE_AUDIO => 'images'.DIRECTORY_SEPARATOR.'audio.jpg',
+        UploadModelInterface::FILE_TYPE_VIDEO => 'images'.DIRECTORY_SEPARATOR.'video.jpg',
+        UploadModelInterface::FILE_TYPE_TEXT => 'images'.DIRECTORY_SEPARATOR.'text.jpg',
+        UploadModelInterface::FILE_TYPE_APP => 'images'.DIRECTORY_SEPARATOR.'app.jpg',
+        UploadModelInterface::FILE_TYPE_OTHER => 'images'.DIRECTORY_SEPARATOR.'other.jpg',
+    ];
 
     /**
      * Csrf validation.
@@ -307,7 +314,6 @@ class Module extends BaseModule
                 'fileAttributeName' => $this->fileAttributeName,
                 'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
-                'thumbStubUrl' => $this->thumbStubUrl,
                 'directorySeparator' => $this->directorySeparator,
             ]
         ];

@@ -21,7 +21,6 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
- * @property string $thumbStubUrl
  *
  * @package Itstructure\FilesModule\components
  */
@@ -102,13 +101,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
 
     /**
-     * Default thumbnail stub url.
-     *
-     * @var string
-     */
-    public $thumbStubUrl;
-
-    /**
      * Initialize.
      */
     public function init()
@@ -144,7 +136,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'fileAttributeName' => $this->fileAttributeName,
             'thumbsConfig' => $this->thumbsConfig,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
-            'thumbStubUrl' => $this->thumbStubUrl
         ]);
 
         return $object;

@@ -23,7 +23,6 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
- * @property string $thumbStubUrl
  * @property string $uploadRoot
  * @property string $directoryForDelete
  * @property string $uploadDir
@@ -124,13 +123,6 @@ abstract class BaseUpload extends Model
      * @var string
      */
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
-
-    /**
-     * Default thumbnail stub url.
-     *
-     * @var string
-     */
-    public $thumbStubUrl;
 
     /**
      * Root directory for uploaded files.

@@ -258,21 +258,81 @@ class Mediafile extends ActiveRecord
     }
 
     /**
+     * Check if the file is audio.
+     *
+     * @return bool
+     */
+    public function isAudio(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_AUDIO) !== false;
+    }
+
+    /**
+     * Check if the file is video.
+     *
+     * @return bool
+     */
+    public function isVideo(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_VIDEO) !== false;
+    }
+
+    /**
+     * Check if the file is text.
+     *
+     * @return bool
+     */
+    public function isText(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_TEXT) !== false;
+    }
+
+    /**
+     * Check if the file is application.
+     *
+     * @return bool
+     */
+    public function isApp(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_APP) !== false;
+    }
+
+    /**
      * Get default thumbnail url.
      *
-     * @throws InvalidConfigException
+     * @param string $assetUrl
      *
      * @return string
      */
-    public function getDefaultThumbUrl(): string
+    public function getDefaultThumbUrl($assetUrl = ''): string
     {
+        if (!empty($assetUrl) && is_string($assetUrl)){
+            $root = $assetUrl.DIRECTORY_SEPARATOR;
+        } else {
+            $root = '';
+        }
+
         $module = $this->getModule();
 
         if ($this->isImage()) {
             return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+
+        } elseif ($this->isAudio()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_AUDIO];
+
+        } elseif ($this->isVideo()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_VIDEO];
+
+        } elseif ($this->isText()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_TEXT];
+
+        } elseif ($this->isApp()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
+
+        } else {
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_OTHER];
         }
 
-        return $module->thumbStubUrl;
     }
 
     /**

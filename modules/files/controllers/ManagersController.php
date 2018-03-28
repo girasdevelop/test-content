@@ -51,7 +51,7 @@ class ManagersController extends Controller
         }
 
         $pagination = new Pagination([
-            'defaultPageSize' => 10,
+            'defaultPageSize' => 15,
             'totalCount' => $query->count(),
         ]);
 

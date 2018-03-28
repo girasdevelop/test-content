@@ -216,12 +216,12 @@ class Mediafile extends ActiveRecord
     public function getThumbUrl(string $alias): string
     {
         if ($alias === 'original') {
-            return DIRECTORY_SEPARATOR.$this->url;
+            return $this->url;
         }
 
         $thumbs = $this->getThumbs();
 
-        return !empty($thumbs[$alias]) ? DIRECTORY_SEPARATOR.$thumbs[$alias] : '';
+        return !empty($thumbs[$alias]) ? $thumbs[$alias] : '';
     }
 
     /**

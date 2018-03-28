@@ -58,9 +58,9 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'insertedData' => FileSetter::INSERTED_DATA_ID,
                 'buttonName' => Module::t('main', 'Set thumbnail'),
                 'imageContainer' => '#thumbnail-container',
-                'owner' => 'post',
+                /*'owner' => 'post',
                 'ownerId' => 1,
-                'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE
+                'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE*/
             ]); ?>
 
         </div>

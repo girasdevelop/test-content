@@ -55,15 +55,15 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      */
     protected function setParamsForSave(): void
     {
-        $uploadDir = $this->getUploadDirConfig($this->file->type);
+        $uploadDir = trim($this->getUploadDirConfig($this->file->type), DIRECTORY_SEPARATOR);
 
         if (!empty($this->subDir)){
-            $uploadDir = trim($uploadDir, DIRECTORY_SEPARATOR) .
+            $uploadDir = $uploadDir .
                          DIRECTORY_SEPARATOR .
-                         $this->subDir;
+                         trim($this->subDir, DIRECTORY_SEPARATOR);
         }
 
-        $this->uploadDir = trim($uploadDir, DIRECTORY_SEPARATOR) .
+        $this->uploadDir = $uploadDir .
                            DIRECTORY_SEPARATOR . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
                            DIRECTORY_SEPARATOR . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
 
@@ -73,7 +73,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
 
-        $this->databaseDir = $this->uploadDir . DIRECTORY_SEPARATOR . $this->outFileName;
+        $this->databaseDir = DIRECTORY_SEPARATOR . $this->uploadDir . DIRECTORY_SEPARATOR . $this->outFileName;
 
         $this->mediafileModel->type = $this->file->type;
     }
@@ -89,7 +89,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
     {
         $originalFile = pathinfo($this->mediafileModel->url);
 
-        $dirname = $originalFile['dirname'];
+        $dirname = ltrim($originalFile['dirname'], DIRECTORY_SEPARATOR);
 
         $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
 

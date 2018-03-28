@@ -84,7 +84,7 @@ $(document).ready(function() {
                 showPopup(popupElement, data.meta.message, false);
                 getFileInfo(params.id, false);
                 if (data.data.files && data.data.files[0]){
-                    $('[data-key="' + params.id + '"] img:first').attr('src', '/' + data.data.files[0].thumbnailUrl);
+                    $('[data-key="' + params.id + '"] img:first').attr('src', data.data.files[0].thumbnailUrl);
                 }
             } else {
                 showPopup(popupElement, data.data.errors, true, 4000);

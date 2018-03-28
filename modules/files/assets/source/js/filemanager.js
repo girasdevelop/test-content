@@ -58,6 +58,7 @@ $(document).ready(function() {
         var fileInputs = $('[role="file-inputs"]'),
             url = fileInputs.attr("data-save-src"),
             popupElement = $('[role="popup"]'),
+            subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
             params = {
                 _csrf: yii.getCsrfToken(),
                 id: fileInputs.attr("data-file-id"),
@@ -66,6 +67,10 @@ $(document).ready(function() {
 
         if (fileInputs.attr("data-is-image") == true){
             params.alt = $('[role="file-alt"]').val();
+        }
+
+        if (subDir && subDir != ''){
+            params.subDir = subDir;
         }
 
         var fileInputField = $('[role="file-new"]');

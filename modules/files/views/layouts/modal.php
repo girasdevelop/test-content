@@ -10,6 +10,7 @@
 /** @var string $owner */
 /** @var int $ownerId */
 /** @var string $ownerAttribute */
+/** @var string $subDir */
 ?>
 
 <div role="filemanager-modal" class="modal" tabindex="-1"
@@ -22,7 +23,9 @@
      data-thumb="<?php echo $thumb ?>"
      data-owner="<?php echo $owner ?>"
      data-owner-id="<?php echo $ownerId ?>"
-     data-owner-attribute="<?php echo $ownerAttribute ?>">
+     data-owner-attribute="<?php echo $ownerAttribute ?>"
+     data-sub-dir="<?php echo $subDir ?>"
+>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body"></div>

@@ -61,6 +61,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 /*'owner' => 'post',
                 'ownerId' => 1,
                 'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE*/
+                'subDir' => 'post'
             ]); ?>
 
         </div>

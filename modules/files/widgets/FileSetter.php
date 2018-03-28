@@ -132,6 +132,13 @@ class FileSetter extends InputWidget
      */
     public $ownerAttribute = null;
 
+    /**
+     * Subdirectory to upload files.
+     *
+     * @var string
+     */
+    public $subDir = '';
+
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';
 
@@ -185,6 +192,7 @@ class FileSetter extends InputWidget
             'owner' => $this->owner,
             'ownerId' => $this->ownerId,
             'ownerAttribute' => $this->ownerAttribute,
+            'subDir' => $this->subDir,
         ]);
 
         return strtr($this->template, $replace) . $modal;

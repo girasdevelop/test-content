@@ -37,7 +37,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
             throw new InvalidConfigException('The uploadRoot is not defined.');
         }
 
-        $this->uploadRoot = trim($this->uploadRoot, $this->directorySeparator);
+        $this->uploadRoot = trim($this->uploadRoot, DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -58,22 +58,22 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
         $uploadDir = $this->getUploadDirConfig($this->file->type);
 
         if (!empty($this->subDir)){
-            $uploadDir = trim($uploadDir, $this->directorySeparator) .
-                         $this->directorySeparator .
+            $uploadDir = trim($uploadDir, DIRECTORY_SEPARATOR) .
+                         DIRECTORY_SEPARATOR .
                          $this->subDir;
         }
 
-        $this->uploadDir = trim($uploadDir, $this->directorySeparator) .
-                           $this->directorySeparator . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
-                           $this->directorySeparator . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
+        $this->uploadDir = trim($uploadDir, DIRECTORY_SEPARATOR) .
+                           DIRECTORY_SEPARATOR . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
+                           DIRECTORY_SEPARATOR . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
 
-        $this->uploadPath = $this->uploadRoot . $this->directorySeparator . $this->uploadDir;
+        $this->uploadPath = $this->uploadRoot . DIRECTORY_SEPARATOR . $this->uploadDir;
 
         $this->outFileName = $this->renameFiles ?
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
 
-        $this->databaseDir = $this->uploadDir . $this->directorySeparator . $this->outFileName;
+        $this->databaseDir = $this->uploadDir . DIRECTORY_SEPARATOR . $this->outFileName;
 
         $this->mediafileModel->type = $this->file->type;
     }
@@ -94,9 +94,9 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
         $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
 
         if (count(BaseFileHelper::findDirectories($dirnameParent)) == 1){
-            $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $dirnameParent;
+            $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirnameParent;
         } else {
-            $this->directoryForDelete = $this->uploadRoot . $this->directorySeparator . $dirname;
+            $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirname;
         }
     }
 
@@ -109,7 +109,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
     {
         BaseFileHelper::createDirectory($this->uploadPath, 0777);
 
-        return $this->file->saveAs($this->uploadPath . $this->directorySeparator . $this->outFileName);
+        return $this->file->saveAs($this->uploadPath . DIRECTORY_SEPARATOR . $this->outFileName);
     }
 
     /**
@@ -136,7 +136,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
         $originalFile = pathinfo($this->mediafileModel->url);
 
         $thumbUrl = $originalFile['dirname'] .
-                    $this->directorySeparator .
+                    DIRECTORY_SEPARATOR .
                     $this->getThumbFilename($originalFile['filename'],
                         $originalFile['extension'],
                         $thumbConfig->alias,
@@ -144,11 +144,11 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
                         $thumbConfig->height
                     );
 
-        Image::thumbnail($this->uploadRoot . $this->directorySeparator . $this->mediafileModel->url,
+        Image::thumbnail($this->uploadRoot . DIRECTORY_SEPARATOR . $this->mediafileModel->url,
             $thumbConfig->width,
             $thumbConfig->height,
             $thumbConfig->mode
-        )->save($this->uploadRoot.$this->directorySeparator.$thumbUrl);
+        )->save($this->uploadRoot.DIRECTORY_SEPARATOR.$thumbUrl);
 
         return $thumbUrl;
     }

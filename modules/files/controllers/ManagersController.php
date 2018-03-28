@@ -6,6 +6,7 @@ use yii\data\{ActiveDataProvider, Pagination};
 use yii\web\Controller;
 use yii\helpers\BaseUrl;
 use app\modules\files\Module;
+use app\modules\files\assets\FilemanagerAsset;
 use app\modules\files\interfaces\UploadModelInterface;
 use app\modules\files\models\{OwnersMediafiles, Mediafile};
 use app\modules\files\traits\BehaviorsTrait;
@@ -74,7 +75,6 @@ class ManagersController extends Controller
     public function actionUploadmanager()
     {
         return $this->render('uploadmanager', [
-            'model' => new Mediafile(),
             'manager' => 'uploadmanager',
             'fileAttributeName' => $this->module->fileAttributeName,
             'fileTypes' => '[

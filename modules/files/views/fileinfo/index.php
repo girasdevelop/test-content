@@ -15,7 +15,7 @@ $bundle = FilemanagerAsset::register($this);
 <div class="media">
     <div class="media-left">
         <a href="#">
-            <?php echo Html::img(DIRECTORY_SEPARATOR.$model->getDefaultThumbUrl()) ?>
+            <?php echo Html::img($model->getDefaultThumbUrl()) ?>
         </a>
     </div>
     <div class="media-body">

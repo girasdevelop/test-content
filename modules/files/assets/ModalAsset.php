@@ -2,12 +2,8 @@
 
 namespace app\modules\files\assets;
 
-use yii\web\AssetBundle;
-
-class ModalAsset extends AssetBundle
+class ModalAsset extends BaseAsset
 {
-    public $sourcePath = '@app/modules/files/assets/source';
-
     public $css = [
         'css/modal.css',
     ];

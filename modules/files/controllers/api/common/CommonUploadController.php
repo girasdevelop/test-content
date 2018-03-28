@@ -10,6 +10,7 @@ use app\modules\files\Module;
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\LocalUpload;
+use app\modules\files\assets\UploadmanagerAsset;
 use app\modules\files\traits\{BehaviorsTrait, ResponseTrait};
 use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
@@ -161,7 +162,7 @@ abstract class CommonUploadController extends RestController
         return [
             'id'            => $this->uploadModel->id,
             'url'           => $this->uploadModel->mediafileModel->url,
-            'thumbnailUrl'  => $this->uploadModel->mediafileModel->getDefaultThumbUrl(),
+            'thumbnailUrl'  => $this->uploadModel->mediafileModel->getDefaultThumbUrl(UploadmanagerAsset::register($this->view)->baseUrl),
             'name'          => $this->uploadModel->mediafileModel->filename,
             'type'          => $this->uploadModel->mediafileModel->type,
             'size'          => $this->uploadModel->mediafileModel->size,

@@ -2,12 +2,8 @@
 
 namespace app\modules\files\assets;
 
-use yii\web\AssetBundle;
-
-class FileSetterAsset extends AssetBundle
+class FileSetterAsset extends BaseAsset
 {
-    public $sourcePath = '@app/modules/files/assets/source';
-
     public $js = [
         'js/filesetter.js',
     ];

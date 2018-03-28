@@ -2,17 +2,16 @@
 
 namespace app\modules\files\assets;
 
-use yii\web\AssetBundle;
-
-class UploadmanagerAsset extends AssetBundle
+class UploadmanagerAsset extends BaseAsset
 {
-    public $sourcePath = '@app/modules/files/assets/source';
     public $css = [
         'css/uploadmanager.css',
     ];
+
     public $js = [
         'js/uploadmanager.js',
     ];
+
     public $depends = [
         'yii\bootstrap\BootstrapAsset',
         'yii\web\JqueryAsset',

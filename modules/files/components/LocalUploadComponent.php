@@ -15,7 +15,6 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property string $uploadRoot
  * @property array $uploadDirs
  * @property bool $renameFiles
- * @property string $directorySeparator
  * @property array $fileExtensions
  * @property int $fileMaxSize
  * @property string $fileAttributeName
@@ -53,13 +52,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var bool
      */
     public $renameFiles = true;
-
-    /**
-     * Directory separator.
-     *
-     * @var string
-     */
-    public $directorySeparator = DIRECTORY_SEPARATOR;
 
     /**
      * File extensions.
@@ -130,7 +122,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'uploadRoot' => $this->uploadRoot,
             'uploadDirs' => $this->uploadDirs,
             'renameFiles' => $this->renameFiles,
-            'directorySeparator' => $this->directorySeparator,
             'fileExtensions' => $this->fileExtensions,
             'fileMaxSize' => $this->fileMaxSize,
             'fileAttributeName' => $this->fileAttributeName,
@@ -155,7 +146,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'class' => LocalUpload::class,
             'mediafileModel' => $mediafileModel,
             'uploadRoot' => $this->uploadRoot,
-            'directorySeparator' => $this->directorySeparator,
         ]);
 
         return $object;

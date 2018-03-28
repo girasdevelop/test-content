@@ -11,7 +11,7 @@ use app\modules\files\assets\FilemanagerAsset;
 /* @var $pagination Pagination */
 /* @var $manager string */
 
-FilemanagerAsset::register($this);
+$this->params['bundle'] = FilemanagerAsset::register($this);
 $this->params['manager'] = $manager;
 ?>
 
@@ -22,7 +22,10 @@ $this->params['manager'] = $manager;
         <?php echo ListView::widget([
             'dataProvider' => $dataProvider,
             'itemView' => '_fileItem',
-            'layout' => '{summary}{items}'
+            'layout' => '{summary}{items}',
+            'viewParams' => [
+                'baseUrl' => $this->params['bundle']->baseUrl,
+            ]
         ]) ?>
 
         <?php echo LinkPager::widget(['pagination' => $pagination]) ?>

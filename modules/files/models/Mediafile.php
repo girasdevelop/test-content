@@ -216,12 +216,12 @@ class Mediafile extends ActiveRecord
     public function getThumbUrl(string $alias): string
     {
         if ($alias === 'original') {
-            return $this->url;
+            return DIRECTORY_SEPARATOR.$this->url;
         }
 
         $thumbs = $this->getThumbs();
 
-        return !empty($thumbs[$alias]) ? $thumbs[$alias] : '';
+        return !empty($thumbs[$alias]) ? DIRECTORY_SEPARATOR.$thumbs[$alias] : '';
     }
 
     /**
@@ -245,6 +245,53 @@ class Mediafile extends ActiveRecord
         }
 
         return Html::img($url, $options);
+    }
+
+    /**
+     * Get default thumbnail url.
+     *
+     * @param string $baseUrl
+     *
+     * @return string
+     */
+    public function getDefaultThumbUrl($baseUrl = ''): string
+    {
+        if ($this->isImage()) {
+            return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+
+        } else {
+            if (!empty($baseUrl) && is_string($baseUrl)){
+                $root = $baseUrl.DIRECTORY_SEPARATOR;
+            } else {
+                $root = DIRECTORY_SEPARATOR;
+            }
+            $module = $this->getModule();
+        }
+
+        if ($this->isAudio()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_AUDIO];
+
+        } elseif ($this->isVideo()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_VIDEO];
+
+        } elseif ($this->isText()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_TEXT];
+
+        } elseif ($this->isApp()){
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
+
+        } else {
+            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_OTHER];
+        }
+    }
+
+    /**
+     * @return string file size
+     */
+    public function getFileSize()
+    {
+        \Yii::$app->formatter->sizeFormatBase = 1000;
+        return \Yii::$app->formatter->asShortSize($this->size, 0);
     }
 
     /**
@@ -295,52 +342,5 @@ class Mediafile extends ActiveRecord
     public function isApp(): bool
     {
         return strpos($this->type, UploadModelInterface::FILE_TYPE_APP) !== false;
-    }
-
-    /**
-     * Get default thumbnail url.
-     *
-     * @param string $assetUrl
-     *
-     * @return string
-     */
-    public function getDefaultThumbUrl($assetUrl = ''): string
-    {
-        if (!empty($assetUrl) && is_string($assetUrl)){
-            $root = $assetUrl.DIRECTORY_SEPARATOR;
-        } else {
-            $root = '';
-        }
-
-        $module = $this->getModule();
-
-        if ($this->isImage()) {
-            return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
-
-        } elseif ($this->isAudio()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_AUDIO];
-
-        } elseif ($this->isVideo()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_VIDEO];
-
-        } elseif ($this->isText()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_TEXT];
-
-        } elseif ($this->isApp()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
-
-        } else {
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_OTHER];
-        }
-
-    }
-
-    /**
-     * @return string file size
-     */
-    public function getFileSize()
-    {
-        \Yii::$app->formatter->sizeFormatBase = 1000;
-        return \Yii::$app->formatter->asShortSize($this->size, 0);
     }
 }

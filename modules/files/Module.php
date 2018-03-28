@@ -23,7 +23,6 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property string $thumbFilenameTemplate
  * @property array $thumbStubUrls
  * @property bool $enableCsrfValidation
- * @property string $directorySeparator
  * @property View $_view
  *
  * @package Itstructure\FilesModule
@@ -117,12 +116,12 @@ class Module extends BaseModule
      * @var string
      */
     public $thumbStubUrls = [
-        UploadModelInterface::FILE_TYPE_IMAGE => 'images'.DIRECTORY_SEPARATOR.'file.png',
-        UploadModelInterface::FILE_TYPE_AUDIO => 'images'.DIRECTORY_SEPARATOR.'audio.jpg',
-        UploadModelInterface::FILE_TYPE_VIDEO => 'images'.DIRECTORY_SEPARATOR.'video.jpg',
-        UploadModelInterface::FILE_TYPE_TEXT => 'images'.DIRECTORY_SEPARATOR.'text.jpg',
-        UploadModelInterface::FILE_TYPE_APP => 'images'.DIRECTORY_SEPARATOR.'app.jpg',
-        UploadModelInterface::FILE_TYPE_OTHER => 'images'.DIRECTORY_SEPARATOR.'other.jpg',
+        UploadModelInterface::FILE_TYPE_IMAGE => 'images'.DIRECTORY_SEPARATOR.'image.png',
+        UploadModelInterface::FILE_TYPE_AUDIO => 'images'.DIRECTORY_SEPARATOR.'audio.png',
+        UploadModelInterface::FILE_TYPE_VIDEO => 'images'.DIRECTORY_SEPARATOR.'video.png',
+        UploadModelInterface::FILE_TYPE_TEXT => 'images'.DIRECTORY_SEPARATOR.'text.png',
+        UploadModelInterface::FILE_TYPE_APP => 'images'.DIRECTORY_SEPARATOR.'app.png',
+        UploadModelInterface::FILE_TYPE_OTHER => 'images'.DIRECTORY_SEPARATOR.'other.png',
     ];
 
     /**
@@ -131,13 +130,6 @@ class Module extends BaseModule
      * @var bool
      */
     public $enableCsrfValidation = false;
-
-    /**
-     * Directory separator.
-     *
-     * @var string
-     */
-    public $directorySeparator = DIRECTORY_SEPARATOR;
 
     /**
      * View component to render content.
@@ -314,7 +306,6 @@ class Module extends BaseModule
                 'fileAttributeName' => $this->fileAttributeName,
                 'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
-                'directorySeparator' => $this->directorySeparator,
             ]
         ];
     }

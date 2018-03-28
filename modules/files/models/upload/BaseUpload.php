@@ -293,7 +293,7 @@ abstract class BaseUpload extends Model
                     self::SCENARIO_UPDATE,
                 ],
                 'filter' => function($value){
-                    return trim($value, $this->directorySeparator);
+                    return trim($value, DIRECTORY_SEPARATOR);
                 }
             ],
             [

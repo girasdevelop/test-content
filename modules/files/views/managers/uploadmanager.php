@@ -1,11 +1,9 @@
 <?php
 use yii\helpers\Html;
 use app\modules\files\Module;
-use app\modules\files\models\Mediafile;
 use app\modules\files\assets\UploadmanagerAsset;
 
 /* @var $this yii\web\View */
-/* @var $model Mediafile */
 /* @var $manager string */
 /* @var $fileAttributeName string */
 /* @var $fileTypes array */

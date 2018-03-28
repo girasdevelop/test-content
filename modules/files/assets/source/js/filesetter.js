@@ -20,7 +20,7 @@ $(document).ready(function() {
             mainInput.trigger("fileInsert", [insertedData]);
 
             if (imageContainer) {
-                imageContainer.html('<img src="/' + fileInputs.attr("data-file-url") + '">');
+                imageContainer.html('<img src="' + fileInputs.attr("data-file-url") + '">');
             }
 
             mainInput.val(fileInputs.attr("data-file-" + insertedData));

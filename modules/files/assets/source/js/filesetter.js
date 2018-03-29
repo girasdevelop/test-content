@@ -40,12 +40,28 @@ $(document).ready(function() {
         var ownerId = modal.attr("data-owner-id");
         var ownerAttribute = modal.attr("data-owner-attribute");
 
-        if (owner && ownerId){
-            srcToFiles += '?owner=' + owner + '&ownerId=' + ownerId;
+        var paramsArray = [];
+        var paramsQuery = '';
 
-            if (ownerAttribute){
-                srcToFiles += '&ownerAttribute=' + ownerAttribute;
+        if (owner){
+            paramsArray.owner = owner;
+
+            if (ownerId){
+                paramsArray.ownerId = ownerId;
             }
+        }
+
+        if (ownerAttribute){
+            paramsArray.ownerAttribute = ownerAttribute;
+        }
+
+        for (var index in paramsArray){
+            var paramString = index + '=' + paramsArray[index];
+            paramsQuery += paramsQuery == '' ? paramString : '&' + paramString;
+        }
+
+        if (paramsQuery != ''){
+            srcToFiles += '?' + paramsQuery;
         }
 
         var iframe = $('<iframe src="' + srcToFiles + '" frameborder="0" role="filemanager-frame"></iframe>');

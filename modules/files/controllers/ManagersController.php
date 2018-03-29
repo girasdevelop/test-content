@@ -44,12 +44,12 @@ class ManagersController extends Controller
     {
         $request = \Yii::$app->request;
 
-        if (null !== $request->get('owner') && null !== $request->get('ownerId')) {
-            $query = OwnersMediafiles::getMediaFilesQuery(
-                $request->get('owner'),
-                (int)$request->get('ownerId'),
-                $request->get('ownerAttribute')
-            )->orderBy('id DESC');
+        if (null !== $request->get('owner') || null !== $request->get('ownerAttribute')) {
+            $query = OwnersMediafiles::getMediaFilesQuery([
+                'owner' => $request->get('owner'),
+                'ownerId' => (int)$request->get('ownerId'),
+                'ownerAttribute' => $request->get('ownerAttribute')
+            ])->orderBy('id DESC');
         } else {
             $query = Mediafile::find()->orderBy('id DESC');
         }

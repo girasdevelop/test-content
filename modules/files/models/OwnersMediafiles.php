@@ -2,6 +2,7 @@
 
 namespace app\modules\files\models;
 
+use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
 use app\modules\files\interfaces\UploadModelInterface;
 
@@ -114,26 +115,26 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getMediaFiles(string $owner, int $ownerId, string $ownerAttribute = null)
     {
-        return static::getMediaFilesQuery($owner, $ownerId, $ownerAttribute)->all();
+        return static::getMediaFilesQuery([
+            'owner' => $owner,
+            'ownerId' => $ownerId,
+            'ownerAttribute' => $ownerAttribute,
+        ])->all();
     }
 
     /**
      * Get all mediafiles Query by owner.
      *
-     * @param null|string $owner
-     * @param null|int    $ownerId
-     * @param null|string $ownerAttribute
+     * @param array $args. It can be an array of the next params: owner{string}, ownerId{int}, ownerAttribute{string}.
      *
      * @return ActiveQuery
      */
-    public static function getMediaFilesQuery(string $owner = null, int $ownerId = null, string $ownerAttribute = null)
+    public static function getMediaFilesQuery(array $args = [])
     {
         return Mediafile::find()
-            ->where(
-                [
-                    'id' =>  static::getMediafileIds($owner, $ownerId, $ownerAttribute)->asArray()
-                ]
-            );
+            ->where([
+                'id' => static::getMediafileIds($args)->asArray()
+            ]);
     }
 
     /**
@@ -147,11 +148,13 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
     public static function getOwnerThumbnail(string $owner, int $ownerId)
     {
         return Mediafile::find()
-            ->where(
-                [
-                    'id' =>  static::getMediafileIds($owner, $ownerId, UploadModelInterface::FILE_TYPE_THUMB)->one()->mediafileId
-                ]
-            )->one();
+            ->where([
+                'id' =>  static::getMediafileIds([
+                    'owner' => $owner,
+                    'ownerId' => $ownerId,
+                    'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
+                ])->one()->mediafileId
+            ])->one();
     }
 
     /**
@@ -235,30 +238,44 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
     /**
      * Get Id's by owner.
      *
-     * @param null|string $owner
-     * @param null|int    $ownerId
-     * @param null|string $ownerAttribute
+     * @param array $args. It can be an array of the next params: owner{string}, ownerId{int}, ownerAttribute{string}.
+     *
+     * @throws InvalidArgumentException
      *
      * @return ActiveQuery
      */
-    private static function getMediafileIds(string $owner = null, int $ownerId = null, string $ownerAttribute = null): ActiveQuery
+    private static function getMediafileIds(array $args): ActiveQuery
     {
         $conditions = [];
 
-        if (null !== $owner){
-            $conditions['owner'] = $owner;
+        if (isset($args['owner'])){
+            if (!is_string($args['owner']) || empty($args['owner'])){
+                throw new InvalidArgumentException('Parameter owner must be a string.');
+            }
+            $conditions['owner'] = $args['owner'];
 
-            if (null !== $ownerId){
-                $conditions['ownerId'] = $ownerId;
+            if (isset($args['ownerId'])){
+                if (!is_int($args['ownerId'])){
+                    throw new InvalidArgumentException('Parameter ownerId must be an integer.');
+                }
+                $conditions['ownerId'] = $args['ownerId'];
             }
         }
 
-        if (null !== $ownerAttribute){
-            $conditions['ownerAttribute'] = $ownerAttribute;
+        if (isset($args['ownerAttribute'])){
+            if (!is_string($args['owner']) || empty($args['ownerAttribute'])){
+                throw new InvalidArgumentException('Parameter ownerAttribute must be a string.');
+            }
+            $conditions['ownerAttribute'] = $args['ownerAttribute'];
         }
 
-        return static::find()
-            ->select('mediafileId')
-            ->where($conditions);
+        $query = static::find()
+            ->select('mediafileId');
+
+        if (count($conditions) > 0){
+            return $query->where($conditions);
+        }
+
+        return $query;
     }
 }

@@ -120,13 +120,13 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
     /**
      * Get all mediafiles Query by owner.
      *
-     * @param string $owner
-     * @param int    $ownerId
+     * @param null|string $owner
+     * @param null|int    $ownerId
      * @param null|string $ownerAttribute
      *
      * @return ActiveQuery
      */
-    public static function getMediaFilesQuery(string $owner, int $ownerId, string $ownerAttribute = null)
+    public static function getMediaFilesQuery(string $owner = null, int $ownerId = null, string $ownerAttribute = null)
     {
         return Mediafile::find()
             ->where(
@@ -235,18 +235,23 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
     /**
      * Get Id's by owner.
      *
-     * @param string $owner
-     * @param int    $ownerId
+     * @param null|string $owner
+     * @param null|int    $ownerId
      * @param null|string $ownerAttribute
      *
      * @return ActiveQuery
      */
-    private static function getMediafileIds(string $owner, int $ownerId, string $ownerAttribute = null): ActiveQuery
+    private static function getMediafileIds(string $owner = null, int $ownerId = null, string $ownerAttribute = null): ActiveQuery
     {
-        $conditions = [
-            'owner' => $owner,
-            'ownerId' => $ownerId
-        ];
+        $conditions = [];
+
+        if (null !== $owner){
+            $conditions['owner'] = $owner;
+
+            if (null !== $ownerId){
+                $conditions['ownerId'] = $ownerId;
+            }
+        }
 
         if (null !== $ownerAttribute){
             $conditions['ownerAttribute'] = $ownerAttribute;

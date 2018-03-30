@@ -47,9 +47,11 @@ class ManagersController extends Controller
         if (null !== $request->get('owner') || null !== $request->get('ownerAttribute')) {
             $query = OwnersMediafiles::getMediaFilesQuery([
                 'owner' => $request->get('owner'),
-                'ownerId' => (int)$request->get('ownerId'),
+                'ownerId' => $request->get('ownerId'),
                 'ownerAttribute' => $request->get('ownerAttribute')
-            ])->orderBy('id DESC');
+            ])->orWhere([
+                'not in', 'id', OwnersMediafiles::find()->select('mediafileId')->asArray()
+            ]);
         } else {
             $query = Mediafile::find()->orderBy('id DESC');
         }

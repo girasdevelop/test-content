@@ -59,7 +59,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'buttonName' => Module::t('main', 'Set thumbnail'),
                 'imageContainer' => '#thumbnail-container',
                 'owner' => 'post',
-                //'ownerId' => 2,
+                'ownerId' => 2,
                 //'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE,
                 'subDir' => 'post'
             ]); ?>

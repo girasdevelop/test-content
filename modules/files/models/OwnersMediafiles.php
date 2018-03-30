@@ -255,8 +255,8 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
             $conditions['owner'] = $args['owner'];
 
             if (isset($args['ownerId'])){
-                if (!is_int($args['ownerId'])){
-                    throw new InvalidArgumentException('Parameter ownerId must be an integer.');
+                if (!is_numeric($args['ownerId'])){
+                    throw new InvalidArgumentException('Parameter ownerId must be numeric.');
                 }
                 $conditions['ownerId'] = $args['ownerId'];
             }

@@ -13,14 +13,14 @@ $(document).ready(function() {
             e.preventDefault();
 
             var fileInputs = $(this).parents('[role="file-inputs"]'),
-                imageContainer = $(modal.attr("data-image-container")),
+                mediafileContainer = $(modal.attr("data-mediafile-container")),
                 insertedData = modal.attr("data-inserted-data"),
                 mainInput = $("#" + modal.attr("data-input-id"));
 
             mainInput.trigger("fileInsert", [insertedData]);
 
-            if (imageContainer) {
-                imageContainer.html('<img src="' + fileInputs.attr("data-file-url") + '">');
+            if (mediafileContainer) {
+                mediafileContainer.html('<img src="' + fileInputs.attr("data-file-url") + '">');
             }
 
             mainInput.val(fileInputs.attr("data-file-" + insertedData));
@@ -78,6 +78,6 @@ $(document).ready(function() {
         e.preventDefault();
 
         $("#" + $(this).attr("data-clear-element-id")).val("");
-        $($(this).attr("data-image-container")).empty();
+        $($(this).attr("data-mediafile-container")).empty();
     });
 });

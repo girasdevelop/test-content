@@ -8,7 +8,7 @@ use app\modules\files\models\Mediafile;
 ?>
 
 <div class="item">
-    <?php echo Html::a($model->getThumbImage('default') . '<span class="checked glyphicon glyphicon-ok"></span>',
+    <?php echo Html::a(Html::img($model->getDefaultThumbUrl($baseUrl)) . '<span class="checked glyphicon glyphicon-ok"></span>',
         '#mediafile',
         ['data-key' => $model->id]
     ); ?>

@@ -34,13 +34,11 @@ class FileinfoController extends Controller
     public function actionIndex()
     {
         $id = \Yii::$app->request->post('id');
-        $strictThumb = \Yii::$app->request->post('strictThumb');
 
         $model = Mediafile::findOne($id);
 
         return $this->renderAjax('index', [
             'model' => $model,
-            'strictThumb' => $strictThumb,
             'fileAttributeName' => $this->module->fileAttributeName
         ]);
     }

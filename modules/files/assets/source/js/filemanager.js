@@ -12,12 +12,10 @@ $(document).ready(function() {
     function getFileInfo(id, isAjaxLoader) {
 
         var popupElement = $('[role="popup"]');
-        var strictThumb = window.fileManagerModalContainer.attr("data-thumb");
         var url = window.fileManagerContainer.attr("data-url-info");
         var params = {
             _csrf: yii.getCsrfToken(),
-            id: id,
-            strictThumb: strictThumb
+            id: id
         };
 
         AJAX(url, 'POST', params, false, function () {

@@ -70,7 +70,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      *
      * @var int
      */
-    public $fileMaxSize = 1024*1024*5;
+    public $fileMaxSize = 1024*1024*10;
 
     /**
      * Name of the file field.

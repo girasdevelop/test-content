@@ -102,7 +102,7 @@ abstract class BaseUpload extends Model
      *
      * @var int
      */
-    public $fileMaxSize = 1024*1024*5;
+    public $fileMaxSize = 1024*1024*10;
 
     /**
      * Name of the file field.

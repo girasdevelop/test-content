@@ -1,116 +1,36 @@
 <?php
 namespace app\modules\files\widgets;
 
-use app\modules\files\Module;
 use Yii;
 use yii\helpers\{Html, Url};
 use yii\widgets\InputWidget;
+use app\modules\files\Module;
 use app\modules\files\assets\FileSetterAsset;
-use app\modules\files\controllers\ManagersController;
 
 /**
  * Class FileSetter
  *
- * Basic example of usage:
+ * Example:
  *
- *  <?= FileInput::widget([
- *      'name' => 'mediafile',
- *      'buttonTag' => 'button',
- *      'buttonName' => 'Browse',
- *      'buttonOptions' => ['class' => 'btn btn-default'],
- *      'options' => ['class' => 'form-control'],
- *      // Widget template
- *      'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
- *      // Optional, if set, only this image can be selected by user
- *      'thumb' => 'original',
- *      // Optional, if set, in container will be inserted selected image
- *      'imageContainer' => '.img',
- *      // Default to FileInput::DATA_URL. This data will be inserted in input field
- *      'pasteData' => FileInput::DATA_URL,
- *      // JavaScript function, which will be called before insert file data to input.
- *      // Argument data contains file data.
- *      // data example: [alt: "Witch with cat", description: "123", url: "/uploads/2014/12/vedma-100x100.jpeg", id: "45"]
- *      'callbackBeforeInsert' => 'function(e, data) {
- *      console.log( data );
- *      }',
- *  ]) ?>
+ * Container to display selected mediafile (example for image).
+ * <div id="thumbnail-container"></div>
  *
- * This class provides filemanager usage. You can optional select all media file info to your input field.
- * More samples of usage see on github: https://github.com/PendalF89/yii2-filemanager
+ * <?php echo FileSetter::widget([
+ *    'name' => UploadModelInterface::FILE_TYPE_IMAGE,
+ *    'buttonName' => Module::t('main', 'Set thumbnail'),
+ *    'mediafileContainer' => '#thumbnail-container',
+ *    'owner' => 'post',
+ *    'ownerId' => {current owner id, post id, page id e.t.c.},
+ *    'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE,
+ *    'subDir' => 'post'
+ * ]); ?>
  *
- * @package pendalf89\filemanager\widgets
- * @author Zabolotskikh Boris <zabolotskich@bk.ru>
+ * @package app\modules\files\widgets
+ *
+ * @author Girnik Andrey <girnikandrey@gmail.com>
  */
 class FileSetter extends InputWidget
 {
-    /**
-     * @var string widget template
-     */
-    public $template = '<div class="input-group">{input}<span class="input-group-btn">{button}{reset-button}</span></div>';
-
-    /**
-     * @var string button tag
-     */
-    public $buttonHtmlTag = 'button';
-
-    /**
-     * @var string button name
-     */
-    public $buttonName = 'Browse';
-
-    /**
-     * @var array button html options
-     */
-    public $buttonOptions = ['class' => 'btn btn-default'];
-
-    /**
-     * @var string reset button tag
-     */
-    public $resetButtonHtmlTag = 'button';
-
-    /**
-     * @var string reset button name
-     */
-    public $resetButtonName = '<span class="text-danger glyphicon glyphicon-remove"></span>';
-
-    /**
-     * @var array reset button html options
-     */
-    public $resetButtonOptions = ['class' => 'btn btn-default'];
-
-    /**
-     * @var string Optional, if set, only this image can be selected by user
-     */
-    public $thumb = '';
-
-    /**
-     * @var string Optional, if set, in container will be inserted selected image
-     */
-    public $imageContainer = '';
-
-    /**
-     * @var string JavaScript function, which will be called before insert file data to input.
-     * Argument data contains file data.
-     * data example: [alt: "Witch with cat", description: "123", url: "/uploads/2014/12/vedma-100x100.jpeg", id: "45"]
-     */
-    public $callbackBeforeInsert = '';
-
-    /**
-     * @var string This data will be inserted in input field
-     */
-    public $insertedData = self::INSERTED_DATA_URL;
-
-    /**
-     * @var array widget html options
-     */
-    public $options = ['class' => 'form-control'];
-    
-    /**
-     *
-     * @var string
-     */
-    public $srcToFiles  = Module::FILE_MANAGER_SRC;
-
     /**
      * Owner name (post, article, page e.t.c.).
      *
@@ -139,6 +59,70 @@ class FileSetter extends InputWidget
      */
     public $subDir = '';
 
+    /**
+     * @var string template to display widget elements
+     */
+    public $template = '<div class="input-group">{input}<span class="input-group-btn">{button}{reset-button}</span></div>';
+
+    /**
+     * @var string button html tag
+     */
+    public $buttonHtmlTag = 'button';
+
+    /**
+     * @var string button name
+     */
+    public $buttonName = 'Browse';
+
+    /**
+     * @var array button html options
+     */
+    public $buttonOptions = ['class' => 'btn btn-default'];
+
+    /**
+     * @var string reset button html tag
+     */
+    public $resetButtonHtmlTag = 'button';
+
+    /**
+     * @var string reset button name
+     */
+    public $resetButtonName = '<span class="text-danger glyphicon glyphicon-remove"></span>';
+
+    /**
+     * @var array reset button html options
+     */
+    public $resetButtonOptions = ['class' => 'btn btn-default'];
+
+    /**
+     * @var string Optional, if set, in container will be inserted selected image
+     */
+    public $mediafileContainer = '';
+
+    /**
+     * @var string JS function. That will be called before insert file data in to the input.
+     */
+    public $callbackBeforeInsert = '';
+
+    /**
+     * @var string This data will be inserted in input field
+     */
+    public $insertedData = self::INSERTED_DATA_ID;
+
+    /**
+     * @var array widget html options
+     */
+    public $options = ['class' => 'form-control'];
+    
+    /**
+     *
+     * @var string
+     */
+    public $srcToFiles  = Module::FILE_MANAGER_SRC;
+
+    /**
+     * Data, which will be inserted in to the file input.
+     */
     const INSERTED_DATA_ID = 'id';
     const INSERTED_DATA_URL = 'url';
 
@@ -156,11 +140,11 @@ class FileSetter extends InputWidget
         $this->buttonOptions['role'] = 'filemanager-load';
         $this->resetButtonOptions['role'] = 'clear-input';
         $this->resetButtonOptions['data-clear-element-id'] = $this->options['id'];
-        $this->resetButtonOptions['data-image-container'] = $this->imageContainer;
+        $this->resetButtonOptions['data-mediafile-container'] = $this->mediafileContainer;
     }
 
     /**
-     * Runs the widget.
+     * Run widget.
      */
     public function run()
     {
@@ -184,10 +168,8 @@ class FileSetter extends InputWidget
         $modal = $this->renderFile('@app/modules/files/views/layouts/modal.php', [
             'inputId' => $this->options['id'],
             'btnId' => $this->buttonOptions['id'],
-            'frameId' => $this->options['id'] . '-frame',
             'srcToFiles' => Url::to([$this->srcToFiles]),
-            'thumb' => $this->thumb,
-            'imageContainer' => $this->imageContainer,
+            'mediafileContainer' => $this->mediafileContainer,
             'insertedData' => $this->insertedData,
             'owner' => $this->owner,
             'ownerId' => $this->ownerId,

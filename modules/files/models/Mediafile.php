@@ -32,7 +32,7 @@ class Mediafile extends ActiveRecord
     /**
      * @var null|Module
      */
-    public $_module = null;
+    private $_module = null;
 
     /**
      * {@inheritdoc}
@@ -60,6 +60,7 @@ class Mediafile extends ActiveRecord
             [
                 [
                     'alt',
+                    'title',
                     'description',
                     'thumbs',
                     'advance',
@@ -103,6 +104,7 @@ class Mediafile extends ActiveRecord
             'url' => 'Url',
             'alt' => 'Alt',
             'size' => 'Size',
+            'title' => 'Title',
             'description' => 'Description',
             'thumbs' => 'Thumbs',
             'advance' => 'Advance',

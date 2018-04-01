@@ -6,9 +6,9 @@ use app\modules\files\assets\UploadmanagerAsset;
 /* @var $this yii\web\View */
 /* @var $manager string */
 /* @var $fileAttributeName string */
-/* @var $fileTypes array */
+/* @var $thumbStubUrls array */
 
-UploadmanagerAsset::register($this);
+$this->params['bundle'] = UploadmanagerAsset::register($this);
 $this->params['manager'] = $manager;
 ?>
 
@@ -19,7 +19,7 @@ $this->params['manager'] = $manager;
             <tbody>
                 <tr>
                     <td>
-                        <img width="75" src="{src}">
+                        {preview}
                     </td>
                     <td>
                         {title}
@@ -35,7 +35,7 @@ $this->params['manager'] = $manager;
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
-     data-file-types="<?php echo $fileTypes ?>">
+     data-base-url="<?php echo $this->params['bundle']->baseUrl ?>">
 
     <div id="buttons">
         <label class="btn btn-success btn-sm" for="my-file-selector">

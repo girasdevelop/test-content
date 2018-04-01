@@ -44,6 +44,12 @@ $bundle = FilemanagerAsset::register($this);
     <?php endif; ?>
 
     <div class="input-group input-group-sm">
+        <span class="input-group-addon" id="file-title"><?php echo Module::t('filemanager', 'Title') ?></span>
+        <input type="text" class="form-control" placeholder="<?php echo Module::t('filemanager', 'Title') ?>"
+               aria-describedby="file-title" name="title" role="file-title" value="<?php echo $model->title ?>">
+    </div>
+
+    <div class="input-group input-group-sm">
         <span class="input-group-addon" id="file-description"><?php echo Module::t('filemanager', 'Description') ?></span>
         <textarea class="form-control" placeholder="<?php echo Module::t('filemanager', 'Description') ?>"
                aria-describedby="file-description" name="description" role="file-description"><?php echo $model->description ?></textarea>

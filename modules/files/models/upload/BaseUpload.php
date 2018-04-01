@@ -13,6 +13,7 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  * Class BaseUpload
  *
  * @property string $alt
+ * @property string $title
  * @property string $description
  * @property string $advance
  * @property string $subDir
@@ -49,6 +50,13 @@ abstract class BaseUpload extends Model
      * @var string
      */
     public $alt;
+
+    /**
+     * Title for the file.
+     *
+     * @var string
+     */
+    public $title;
 
     /**
      * File description.
@@ -247,6 +255,7 @@ abstract class BaseUpload extends Model
             $this->fileAttributeName,
             'subDir',
             'alt',
+            'title',
             'description',
             'advance'
         ];
@@ -299,6 +308,7 @@ abstract class BaseUpload extends Model
             [
                 [
                     'alt',
+                    'title',
                     'description',
                     'advance'
                 ],
@@ -391,6 +401,7 @@ abstract class BaseUpload extends Model
         }
 
         $this->mediafileModel->alt = $this->alt;
+        $this->mediafileModel->title = $this->title;
         $this->mediafileModel->description = $this->description;
         $this->mediafileModel->advance = $this->advance;
 

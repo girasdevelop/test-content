@@ -2,12 +2,11 @@
 
 namespace app\modules\files\controllers;
 
-use yii\data\{ActiveDataProvider, Pagination};
-use yii\web\Controller;
 use yii\helpers\BaseUrl;
+use yii\data\{ActiveDataProvider, Pagination};
+use yii\base\InvalidArgumentException;
+use yii\web\{Controller, BadRequestHttpException};
 use app\modules\files\Module;
-use app\modules\files\assets\FilemanagerAsset;
-use app\modules\files\interfaces\UploadModelInterface;
 use app\modules\files\models\{OwnersMediafiles, Mediafile};
 use app\modules\files\traits\BehaviorsTrait;
 
@@ -38,58 +37,67 @@ class ManagersController extends Controller
     }
 
     /**
+     * Get filemanager with uploaded files.
+     *
+     * @throws BadRequestHttpException
+     *
      * @return string
      */
     public function actionFilemanager()
     {
-        $request = \Yii::$app->request;
+        try {
+            $request = \Yii::$app->request;
 
-        if (null !== $request->get('owner') || null !== $request->get('ownerAttribute')) {
-            $query = OwnersMediafiles::getMediaFilesQuery([
-                'owner' => $request->get('owner'),
-                'ownerId' => $request->get('ownerId'),
-                'ownerAttribute' => $request->get('ownerAttribute')
-            ])->orWhere([
-                'not in', 'id', OwnersMediafiles::find()->select('mediafileId')->asArray()
+            if (null !== $request->get('owner') || null !== $request->get('ownerAttribute')) {
+                $query = OwnersMediafiles::getMediaFilesQuery([
+                    'owner' => $request->get('owner'),
+                    'ownerId' => $request->get('ownerId'),
+                    'ownerAttribute' => $request->get('ownerAttribute')
+                ])->orWhere([
+                    'not in', 'id', OwnersMediafiles::find()->select('mediafileId')->asArray()
+                ]);
+            } else {
+                $query = Mediafile::find()->orderBy('id DESC');
+            }
+
+            $pagination = new Pagination([
+                'defaultPageSize' => 15,
+                'totalCount' => $query->count(),
             ]);
-        } else {
-            $query = Mediafile::find()->orderBy('id DESC');
+
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => $pagination
+            ]);
+
+            BaseUrl::remember($request->getAbsoluteUrl(), Module::BACK_URL_PARAM);
+
+            return $this->render('filemanager', [
+                'dataProvider' => $dataProvider,
+                'pagination' => $pagination,
+                'manager' => 'filemanager',
+            ]);
+        } catch (\Exception|InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
-
-        $pagination = new Pagination([
-            'defaultPageSize' => 15,
-            'totalCount' => $query->count(),
-        ]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => $pagination
-        ]);
-
-        BaseUrl::remember($request->getAbsoluteUrl(), Module::BACK_URL_PARAM);
-
-        return $this->render('filemanager', [
-            'dataProvider' => $dataProvider,
-            'pagination' => $pagination,
-            'manager' => 'filemanager',
-        ]);
     }
 
     /**
+     * Get uploadmanager for uploading files.
+     *
+     * @throws BadRequestHttpException
+     *
      * @return string
      */
     public function actionUploadmanager()
     {
-        return $this->render('uploadmanager', [
-            'manager' => 'uploadmanager',
-            'fileAttributeName' => $this->module->fileAttributeName,
-            'fileTypes' => '[
-                UploadModelInterface::FILE_TYPE_IMAGE,
-                UploadModelInterface::FILE_TYPE_AUDIO,
-                UploadModelInterface::FILE_TYPE_VIDEO,
-                UploadModelInterface::FILE_TYPE_TEXT,
-                UploadModelInterface::FILE_TYPE_APP,
-            ]'
-        ]);
+        try {
+            return $this->render('uploadmanager', [
+                'manager' => 'uploadmanager',
+                'fileAttributeName' => $this->module->fileAttributeName,
+            ]);
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage(), $e->getCode());
+        }
     }
 }

@@ -60,6 +60,7 @@ $(document).ready(function() {
             params = {
                 _csrf: yii.getCsrfToken(),
                 id: fileInputs.attr("data-file-id"),
+                title: $('[role="file-title"]').val(),
                 description: $('[role="file-description"]').val()
             };
 

@@ -8,6 +8,7 @@ return [
     'Created' => 'Created',
     'Updated' => 'Updated',
     'Alt' => 'Alt',
+    'Title' => 'Title',
     'Description' => 'Description',
     'New file' => 'New file',
 ];

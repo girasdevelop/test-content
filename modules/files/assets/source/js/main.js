@@ -13,7 +13,7 @@ function serializeParams(obj) {
  *
  * @param {string} url           - Request URL
  * @param {string} method        - Request type ('post' || 'get')
- * @param {object} params        - Object with params (for files { name: 'image' (sended to $_POST[]), files: { custom_filename: element.files[0] } (sended to $_FILES[]))
+ * @param {object} params        - Object with params (for files { name: 'vasya' (sended to $_POST[]), files: { custom_filename: element.files[0] } (sended to $_FILES[]))
  * @param {bool}   response_json - Type of response (JSON or not)
  * @param {func}   func_waiting  - Function while waiting
  * @param {func}   func_callback - Function on success

@@ -19,13 +19,34 @@ function renderTemplate(name, data) {
 $('[role="add-file"]').change(function(event) {
 
     var file = event.target.files[0],
-        tmppath = URL.createObjectURL(file);
-//alert(file.type);
-    var fileTypes = $('[role="uploadmanager"]').attr('data-file-types');
-    alert(fileTypes);
+        tmpPath = URL.createObjectURL(file),
+        fileType = file.type.split('/')[0],
+        baseUrl = $('[role="uploadmanager"]').attr('data-base-url'),
+        preview;
+    
+    switch (fileType) {
+        case 'image':
+            preview = '<img width="75" src="' + tmpPath + '">';
+            break;
+        case 'audio':
+            preview = '<audio src="' + tmpPath + '" controls></audio>';
+            break;
+        case 'video':
+            preview = '<img width="75" src="' + tmpPath + '">';
+            break;
+        case 'text':
+            preview = '<img width="75" src="' + tmpPath + '">';
+            break;
+        case 'application':
+            preview = '<img width="75" src="' + tmpPath + '">';
+            break;
+        default:
+            alert( 'Я таких значений не знаю' );
+    }
+
     var newHtml = renderTemplate('file-template', {
             title: file.name,
-            src: tmppath
+            preview: preview
         }),
         workspace = $('#workspace'),
         oldHtml = workspace.html();

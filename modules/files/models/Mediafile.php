@@ -16,6 +16,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property string $url
  * @property string $alt
  * @property int $size
+ * @property string $title
  * @property string $description
  * @property string $thumbs
  * @property string $advance

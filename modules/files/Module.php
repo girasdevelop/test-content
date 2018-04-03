@@ -303,7 +303,6 @@ class Module extends BaseModule
         return [
             'local-upload-component' => [
                 'class' => LocalUploadComponent::class,
-                'fileAttributeName' => $this->fileAttributeName,
                 'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
             ]

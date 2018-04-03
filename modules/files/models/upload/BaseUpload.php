@@ -21,7 +21,6 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  * @property string $directorySeparator
  * @property array $fileExtensions
  * @property int $fileMaxSize
- * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  * @property string $uploadRoot
@@ -99,9 +98,8 @@ abstract class BaseUpload extends Model
      * @var array
      */
     public $fileExtensions = [
-        'png', 'jpg', 'jpeg', 'pjpg', 'pjpeg', 'gif',
-        'mpe', 'mpeg', 'mpg', 'mp3', 'wma', 'avi',
-        'flv', 'mp4',
+        'png', 'jpg', 'jpeg', 'gif',
+        'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
         'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip'
     ];
 
@@ -111,13 +109,6 @@ abstract class BaseUpload extends Model
      * @var int
      */
     public $fileMaxSize = 1024*1024*10;
-
-    /**
-     * Name of the file field.
-     *
-     * @var string
-     */
-    public $fileAttributeName = 'file';
 
     /**
      * @var array
@@ -252,7 +243,7 @@ abstract class BaseUpload extends Model
     public function attributes()
     {
         return [
-            $this->fileAttributeName,
+            'file',
             'subDir',
             'alt',
             'title',
@@ -268,14 +259,14 @@ abstract class BaseUpload extends Model
     {
         return [
             [
-                $this->fileAttributeName,
+                'file',
                 'required',
                 'on' => [
                     self::SCENARIO_UPLOAD,
                 ],
             ],
             [
-                $this->fileAttributeName,
+                'file',
                 'file',
                 'on' => [
                     self::SCENARIO_UPLOAD,

@@ -17,7 +17,6 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property bool $renameFiles
  * @property array $fileExtensions
  * @property int $fileMaxSize
- * @property string $fileAttributeName
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
  *
@@ -59,9 +58,8 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var array
      */
     public $fileExtensions = [
-        'png', 'jpg', 'jpeg', 'pjpg', 'pjpeg', 'gif',
-        'mpe', 'mpeg', 'mpg', 'mp3', 'wma', 'avi',
-        'flv', 'mp4',
+        'png', 'jpg', 'jpeg', 'gif',
+        'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
         'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip'
     ];
 
@@ -71,13 +69,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var int
      */
     public $fileMaxSize = 1024*1024*10;
-
-    /**
-     * Name of the file field.
-     *
-     * @var string
-     */
-    public $fileAttributeName = 'file';
 
     /**
      * @var array
@@ -124,7 +115,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'renameFiles' => $this->renameFiles,
             'fileExtensions' => $this->fileExtensions,
             'fileMaxSize' => $this->fileMaxSize,
-            'fileAttributeName' => $this->fileAttributeName,
             'thumbsConfig' => $this->thumbsConfig,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
         ]);

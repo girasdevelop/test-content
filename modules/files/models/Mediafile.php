@@ -271,17 +271,20 @@ class Mediafile extends ActiveRecord
             $module = $this->getModule();
         }
 
-        if ($this->isAudio()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_AUDIO];
+        if ($this->isApp()){
 
-        } elseif ($this->isVideo()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_VIDEO];
+            if ($this->isExcel()){
+                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_EXCEL];
 
-        } elseif ($this->isText()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_TEXT];
+            } elseif ($this->isPdf()){
+                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_PDF];
 
-        } elseif ($this->isApp()){
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
+            } elseif ($this->isWord()){
+                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_WORD];
+
+            } else {
+                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
+            }
 
         } else {
             return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_OTHER];
@@ -345,5 +348,35 @@ class Mediafile extends ActiveRecord
     public function isApp(): bool
     {
         return strpos($this->type, UploadModelInterface::FILE_TYPE_APP) !== false;
+    }
+
+    /**
+     * Check if the file is excel.
+     *
+     * @return bool
+     */
+    public function isExcel(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_EXCEL) !== false;
+    }
+
+    /**
+     * Check if the file is pdf.
+     *
+     * @return bool
+     */
+    public function isPdf(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_PDF) !== false;
+    }
+
+    /**
+     * Check if the file is word.
+     *
+     * @return bool
+     */
+    public function isWord(): bool
+    {
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_WORD) !== false;
     }
 }

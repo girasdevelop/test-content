@@ -100,7 +100,7 @@ abstract class BaseUpload extends Model
     public $fileExtensions = [
         'png', 'jpg', 'jpeg', 'gif',
         'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
-        'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip'
+        'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip', 'mcd'
     ];
 
     /**

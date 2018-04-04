@@ -116,12 +116,12 @@ class Module extends BaseModule
      * @var string
      */
     public $thumbStubUrls = [
-        UploadModelInterface::FILE_TYPE_IMAGE => 'images'.DIRECTORY_SEPARATOR.'image.png',
-        UploadModelInterface::FILE_TYPE_AUDIO => 'images'.DIRECTORY_SEPARATOR.'audio.png',
-        UploadModelInterface::FILE_TYPE_VIDEO => 'images'.DIRECTORY_SEPARATOR.'video.png',
-        UploadModelInterface::FILE_TYPE_TEXT => 'images'.DIRECTORY_SEPARATOR.'text.png',
         UploadModelInterface::FILE_TYPE_APP => 'images'.DIRECTORY_SEPARATOR.'app.png',
+        UploadModelInterface::FILE_TYPE_EXCEL => 'images'.DIRECTORY_SEPARATOR.'excel.png',
         UploadModelInterface::FILE_TYPE_OTHER => 'images'.DIRECTORY_SEPARATOR.'other.png',
+        UploadModelInterface::FILE_TYPE_PDF => 'images'.DIRECTORY_SEPARATOR.'pdf.png',
+        UploadModelInterface::FILE_TYPE_TEXT => 'images'.DIRECTORY_SEPARATOR.'text.png',
+        UploadModelInterface::FILE_TYPE_WORD => 'images'.DIRECTORY_SEPARATOR.'word.png',
     ];
 
     /**

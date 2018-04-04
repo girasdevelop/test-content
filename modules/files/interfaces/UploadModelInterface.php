@@ -16,6 +16,9 @@ interface UploadModelInterface
     const FILE_TYPE_AUDIO = 'audio';
     const FILE_TYPE_VIDEO = 'video';
     const FILE_TYPE_APP = 'application';
+    const FILE_TYPE_WORD = 'word';
+    const FILE_TYPE_EXCEL = 'excel';
+    const FILE_TYPE_PDF = 'pdf';
     const FILE_TYPE_TEXT = 'text';
     const FILE_TYPE_OTHER = 'other';
     const FILE_TYPE_THUMB = 'thumbnail';

@@ -29,7 +29,7 @@ $(document).ready(function() {
             }
 
         }, function(data, xhr) {
-            showPopup(popupElement, 'Server Error!', true);
+            showPopup(popupElement, 'Server Error!', true, 4000);
         });
     }
 
@@ -95,7 +95,7 @@ $(document).ready(function() {
             }
 
         }, function(data, xhr) {
-            showPopup(popupElement, data.message, true);
+            showPopup(popupElement, data.message, true, 4000);
             getFileInfo(params.id);
         });
     });
@@ -130,7 +130,7 @@ $(document).ready(function() {
                 }
 
             }, function(data, xhr) {
-                showPopup(popupElement, data.message, true);
+                showPopup(popupElement, data.message, true, 4000);
             });
         }
     });

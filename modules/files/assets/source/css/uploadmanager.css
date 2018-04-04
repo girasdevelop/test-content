@@ -23,3 +23,15 @@
 #uploadmanager .progress {
   margin-top: 10px;
 }
+#uploadmanager #workspace div.popup {
+  font-weight: bold;
+}
+#uploadmanager #workspace div.popup .error {
+  color: red;
+}
+#uploadmanager #workspace div.popup .success {
+  color: green;
+}
+div[role="button-block-delete"]{
+  display: none;
+}

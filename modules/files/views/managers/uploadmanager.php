@@ -13,9 +13,9 @@ $this->params['manager'] = $manager;
 ?>
 
 <script type="html/tpl" id="file-template">
-<tr>
+<tr role="file-block">
     <td>
-        <table width="100%" role="file-block">
+        <table width="100%">
             <tbody>
             <tr>
                 <td width="128">
@@ -24,29 +24,50 @@ $this->params['manager'] = $manager;
                 <td width="10">
                 </td>
                 <td>
-                    {size}
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-                            <span class="sr-only">100% Complete</span>
+                    <div>
+                        {size}
+                    </div>
+                    <div>
+                        {title}
+                    </div>
+                    <div role="progress-block">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                <span class="sr-only">100% Complete</span>
+                            </div>
                         </div>
                     </div>
-                    {title}
                 </td>
                 <td width="10">
                 </td>
                 <td width="200">
-                    <?php echo Html::button('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload'), [
-                        'class' => 'btn btn-primary btn-sm',
-                        'id' => 'upload-button-{fileNumber}',
-                        'role' => 'upload-file',
-                        'data-file-number' => '{fileNumber}'
-                    ]) ?>
-                    <?php echo Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Module::t('uploadmanager', 'Cancel'), [
-                        'class' => 'btn btn-info btn-sm',
-                        'id' => 'cancel-button-{fileNumber}',
-                        'role' => 'cancel-upload',
-                        'data-number' => '{fileNumber}'
-                    ]) ?>
+                    <div role="button-block-upload">
+                        <?php echo Html::button('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload'), [
+                            'class' => 'btn btn-primary btn-sm',
+                            'id' => 'upload-button-{fileNumber}',
+                            'role' => 'upload-file',
+                            'data-file-number' => '{fileNumber}'
+                        ]) ?>
+                        <?php echo Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Module::t('uploadmanager', 'Cancel'), [
+                            'class' => 'btn btn-info btn-sm',
+                            'id' => 'cancel-button-{fileNumber}',
+                            'role' => 'cancel-upload',
+                            'data-file-number' => '{fileNumber}'
+                        ]) ?>
+                    </div>
+                    <div role="button-block-delete">
+                        <?php echo Html::button('<span class="glyphicon glyphicon-trash"></span> ' . Module::t('uploadmanager', 'Delete'), [
+                            'class' => 'btn btn-danger btn-sm',
+                            'id' => 'delete-button-{fileNumber}',
+                            'role' => 'delete-file-button',
+                            'data-file-number' => '{fileNumber}',
+                            'data-file-id' => ''
+                        ]) ?>
+                        <?php echo Html::checkbox(Module::t('uploadmanager', 'Delete'), false, [
+                            'id' => 'delete-checkbox-{fileNumber}',
+                            'role' => 'delete-file-checkbox',
+                        ]) ?>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -76,9 +97,7 @@ $this->params['manager'] = $manager;
 <div id="uploadmanager" role="uploadmanager"
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
-     data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
-     data-base-url="<?php echo $this->params['bundle']->baseUrl ?>"
-     data-sub-dir="">
+     data-base-url="<?php echo $this->params['bundle']->baseUrl ?>">
 
     <div id="buttons">
         <label class="btn btn-success btn-sm" for="my-file-selector">
@@ -87,15 +106,22 @@ $this->params['manager'] = $manager;
         </label>
 
         <?php echo Html::button('<span class="glyphicon glyphicon-upload"></span> ' . Module::t('uploadmanager', 'Upload'), [
-            'class' => 'btn btn-primary btn-sm'
+            'class' => 'btn btn-primary btn-sm',
+            'role' => 'total-upload-file'
         ]) ?>
 
         <?php echo Html::button('<span class="glyphicon glyphicon-ban-circle"></span> ' . Module::t('uploadmanager', 'Cancel'), [
-            'class' => 'btn btn-info btn-sm'
+            'class' => 'btn btn-info btn-sm',
+            'role' => 'total-cancel-upload'
         ]) ?>
 
         <?php echo Html::button('<span class="glyphicon glyphicon-trash"></span> ' . Module::t('uploadmanager', 'Delete'), [
-            'class' => 'btn btn-danger btn-sm'
+            'class' => 'btn btn-danger btn-sm',
+            'role' => 'total-delete-file-button'
+        ]) ?>
+
+        <?php echo Html::checkbox('', false, [
+            'role' => 'total-delete-file-checkbox'
         ]) ?>
     </div>
 

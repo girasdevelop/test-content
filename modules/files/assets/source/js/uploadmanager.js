@@ -3,7 +3,11 @@ $(document).ready(function() {
     window.preparedFiles = {};
     window.workspace = $('#workspace');
     window.uploadManagerContainer = $('[role="uploadmanager"]');
+    window.fileManagerModalContainer = $(window.frameElement).parents('[role="filemanager-modal"]');
 
+    /**
+     * Add file to upload.
+     */
     $('[role="add-file"]').change(function(event) {
 
         var file = event.target.files[0],
@@ -76,13 +80,19 @@ $(document).ready(function() {
         workspace.html(oldHtml + newHtml);
     });
 
+    /**
+     * Single upload file.
+     */
     window.workspace.on("click", '[role="upload-file"]', function(e) {
         e.preventDefault();
 
         var fileNumber = $(this).attr('data-file-number'),
             fileBlock = $(this).parents('[role="file-block"]'),
+            progressBlock = fileBlock.find('[role="progress-block"]'),
+            buttonBlockUpload = fileBlock.find('[role="button-block-upload"]'),
+            buttonBlockDelete = fileBlock.find('[role="button-block-delete"]'),
             url = window.uploadManagerContainer.attr('data-save-src'),
-            subDir = window.uploadManagerContainer.attr("data-sub-dir"),
+            subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
             params = {
                 _csrf: yii.getCsrfToken(),
                 title: fileBlock.find('[role="file-title"]').val(),
@@ -96,25 +106,115 @@ $(document).ready(function() {
             params.subDir = subDir;
         }
 
-        /*AJAX(url, 'POST', params, true, function () {
-            setAjaxLoader(popupElement);
+        AJAX(url, 'POST', params, true, function () {
+            setAjaxLoader(progressBlock, 1000);
 
         }, function(data) {
 
             if (data.meta.status == 'success'){
-                showPopup(popupElement, data.meta.message, false);
-                getFileInfo(params.id, false);
+                clearContainer(progressBlock);
+                clearContainer(buttonBlockUpload);
+                buttonBlockDelete.css('display', 'block');
+
                 if (data.data.files && data.data.files[0]){
-                    $('[data-key="' + params.id + '"] img:first').attr('src', data.data.files[0].thumbnailUrl);
+                    fileBlock.find('[role="delete-file-button"]').attr('data-file-id', data.data.files[0].id);
                 }
+
             } else {
-                showPopup(popupElement, data.data.errors, true, 4000);
+                showPopup(progressBlock, data.data.errors, true, 0);
             }
 
         }, function(data, xhr) {
-            showPopup(popupElement, data.message, true);
-            getFileInfo(params.id);
-        });*/
+            showPopup(progressBlock, data.message, true, 0);
+        });
+    });
+
+    /**
+     * Single delete file.
+     */
+    window.workspace.on("click", '[role="delete-file-button"]', function(e) {
+        e.preventDefault();
+
+        var fileNumber = $(this).attr('data-file-number'),
+            fileBlock = $(this).parents('[role="file-block"]'),
+            progressBlock = fileBlock.find('[role="progress-block"]'),
+            url = window.uploadManagerContainer.attr('data-delete-src'),
+            params = {
+                _csrf: yii.getCsrfToken(),
+                id: $(this).attr('data-file-id')
+            };
+
+        AJAX(url, 'POST', params, true, function () {
+
+        }, function(data) {
+
+            if (data.meta.status == 'success'){
+                delete window.preparedFiles[fileNumber];
+                fileBlock.fadeOut();
+            } else {
+                showPopup(progressBlock, data.meta.message, true, 0);
+            }
+
+        }, function(data, xhr) {
+            showPopup(progressBlock, data.message, true, 0);
+        });
+    });
+
+    /**
+     * Cancel before single upload.
+     */
+    window.workspace.on("click", '[role="cancel-upload"]', function(e) {
+        e.preventDefault();
+
+        var fileNumber = $(this).attr('data-file-number'),
+            fileBlock = $(this).parents('[role="file-block"]');
+
+        delete window.preparedFiles[fileNumber];
+
+        fileBlock.fadeOut();
+    });
+
+    /**
+     * Total cancel upload.
+     */
+    $('[role="total-cancel-upload"]').on("click", function(e) {
+        e.preventDefault();
+
+        window.workspace.find('[role="cancel-upload"]').click();
+    });
+
+    /**
+     * Total upload.
+     */
+    $('[role="total-upload-file"]').on("click", function(e) {
+        e.preventDefault();
+
+        window.workspace.find('[role="upload-file"]').click();
+    });
+
+    /**
+     * Total delete.
+     */
+    $('[role="total-delete-file-button"]').on("click", function(e) {
+        e.preventDefault();
+
+        window.workspace.find('input:checked[role="delete-file-checkbox"]').each(function () {
+            $(this).siblings('[role="delete-file-button"]').click();
+        });
+    });
+
+    /**
+     * Total check for delete.
+     */
+    $('[role="total-delete-file-checkbox"]').change(function() {
+
+        var allCheckBoxes = window.workspace.find('[role="delete-file-checkbox"]');
+
+        if (this.checked) {
+            allCheckBoxes.prop('checked', true);
+        } else {
+            allCheckBoxes.prop('checked', false);
+        }
     });
 
     /**

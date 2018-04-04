@@ -152,13 +152,15 @@ function showPopup(container, data, error, time)
         '<div class="' + classPopup + '">' + content + '</div>'
     );
 
-    if (!time){
+    if (!time && time != 0){
         time = 2000;
     }
 
-    setTimeout(function () {
-        clearContainer(container);
-    }, time);
+    if (time && time != 0){
+        setTimeout(function () {
+            clearContainer(container);
+        }, time);
+    }
 }
 
 /**
@@ -173,14 +175,26 @@ function clearContainer(container)
 
 /**
  * Ajax loader using progress-bar style.
- *
- * @param container
+ * @param {element} container
+ * @param {integer} delayTime
  */
-function setAjaxLoader(container) {
+function setAjaxLoader(container, delayTime)
+{
+    var initValue = 100;
+
+    if (delayTime){
+        initValue = 0;
+    }
+
     container.html(
         '<div class="progress">' +
-            '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">' +
+            '<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="' + initValue + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + initValue + '%;">' +
                 '<span class="sr-only">100% Complete</span>' +
             '</div>' +
         '</div>');
+
+    if (delayTime){
+        var progressBar = container.find('[role="progressbar"]');
+        progressBar.on('load', progressBar.animate({width:100+'%'}).delay(delayTime));
+    }
 }

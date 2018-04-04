@@ -16,6 +16,7 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property array $uploadDirs
  * @property bool $renameFiles
  * @property array $fileExtensions
+ * @property bool $checkExtensionByMimeType
  * @property int $fileMaxSize
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
@@ -62,6 +63,13 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
         'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
         'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip', 'mcd'
     ];
+
+    /**
+     * Check extension by MIME type (they are must match).
+     *
+     * @var bool
+     */
+    public $checkExtensionByMimeType = true;
 
     /**
      * Maximum file size.
@@ -114,6 +122,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'uploadDirs' => $this->uploadDirs,
             'renameFiles' => $this->renameFiles,
             'fileExtensions' => $this->fileExtensions,
+            'checkExtensionByMimeType' => $this->checkExtensionByMimeType,
             'fileMaxSize' => $this->fileMaxSize,
             'thumbsConfig' => $this->thumbsConfig,
             'thumbFilenameTemplate' => $this->thumbFilenameTemplate,

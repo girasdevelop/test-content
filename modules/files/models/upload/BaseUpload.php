@@ -20,6 +20,7 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  * @property bool $renameFiles
  * @property string $directorySeparator
  * @property array $fileExtensions
+ * @property bool $checkExtensionByMimeType
  * @property int $fileMaxSize
  * @property array $thumbsConfig
  * @property string $thumbFilenameTemplate
@@ -102,6 +103,13 @@ abstract class BaseUpload extends Model
         'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
         'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip', 'mcd'
     ];
+
+    /**
+     * Check extension by MIME type (they are must match).
+     *
+     * @var bool
+     */
+    public $checkExtensionByMimeType = true;
 
     /**
      * Maximum file size.
@@ -274,6 +282,7 @@ abstract class BaseUpload extends Model
                 ],
                 'skipOnEmpty' => true,
                 'extensions' => $this->fileExtensions,
+                'checkExtensionByMimeType' => $this->checkExtensionByMimeType,
                 'maxSize' => $this->fileMaxSize
             ],
             [

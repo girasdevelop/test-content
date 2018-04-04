@@ -2,9 +2,9 @@
 
 namespace app\modules\files\models;
 
-use yii\helpers\Html;
 use yii\base\InvalidConfigException;
 use app\modules\files\Module;
+use app\modules\files\helpers\Html;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
@@ -200,6 +200,84 @@ class Mediafile extends ActiveRecord
     }
 
     /**
+     * Get preview html.
+     *
+     * @param string $baseUrl
+     * @param array $options
+     *
+     * @return string
+     */
+    public function getPreview($baseUrl = '', array $options = []): string
+    {
+        if ($this->isImage()){
+            if (empty($options['alt'])) {
+                $options['alt'] = $this->alt;
+            }
+            return Html::img($this->getDefaultThumbUrl(), $options);
+
+        } elseif ($this->isApp()){
+            return Html::img($this->getAppPreviewUrl($baseUrl), $options);
+
+        } elseif ($this->isAudio()){
+            return Html::audio($options);
+
+        } else {
+            return Html::img($this->getOtherPreviewUrl($baseUrl), $options);
+        }
+    }
+
+    /**
+     * Get application preview url.
+     *
+     * @param string $baseUrl
+     *
+     * @return string
+     */
+    public function getAppPreviewUrl($baseUrl = ''): string
+    {
+        if (!empty($baseUrl) && is_string($baseUrl)){
+            $root = $baseUrl.DIRECTORY_SEPARATOR;
+        } else {
+            $root = DIRECTORY_SEPARATOR;
+        }
+        $module = $this->getModule();
+
+        if ($this->isExcel()){
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_EXCEL];
+
+        } elseif ($this->isPdf()){
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_PDF];
+
+        } elseif ($this->isWord()){
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_WORD];
+
+        } else {
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get other preview url.
+     *
+     * @param string $baseUrl
+     *
+     * @return string
+     */
+    public function getOtherPreviewUrl($baseUrl = ''): string
+    {
+        if (!empty($baseUrl) && is_string($baseUrl)){
+            $root = $baseUrl.DIRECTORY_SEPARATOR;
+        } else {
+            $root = DIRECTORY_SEPARATOR;
+        }
+        $module = $this->getModule();
+
+        return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_OTHER];
+    }
+
+    /**
      * Get thumbnails.
      *
      * @return array
@@ -253,42 +331,11 @@ class Mediafile extends ActiveRecord
     /**
      * Get default thumbnail url.
      *
-     * @param string $baseUrl
-     *
      * @return string
      */
-    public function getDefaultThumbUrl($baseUrl = ''): string
+    public function getDefaultThumbUrl(): string
     {
-        if ($this->isImage()) {
-            return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
-
-        } else {
-            if (!empty($baseUrl) && is_string($baseUrl)){
-                $root = $baseUrl.DIRECTORY_SEPARATOR;
-            } else {
-                $root = DIRECTORY_SEPARATOR;
-            }
-            $module = $this->getModule();
-        }
-
-        if ($this->isApp()){
-
-            if ($this->isExcel()){
-                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_EXCEL];
-
-            } elseif ($this->isPdf()){
-                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_PDF];
-
-            } elseif ($this->isWord()){
-                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_WORD];
-
-            } else {
-                return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
-            }
-
-        } else {
-            return $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_OTHER];
-        }
+        return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
     }
 
     /**

@@ -219,7 +219,7 @@ class Mediafile extends ActiveRecord
             return Html::img($this->getAppPreviewUrl($baseUrl), $options);
 
         } elseif ($this->isAudio()){
-            return Html::audio($options);
+            return Html::audio($this->url, ['type' => $this->type]);
 
         } else {
             return Html::img($this->getOtherPreviewUrl($baseUrl), $options);

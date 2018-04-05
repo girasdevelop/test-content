@@ -94,6 +94,7 @@ $config = [
             'components' => [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
+                    'checkExtensionByMimeType' => false
                     //'fileExtensions' => ['ext']
                 ],
                 'view' => require __DIR__ . '/admin/view-component.php',

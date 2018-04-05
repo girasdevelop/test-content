@@ -2,7 +2,6 @@
 
 namespace app\modules\files\models;
 
-use yii\base\InvalidConfigException;
 use app\modules\files\Module;
 use app\modules\files\helpers\Html;
 use app\modules\files\interfaces\UploadModelInterface;
@@ -23,7 +22,6 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property int $created_at
  * @property int $updated_at
  * @property Module $_module
- *
  * @property OwnersMediafiles[] $ownersMediafiles
  *
  * @package Itstructure\FilesModule\models
@@ -215,11 +213,22 @@ class Mediafile extends ActiveRecord
             }
             return Html::img($this->getDefaultThumbUrl(), $options);
 
+        } elseif ($this->isAudio()){
+            return Html::audio($this->url, [
+                'source' => [
+                    'type' => $this->type
+                ]
+            ]);
+
+        } elseif ($this->isVideo()){
+            return Html::video($this->url, [
+                'source' => [
+                    'type' => $this->type
+                ]
+            ]);
+
         } elseif ($this->isApp()){
             return Html::img($this->getAppPreviewUrl($baseUrl), $options);
-
-        } elseif ($this->isAudio()){
-            return Html::audio($this->url, ['type' => $this->type]);
 
         } else {
             return Html::img($this->getOtherPreviewUrl($baseUrl), $options);

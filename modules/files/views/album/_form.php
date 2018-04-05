@@ -49,9 +49,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'form'  => $form,
             ]) ?>
 
-            <?php echo Html::audio('\uploads\audio\post\de\bdf0\7ca7f502ac09954b2ae0f0ebc72e6d85.mp3',
-                ['type' => 'audio/mp3']); ?>
-
             <div id="thumbnail-container"></div>
 
             <?php echo FileSetter::widget([

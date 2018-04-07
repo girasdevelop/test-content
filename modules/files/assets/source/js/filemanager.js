@@ -55,6 +55,7 @@ $(document).ready(function() {
 
         var fileInputs = $('[role="file-inputs"]'),
             url = fileInputs.attr("data-save-src"),
+            baseUrl = fileInputs.attr("data-base-url"),
             popupElement = $('[role="popup"]'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
             params = {
@@ -92,9 +93,22 @@ $(document).ready(function() {
 
                     var file = data.data.files[0],
                         fileType = file.type,
-                        fileUrl = fileType.split('/')[0] == 'image' ? file.thumbnailUrl : file.url;
+                        fileTypeShort = fileType.split('/')[0],
+                        previewOptions = {fileType: fileType, baseUrl: baseUrl};
 
-                    $('[data-key="' + params.id + '"]').html(getPreview(fileType, fileUrl, ''));
+                    if (fileTypeShort == 'image'){
+                        previewOptions.fileUrl = file.thumbnailUrl;
+                    } else {
+                        previewOptions.fileUrl = file.url;
+                    }
+
+                    var preview = getPreview(previewOptions) + '<span class="checked glyphicon glyphicon-ok"></span>';
+
+                    if (fileTypeShort == 'audio' || fileTypeShort == 'text' || fileTypeShort == 'application'){
+                        preview += params.title;
+                    }
+
+                    $('[data-key="' + params.id + '"]').html(preview).attr('class', 'item active');
                 }
             } else {
                 showPopup(popupElement, data.data.errors, true, 4000);

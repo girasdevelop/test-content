@@ -203,28 +203,34 @@ function setAjaxLoader(container, delayTime)
 /**
  * Get preview according with the file type.
  *
- * @param fileType
- * @param filePath
- * @param baseUrl
+ * @param {object} options. Example {fileType: 'image/jpeg', fileUrl: '\uploads\images\post\...url to file.jpeg', baseUrl: '/assets/fc0cd220'}
  * @returns {string}
  */
-function getPreview(fileType, filePath, baseUrl) {
+function getPreview(options) {
+
+    if (jQuery.type(options) !== 'object'){
+        console.log("Parameter 'options' must be an object!");
+    }
+
+    var fileType = options.fileType,
+        fileUrl = options.fileUrl,
+        baseUrl  = options.baseUrl;
 
     switch (fileType.split('/')[0]) {
         case 'image':
-            return '<img src="' + filePath + '">';
+            return '<img src="' + fileUrl + '">';
             break;
 
         case 'audio':
             return  '<audio controls>' +
-                        '<source src="' + filePath + '" type="' + fileType + '" preload="auto" >' +
+                        '<source src="' + fileUrl + '" type="' + fileType + '" preload="auto" >' +
                         '<track kind="subtitles">' +
                     '</audio>';
             break;
 
         case 'video':
             return  '<video controls width="300" height="240">' +
-                        '<source src="' + filePath + '" type="' + fileType + '" preload="auto" >' +
+                        '<source src="' + fileUrl + '" type="' + fileType + '" preload="auto" >' +
                         '<track kind="subtitles">' +
                     '</video>';
             break;
@@ -250,5 +256,21 @@ function getPreview(fileType, filePath, baseUrl) {
 
         default:
             return '<img src="' + baseUrl + '/images/other.png' + '">';
+    }
+}
+
+/**
+ * Analog for "strpos" php function.
+ * @param data
+ * @returns {null}
+ */
+function strpos(data) {
+    // Created by Mark Tali [webcodes.ru]
+    // Example. Return 8, but if index > 2, then return null
+    // strpos({str: 'Bla-bla-bla...', find: 'bla', index: 2});
+    var haystack = data.str, needle = data.find, offset = 0;
+    for (var i = 0; i < haystack.split(needle).length; i++) {
+        var index = haystack.indexOf(needle, offset + (data.index != 1 ? 1 : 0));
+        if (i == data.index - 1) return (index != -1 ? index : null); else offset = index;
     }
 }

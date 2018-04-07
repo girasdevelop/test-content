@@ -56,8 +56,8 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'buttonName' => Module::t('main', 'Set thumbnail'),
                 'mediafileContainer' => '#thumbnail-container',
                 'owner' => 'post',
-                'ownerId' => 1,
-                'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE,
+                'ownerId' => 3,
+                'ownerAttribute' => UploadModelInterface::FILE_TYPE_AUDIO,
                 'subDir' => 'post'
             ]); ?>
 

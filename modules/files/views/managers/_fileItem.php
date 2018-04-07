@@ -6,6 +6,6 @@ use app\modules\files\models\Mediafile;
 ?>
 
 <?php echo $model->getPreview($baseUrl) . '<span class="checked glyphicon glyphicon-ok"></span>'; ?>
-<?php if ($model->isAudio()): ?>
+<?php if ($model->isAudio() || $model->isText() || $model->isApp()): ?>
     <?php echo $model->title; ?>
 <?php endif; ?>

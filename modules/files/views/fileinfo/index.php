@@ -31,7 +31,8 @@ $bundle = FilemanagerAsset::register($this);
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
-     data-is-image="<?php echo $model->isImage() ?>">
+     data-is-image="<?php echo $model->isImage() ?>"
+     data-base-url="<?php echo $bundle->baseUrl ?>">
 
     <?php if ($model->isImage()): ?>
         <div class="input-group input-group-sm">

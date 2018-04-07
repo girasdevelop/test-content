@@ -16,7 +16,7 @@ $(document).ready(function() {
             baseUrl = window.uploadManagerContainer.attr('data-base-url'),
             preview;
 
-        preview = getPreview(fileType, tmpPath, baseUrl);
+        preview = getPreview({fileType: fileType, fileUrl: tmpPath, baseUrl: baseUrl});
 
         if (window.fileNumber == null){
             window.fileNumber = 1;
@@ -191,22 +191,6 @@ $(document).ready(function() {
             }
         }
         return template;
-    }
-
-    /**
-     * Analog for "strpos" php function.
-     * @param data
-     * @returns {null}
-     */
-    function strpos(data) {
-        // Created by Mark Tali [webcodes.ru]
-        // Example. Return 8, but if index > 2, then return null
-        // strpos({str: 'Bla-bla-bla...', find: 'bla', index: 2});
-        var haystack = data.str, needle = data.find, offset = 0;
-        for (var i = 0; i < haystack.split(needle).length; i++) {
-            var index = haystack.indexOf(needle, offset + (data.index != 1 ? 1 : 0));
-            if (i == data.index - 1) return (index != -1 ? index : null); else offset = index;
-        }
     }
 
     /**

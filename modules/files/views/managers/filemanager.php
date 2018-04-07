@@ -22,6 +22,10 @@ $this->params['manager'] = $manager;
         <?php echo ListView::widget([
             'dataProvider' => $dataProvider,
             'itemView' => '_fileItem',
+            'itemOptions' => [
+                'class' => 'item',
+                'role' => 'item',
+            ],
             'layout' => '{summary}{items}',
             'viewParams' => [
                 'baseUrl' => $this->params['bundle']->baseUrl,

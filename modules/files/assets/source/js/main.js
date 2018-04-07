@@ -203,64 +203,104 @@ function setAjaxLoader(container, delayTime)
 /**
  * Get preview according with the file type.
  *
- * @param {object} options. Example {fileType: 'image/jpeg', fileUrl: '\uploads\images\post\...url to file.jpeg', baseUrl: '/assets/fc0cd220'}
+ * @param {object} params.
+ * Example {fileType: 'image/jpeg', fileUrl: '\uploads\images\post\...url to file.jpeg', baseUrl: '/assets/fc0cd220'}
+ *
  * @returns {string}
  */
-function getPreview(options) {
+function getPreview(params) {
 
-    if (jQuery.type(options) !== 'object'){
+    if (jQuery.type(params) !== 'object'){
         console.log("Parameter 'options' must be an object!");
     }
 
-    var fileType = options.fileType,
-        fileUrl = options.fileUrl,
-        baseUrl  = options.baseUrl;
+    var fileType,
+        fileUrl,
+        baseUrl;
+
+    if (params.fileType){
+        fileType = params.fileType;
+    }
+
+    if (params.fileUrl){
+        fileUrl = params.fileUrl;
+    }
+
+    if (params.baseUrl){
+        baseUrl = params.baseUrl;
+    }
+
+    /* Additional options */
+    var customMainOptions = {},
+        customSourceOptions = {},
+        customTrackOptions = {},
+        initSourceOptions = {},
+        initTrackOptions = {};
+
+    if (params.main && jQuery.type(params.main) === 'object'){
+        customMainOptions = params.main;
+    }
+
+    if (params.source && jQuery.type(params.source) === 'object'){
+        customSourceOptions = params.source;
+    }
+
+    if (params.track && jQuery.type(params.track) === 'object'){
+        customTrackOptions = params.track;
+    }
 
     switch (fileType.split('/')[0]) {
         case 'image':
-            return '<img src="' + fileUrl + '">';
+            return '<img src="' + fileUrl + '" ' + objectParamsToHtml(customMainOptions) + '>';
             break;
 
         case 'audio':
-            return  '<audio controls>' +
-                        '<source src="' + fileUrl + '" type="' + fileType + '" preload="auto" >' +
-                        '<track kind="subtitles">' +
+            var initAudioOptions = {controls: 'controls'};
+                initSourceOptions = {preload: 'auto'};
+                initTrackOptions = {kind: 'subtitles'};
+            return  '<audio controls ' + objectParamsToHtml(jsonMergeRecursive(customMainOptions, initAudioOptions)) + '>' +
+                        '<source src="' + fileUrl + '" type="' + fileType + '" ' + objectParamsToHtml(jsonMergeRecursive(customSourceOptions, initSourceOptions)) + ' >' +
+                        '<track ' + objectParamsToHtml(jsonMergeRecursive(customTrackOptions, initTrackOptions)) + '>' +
                     '</audio>';
             break;
 
         case 'video':
-            return  '<video controls width="300" height="240">' +
-                        '<source src="' + fileUrl + '" type="' + fileType + '" preload="auto" >' +
-                        '<track kind="subtitles">' +
+            var initVideoOptions = {controls: 'controls', width: 300, height: 240};
+                initSourceOptions = {preload: 'auto'};
+                initTrackOptions = {kind: 'subtitles'};
+            return  '<video controls ' + objectParamsToHtml(jsonMergeRecursive(customMainOptions, initVideoOptions)) + '>' +
+                        '<source src="' + fileUrl + '" type="' + fileType + '" ' + objectParamsToHtml(jsonMergeRecursive(customSourceOptions, initSourceOptions)) + ' >' +
+                        '<track ' + objectParamsToHtml(jsonMergeRecursive(customTrackOptions, initTrackOptions)) + '>' +
                     '</video>';
             break;
 
         case 'text':
-            return '<img src="' + baseUrl + '/images/text.png' + '">';
+            return '<img src="' + baseUrl + '/images/text.png' + '" ' + objectParamsToHtml(customMainOptions) + '>';
             break;
 
         case 'application':
             if (strpos({str: fileType.split('/')[1], find: 'word', index: 1})){
-                return '<img src="' + baseUrl + '/images/word.png' + '">';
+                return '<img src="' + baseUrl + '/images/word.png' + '" ' + objectParamsToHtml(customMainOptions) + '>';
 
             } else if (strpos({str: fileType.split('/')[1], find: 'excel', index: 1})){
-                return '<img src="' + baseUrl + '/images/excel.png' + '">';
+                return '<img src="' + baseUrl + '/images/excel.png' + '" ' + objectParamsToHtml(customMainOptions) + '>';
 
             } else if (fileType.split('/')[1] == 'pdf'){
-                return '<img src="' + baseUrl + '/images/pdf.png' + '">';
+                return '<img src="' + baseUrl + '/images/pdf.png' + '" ' + objectParamsToHtml(customMainOptions) + '>';
 
             } else {
-                return '<img src="' + baseUrl + '/images/app.png' + '">';
+                return '<img src="' + baseUrl + '/images/app.png' + '" ' + objectParamsToHtml(customMainOptions) + '>';
             }
             break;
 
         default:
-            return '<img src="' + baseUrl + '/images/other.png' + '">';
+            return '<img src="' + baseUrl + '/images/other.png' + '" ' + objectParamsToHtml(customMainOptions) + '>';
     }
 }
 
 /**
  * Analog for "strpos" php function.
+ *
  * @param data
  * @returns {null}
  */
@@ -273,4 +313,43 @@ function strpos(data) {
         var index = haystack.indexOf(needle, offset + (data.index != 1 ? 1 : 0));
         if (i == data.index - 1) return (index != -1 ? index : null); else offset = index;
     }
+}
+
+/**
+ * Merge two json objects.
+ *
+ * @param json1
+ * @param json2
+ * @returns {{}}
+ */
+function jsonMergeRecursive(json1, json2){
+    var out = {};
+    for(var k1 in json1){
+        if (json1.hasOwnProperty(k1)) out[k1] = json1[k1];
+    }
+    for(var k2 in json2){
+        if (json2.hasOwnProperty(k2)) {
+            if(!out.hasOwnProperty(k2)) out[k2] = json2[k2];
+            else if(
+                (typeof out[k2] === 'object') && (out[k2].constructor === Object) &&
+                (typeof json2[k2] === 'object') && (json2[k2].constructor === Object)
+            ) out[k2] = json_merge_recursive(out[k2], json2[k2]);
+        }
+    }
+    return out;
+}
+
+/**
+ * Parse object params to the html string.
+ *
+ * @param objectParams
+ * @returns {string}
+ */
+function objectParamsToHtml(objectParams)
+{
+    var options = '';
+    for (var index in objectParams){
+        options += ' ' + index + '="'+ objectParams[index] + '"';
+    }
+    return options;
 }

@@ -2,6 +2,7 @@
 
 namespace app\modules\files\models;
 
+use yii\helpers\ArrayHelper;
 use app\modules\files\Module;
 use app\modules\files\helpers\Html;
 use app\modules\files\interfaces\UploadModelInterface;
@@ -214,21 +215,26 @@ class Mediafile extends ActiveRecord
             return Html::img($this->getDefaultThumbUrl(), $options);
 
         } elseif ($this->isAudio()){
-            return Html::audio($this->url, [
-                'source' => [
-                    'type' => $this->type
-                ]
-            ]);
+            return Html::audio($this->url, ArrayHelper::merge([
+                    'source' => [
+                        'type' => $this->type
+                    ]
+                ], $options)
+            );
 
         } elseif ($this->isVideo()){
-            return Html::video($this->url, [
-                'source' => [
-                    'type' => $this->type
-                ]
-            ]);
+            return Html::video($this->url, ArrayHelper::merge([
+                    'source' => [
+                        'type' => $this->type
+                    ]
+                ], $options)
+            );
 
         } elseif ($this->isApp()){
             return Html::img($this->getAppPreviewUrl($baseUrl), $options);
+
+        } elseif ($this->isText()){
+            return Html::img($this->getTextPreviewUrl($baseUrl), $options);
 
         } else {
             return Html::img($this->getOtherPreviewUrl($baseUrl), $options);
@@ -265,6 +271,24 @@ class Mediafile extends ActiveRecord
         }
 
         return $url;
+    }
+
+    /**
+     * Get text preview url.
+     *
+     * @param string $baseUrl
+     *
+     * @return string
+     */
+    public function getTextPreviewUrl($baseUrl = ''): string
+    {
+        if (!empty($baseUrl) && is_string($baseUrl)){
+            $root = $baseUrl.DIRECTORY_SEPARATOR;
+        } else {
+            $root = DIRECTORY_SEPARATOR;
+        }
+
+        return $root . $this->getModule()->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
     }
 
     /**
@@ -351,6 +375,9 @@ class Mediafile extends ActiveRecord
 
         } elseif ($this->isApp()){
             return $this->getAppPreviewUrl($baseUrl);
+
+        } elseif ($this->isText()){
+            return $this->getTextPreviewUrl($baseUrl);
 
         } else {
             return $this->getOtherPreviewUrl($baseUrl);

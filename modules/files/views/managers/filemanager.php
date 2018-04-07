@@ -22,10 +22,13 @@ $this->params['manager'] = $manager;
         <?php echo ListView::widget([
             'dataProvider' => $dataProvider,
             'itemView' => '_fileItem',
-            'itemOptions' => [
-                'class' => 'item',
-                'role' => 'item',
-            ],
+            'itemOptions' => function($model){
+                /* @var $model Mediafile */
+                return [
+                    'class' => 'item '.($model->isImage() || $model->isVideo() ? 'floated' : 'cleared'),
+                    'role' => 'item'
+                ];
+            },
             'layout' => '{summary}{items}',
             'viewParams' => [
                 'baseUrl' => $this->params['bundle']->baseUrl,

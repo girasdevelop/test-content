@@ -9,22 +9,23 @@
   overflow: hidden;
 }
 .list-view .item {
-  float: left;
-  border: 3px solid #e5e5e5;
+  border: 2px solid #e5e5e5;
   position: relative;
-  display: inline-block;
   color: #56bb5c;
   cursor: pointer;
 }
+.list-view .floated {
+  float: left;
+  display: inline-block;
+}
+.list-view .cleared {
+  clear: both;
+}
 .list-view .item img {
-  min-width: 150px;
-  min-height: 150px;
   opacity: .8;
 }
 .list-view .item img:hover {
   opacity: 1;
-}
-.list-view .item audio {
 }
 .list-view .item .checked {
   display: none;
@@ -34,8 +35,8 @@
   font-size: 2em;
 }
 .list-view .active {
-  outline: 3px solid #56bb5c;
-  outline-offset: -3px;
+  outline: 2px solid #56bb5c;
+  outline-offset: -2px;
 }
 .list-view .active img {
   opacity: 1;

@@ -102,13 +102,18 @@ $(document).ready(function() {
                         previewOptions.fileUrl = file.url;
                     }
 
-                    var preview = getPreview(previewOptions) + '<span class="checked glyphicon glyphicon-ok"></span>';
-
-                    if (fileTypeShort == 'audio' || fileTypeShort == 'text' || fileTypeShort == 'application'){
-                        preview += params.title;
+                    if (fileTypeShort != 'image' && fileTypeShort != 'video' && fileTypeShort != 'audio'){
+                        previewOptions.main = {width: 50};
                     }
 
-                    $('[data-key="' + params.id + '"]').html(preview).attr('class', 'item active');
+                    var preview = getPreview(previewOptions) + '<span class="checked glyphicon glyphicon-ok"></span>',
+                        itemSubclass = fileTypeShort == 'image' || fileTypeShort == 'video' ? 'floated' : 'cleared';
+
+                    if (fileTypeShort != 'image' && fileTypeShort != 'video'){
+                        preview += ' ' + params.title;
+                    }
+
+                    $('[data-key="' + params.id + '"]').html(preview).attr('class', 'item ' + itemSubclass + ' active');
                 }
             } else {
                 showPopup(popupElement, data.data.errors, true, 4000);

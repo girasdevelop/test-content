@@ -1,7 +1,7 @@
 /* ITEMS */
 .items {
   float: left;
-  width: 660px;
+  width: 630px;
   overflow: hidden;
 }
 .items .list-view {
@@ -10,40 +10,37 @@
 }
 .list-view .item {
   float: left;
-  border-right: 3px solid #e5e5e5;
-  border-bottom: 3px solid #e5e5e5;
-}
-.list-view .item {
-  display: inline-block;
-}
-.list-view .item a {
+  border: 3px solid #e5e5e5;
   position: relative;
   display: inline-block;
   color: #56bb5c;
+  cursor: pointer;
 }
-.list-view .item a img {
-  min-width: 128px;
-  min-height: 128px;
+.list-view .item img {
+  min-width: 150px;
+  min-height: 150px;
   opacity: .8;
 }
-.list-view .item a img:hover {
+.list-view .item img:hover {
   opacity: 1;
 }
-.list-view .item a .checked {
+.list-view .item audio {
+}
+.list-view .item .checked {
   display: none;
   position: absolute;
   top: 5px;
   right: 6px;
   font-size: 2em;
 }
-.list-view .item .active {
+.list-view .active {
   outline: 3px solid #56bb5c;
   outline-offset: -3px;
 }
-.list-view .item .active img {
+.list-view .active img {
   opacity: 1;
 }
-.list-view .item .active .checked {
+.list-view .active .checked {
   display: inline-block;
 }
 
@@ -55,7 +52,7 @@
 
 /* REDACTOR */
 .redactor {
-  width: 290px;
+  width: 315px;
   float: left;
   padding-left: 10px;
 }

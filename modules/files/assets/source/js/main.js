@@ -175,6 +175,7 @@ function clearContainer(container)
 
 /**
  * Ajax loader using progress-bar style.
+ *
  * @param {element} container
  * @param {integer} delayTime
  */
@@ -196,5 +197,58 @@ function setAjaxLoader(container, delayTime)
     if (delayTime){
         var progressBar = container.find('[role="progressbar"]');
         progressBar.on('load', progressBar.animate({width:100+'%'}).delay(delayTime));
+    }
+}
+
+/**
+ * Get preview according with the file type.
+ *
+ * @param fileType
+ * @param filePath
+ * @param baseUrl
+ * @returns {string}
+ */
+function getPreview(fileType, filePath, baseUrl) {
+
+    switch (fileType.split('/')[0]) {
+        case 'image':
+            return '<img src="' + filePath + '">';
+            break;
+
+        case 'audio':
+            return  '<audio controls>' +
+                        '<source src="' + filePath + '" type="' + fileType + '" preload="auto" >' +
+                        '<track kind="subtitles">' +
+                    '</audio>';
+            break;
+
+        case 'video':
+            return  '<video controls width="300" height="240">' +
+                        '<source src="' + filePath + '" type="' + fileType + '" preload="auto" >' +
+                        '<track kind="subtitles">' +
+                    '</video>';
+            break;
+
+        case 'text':
+            return '<img src="' + baseUrl + '/images/text.png' + '">';
+            break;
+
+        case 'application':
+            if (strpos({str: fileType.split('/')[1], find: 'word', index: 1})){
+                return '<img src="' + baseUrl + '/images/word.png' + '">';
+
+            } else if (strpos({str: fileType.split('/')[1], find: 'excel', index: 1})){
+                return '<img src="' + baseUrl + '/images/excel.png' + '">';
+
+            } else if (fileType.split('/')[1] == 'pdf'){
+                return '<img src="' + baseUrl + '/images/pdf.png' + '">';
+
+            } else {
+                return '<img src="' + baseUrl + '/images/app.png' + '">';
+            }
+            break;
+
+        default:
+            return '<img src="' + baseUrl + '/images/other.png' + '">';
     }
 }

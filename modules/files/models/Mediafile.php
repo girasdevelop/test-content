@@ -340,11 +340,21 @@ class Mediafile extends ActiveRecord
     /**
      * Get default thumbnail url.
      *
+     * @param string $baseUrl
+     *
      * @return string
      */
-    public function getDefaultThumbUrl(): string
+    public function getDefaultThumbUrl($baseUrl = ''): string
     {
-        return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+        if ($this->isImage()){
+            return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+
+        } elseif ($this->isApp()){
+            return $this->getAppPreviewUrl($baseUrl);
+
+        } else {
+            return $this->getOtherPreviewUrl($baseUrl);
+        }
     }
 
     /**

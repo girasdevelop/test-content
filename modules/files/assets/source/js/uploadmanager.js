@@ -16,49 +16,7 @@ $(document).ready(function() {
             baseUrl = window.uploadManagerContainer.attr('data-base-url'),
             preview;
 
-        switch (fileType.split('/')[0]) {
-            case 'image':
-                preview = '<img src="' + tmpPath + '">';
-                break;
-
-            case 'audio':
-                preview =
-                    '<audio controls>' +
-                    '<source src="' + tmpPath + '" type="' + fileType + '" preload="auto" >' +
-                    '<track kind="subtitles">' +
-                    '</audio>';
-                break;
-
-            case 'video':
-                preview =
-                    '<video controls width="300" height="240">' +
-                    '<source src="' + tmpPath + '" type="' + fileType + '" preload="auto" >' +
-                    '<track kind="subtitles">' +
-                    '</video>';
-                break;
-
-            case 'text':
-                preview = '<img src="' + baseUrl + '/images/text.png' + '">';
-                break;
-
-            case 'application':
-                if (strpos({str: fileType.split('/')[1], find: 'word', index: 1})){
-                    preview = '<img src="' + baseUrl + '/images/word.png' + '">';
-
-                } else if (strpos({str: fileType.split('/')[1], find: 'excel', index: 1})){
-                    preview = '<img src="' + baseUrl + '/images/excel.png' + '">';
-
-                } else if (fileType.split('/')[1] == 'pdf'){
-                    preview = '<img src="' + baseUrl + '/images/pdf.png' + '">';
-
-                } else {
-                    preview = '<img src="' + baseUrl + '/images/app.png' + '">';
-                }
-                break;
-
-            default:
-                preview = '<img src="' + baseUrl + '/images/other.png' + '">';
-        }
+        preview = getPreview(fileType, tmpPath, baseUrl);
 
         if (window.fileNumber == null){
             window.fileNumber = 1;

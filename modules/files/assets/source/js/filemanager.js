@@ -36,10 +36,10 @@ $(document).ready(function() {
     /**
      * Get file information by click on the media file item.
      */
-    $('[href="#mediafile"]').on("click", function(e) {
+    $('[role="item"]').on("click", function(e) {
         e.preventDefault();
 
-        $(".item a").removeClass("active");
+        $("div.item").removeClass("active");
         $(this).addClass("active");
 
         var id = $(this).attr("data-key");
@@ -87,8 +87,14 @@ $(document).ready(function() {
             if (data.meta.status == 'success'){
                 showPopup(popupElement, data.meta.message, false);
                 getFileInfo(params.id, false);
+
                 if (data.data.files && data.data.files[0]){
-                    $('[data-key="' + params.id + '"] img:first').attr('src', data.data.files[0].thumbnailUrl);
+
+                    var file = data.data.files[0],
+                        fileType = file.type,
+                        fileUrl = fileType.split('/')[0] == 'image' ? file.thumbnailUrl : file.url;
+
+                    $('[data-key="' + params.id + '"]').html(getPreview(fileType, fileUrl, ''));
                 }
             } else {
                 showPopup(popupElement, data.data.errors, true, 4000);

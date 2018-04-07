@@ -7,9 +7,9 @@ use app\modules\files\models\Mediafile;
 /* @var $baseUrl string */
 ?>
 
-<div class="item">
-    <?php echo Html::a($model->getPreview($baseUrl) . '<span class="checked glyphicon glyphicon-ok"></span>',
-        '#mediafile',
-        ['data-key' => $model->id]
-    ); ?>
+<div class="item" role="item" data-key="<?php echo $model->id ?>">
+    <?php echo $model->getPreview($baseUrl) . '<span class="checked glyphicon glyphicon-ok"></span>'; ?>
+    <?php if ($model->isAudio()): ?>
+        <?php echo $model->title; ?>
+    <?php endif; ?>
 </div>

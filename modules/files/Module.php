@@ -260,7 +260,7 @@ class Module extends BaseModule
     {
         return [
             'name' => 'Default size',
-            'size' => [128, 128],
+            'size' => [150, 150],
         ];
     }
 

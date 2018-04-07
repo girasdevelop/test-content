@@ -13,10 +13,8 @@ $bundle = FilemanagerAsset::register($this);
 ?>
 
 <div class="media">
-    <div class="media-left">
-        <a href="#">
-            <?php echo Html::img($model->getDefaultThumbUrl($bundle->baseUrl)) ?>
-        </a>
+    <div <?php if ($model->isImage() || $model->isApp()): ?>class="media-left"<?php endif; ?> >
+        <?php echo $model->getPreview($bundle->baseUrl) ?>
     </div>
     <div class="media-body">
         <h4 class="media-heading"><?php echo Module::t('filemanager', 'File information') ?></h4>

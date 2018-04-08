@@ -26,11 +26,12 @@ $(document).ready(function() {
 
         window.preparedFiles[window.fileNumber] = file;
 
-        var newHtml = renderTemplate('file-template', {
+        var newHtml = renderTemplate('file-block', {
                 preview: preview,
                 title: file.name,
                 size: displayFileSize(file.size),
-                fileNumber: window.fileNumber
+                fileNumber: window.fileNumber,
+                altVisibility: fileType.split('/')[0] == 'image' ? 'visible' : 'hidden'
             }),
             workspace = $('#workspace'),
             oldHtml = workspace.html();
@@ -51,14 +52,20 @@ $(document).ready(function() {
             buttonBlockDelete = fileBlock.find('[role="button-block-delete"]'),
             url = window.uploadManagerContainer.attr('data-save-src'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
+            file = window.preparedFiles[fileNumber],
+            fileType = file.type,
             params = {
                 _csrf: yii.getCsrfToken(),
                 title: fileBlock.find('[role="file-title"]').val(),
                 description: fileBlock.find('[role="file-description"]').val(),
                 files: {
-                    file: window.preparedFiles[fileNumber]
+                    file: file
                 }
             };
+
+        if (fileType.split('/')[0] == 'image'){
+            params.alt = fileBlock.find('[role="file-alt"]').val();
+        }
 
         if (subDir && subDir != ''){
             params.subDir = subDir;

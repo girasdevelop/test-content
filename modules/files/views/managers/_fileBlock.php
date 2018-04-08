@@ -62,15 +62,16 @@ use app\modules\files\Module;
             </tr>
             <tr>
                 <td colspan="5">
+                    <div class="input-group input-group-sm {altVisibility}">
+                        <span class="input-group-addon" id="file-alt"><?php echo Module::t('filemanager', 'Alt') ?></span>
+                        <input type="text" class="form-control" placeholder="<?php echo Module::t('filemanager', 'Alt') ?>"
+                               aria-describedby="file-alt" name="alt" role="file-alt">
+                    </div>
                     <div class="input-group input-group-sm">
                         <span class="input-group-addon" id="file-title"><?php echo Module::t('filemanager', 'Title') ?></span>
                         <input type="text" class="form-control" placeholder="<?php echo Module::t('filemanager', 'Title') ?>"
                                aria-describedby="file-title" name="title" role="file-title">
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
                     <div class="input-group input-group-sm">
                         <span class="input-group-addon" id="file-description"><?php echo Module::t('filemanager', 'Description') ?></span>
                         <textarea class="form-control" placeholder="<?php echo Module::t('filemanager', 'Description') ?>"

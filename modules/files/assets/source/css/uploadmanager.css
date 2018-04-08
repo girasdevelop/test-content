@@ -15,6 +15,15 @@
 #workspace .input-group textarea {
   height: 48px;
 }
+#workspace .input-group span.input-group-addon {
+  width: 90px;
+}
+#workspace .visible {
+  visibility: visible;
+}
+#workspace .hidden {
+  visibility: hidden;
+}
 
 /* UPLOAD MANAGER */
 #uploadmanager #buttons {

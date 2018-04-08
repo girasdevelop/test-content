@@ -12,7 +12,7 @@ $this->params['bundle'] = UploadmanagerAsset::register($this);
 $this->params['manager'] = $manager;
 ?>
 
-<script type="html/tpl" id="file-template">
+<script type="html/tpl" id="file-block">
 <?php echo $this->render('_fileBlock') ?>
 </script>
 

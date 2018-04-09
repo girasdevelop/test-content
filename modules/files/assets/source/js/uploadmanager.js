@@ -52,6 +52,9 @@ $(document).ready(function() {
             buttonBlockDelete = fileBlock.find('[role="button-block-delete"]'),
             url = window.uploadManagerContainer.attr('data-save-src'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
+            owner = window.fileManagerModalContainer.attr("data-owner"),
+            ownerId = window.fileManagerModalContainer.attr("data-owner-id"),
+            ownerAttribute = window.fileManagerModalContainer.attr("data-owner-attribute"),
             file = window.preparedFiles[fileNumber],
             fileType = file.type,
             params = {
@@ -69,6 +72,18 @@ $(document).ready(function() {
 
         if (subDir && subDir != ''){
             params.subDir = subDir;
+        }
+
+        if (owner && owner != ''){
+            params.owner = owner;
+        }
+
+        if (ownerId && ownerId != ''){
+            params.ownerId = ownerId;
+        }
+
+        if (ownerAttribute && ownerAttribute != ''){
+            params.ownerAttribute = ownerAttribute;
         }
 
         AJAX(url, 'POST', params, true, function () {

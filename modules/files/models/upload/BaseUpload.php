@@ -17,6 +17,9 @@ use app\modules\files\interfaces\ThumbConfigInterface;
  * @property string $description
  * @property string $advance
  * @property string $subDir
+ * @property string $owner
+ * @property int $ownerId
+ * @property string $ownerAttribute
  * @property bool $renameFiles
  * @property string $directorySeparator
  * @property array $fileExtensions
@@ -78,6 +81,27 @@ abstract class BaseUpload extends Model
      * @var string
      */
     public $subDir;
+
+    /**
+     * Owner name (post, page, article e.t.c.).
+     *
+     * @var string
+     */
+    public $owner;
+
+    /**
+     * Owner id.
+     *
+     * @var int
+     */
+    public $ownerId;
+
+    /**
+     * Owner attribute (image, audio, thumbnail e.t.c.).
+     *
+     * @var string
+     */
+    public $ownerAttribute;
 
     /**
      * Rename file after upload.
@@ -253,6 +277,9 @@ abstract class BaseUpload extends Model
         return [
             'file',
             'subDir',
+            'owner',
+            'ownerId',
+            'ownerAttribute',
             'alt',
             'title',
             'description',
@@ -310,12 +337,29 @@ abstract class BaseUpload extends Model
                     'alt',
                     'title',
                     'description',
-                    'advance'
+                    'advance',
                 ],
                 'string',
                 'on' => [
                     self::SCENARIO_UPLOAD,
                     self::SCENARIO_UPDATE,
+                ],
+            ],
+            [
+                [
+                    'owner',
+                    'ownerAttribute',
+                ],
+                'string',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                ],
+            ],
+            [
+                'ownerId',
+                'integer',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
                 ],
             ],
         ];
@@ -381,7 +425,7 @@ abstract class BaseUpload extends Model
         if (!$this->validate()){
             return false;
         }
-
+        //var_dump($this->owner.'|'.$this->ownerId.'|'.$this->ownerAttribute);die();
         if (null !== $this->file){
 
             $this->setParamsForSave();
@@ -407,6 +451,10 @@ abstract class BaseUpload extends Model
 
         if (!$this->mediafileModel->save()){
             throw new \Exception('Error save file data in database.', 500);
+        }
+
+        if (null !== $this->owner && null !== $this->ownerId && null != $this->ownerAttribute){
+            $this->mediafileModel->addOwner($this->ownerId, $this->owner, $this->ownerAttribute);
         }
 
         return true;

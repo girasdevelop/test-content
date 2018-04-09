@@ -127,9 +127,7 @@ abstract class Behavior extends BaseBehavior
             }
 
         } else {
-            if (!empty($attributeValue) && $mediafile = $this->loadModel([
-                $this->findModelKey => $attributeValue
-                ])) {
+            if (!empty($attributeValue) && $mediafile = $this->loadModel([$this->findModelKey => $attributeValue])) {
                 $mediafile->addOwner($this->owner->primaryKey, $this->name, $attributeName);
             }
         }

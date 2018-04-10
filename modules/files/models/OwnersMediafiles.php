@@ -143,17 +143,23 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * @param string $owner
      * @param int    $ownerId
      *
-     * @return array|null|\yii\db\ActiveRecord
+     * @return array|null|\yii\db\ActiveRecord|Mediafile
      */
     public static function getOwnerThumbnail(string $owner, int $ownerId)
     {
+        $mediafileId = static::getMediafileIds([
+            'owner' => $owner,
+            'ownerId' => $ownerId,
+            'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
+        ])->one();
+
+        if (null === $mediafileId){
+            return null;
+        }
+
         return Mediafile::find()
             ->where([
-                'id' =>  static::getMediafileIds([
-                    'owner' => $owner,
-                    'ownerId' => $ownerId,
-                    'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
-                ])->one()->mediafileId
+                'id' =>  $mediafileId->mediafileId
             ])->one();
     }
 

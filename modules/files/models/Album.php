@@ -1,8 +1,9 @@
 <?php
-
 namespace app\modules\files\models;
 
+use yii\helpers\ArrayHelper;
 use app\modules\files\Module;
+use app\modules\files\behaviors\BehaviorMediafile;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
@@ -29,6 +30,11 @@ class Album extends ActiveRecord
     const ALBUM_TYPE_OTHER = UploadModelInterface::FILE_TYPE_OTHER . 'Album';
 
     /**
+     * @var int thumbnail(mediafile) id.
+     */
+    public $thumbnail;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -50,7 +56,9 @@ class Album extends ActiveRecord
                 'required',
             ],
             [
-                ['description'],
+                [
+                    'description'
+                ],
                 'string',
             ],
             [
@@ -60,6 +68,12 @@ class Album extends ActiveRecord
                 ],
                 'string',
                 'max' => 255,
+            ],
+            [
+                [
+                    'thumbnail'
+                ],
+                'integer',
             ],
             [
                 [
@@ -77,13 +91,29 @@ class Album extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'type' => 'Type',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'id' => Module::t('main', 'ID'),
+            'title' => Module::t('album', 'Type'),
+            'description' => Module::t('album', 'Description'),
+            'type' => Module::t('album', 'Title'),
+            'created_at' => Module::t('main', 'Created date'),
+            'updated_at' => Module::t('main', 'Updated date'),
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return ArrayHelper::merge(parent::behaviors(), [
+            'mediafile' => [
+                'class' => BehaviorMediafile::class,
+                'name' => self::ALBUM_TYPE_IMAGE,
+                'attributes' => [
+                    'thumbnail',
+                ],
+            ]
+        ]);
     }
 
     /**
@@ -186,9 +216,9 @@ class Album extends ActiveRecord
     /**
      * Get album's thumbnail.
      *
-     * @return array|null|\yii\db\ActiveRecord
+     * @return array|null|\yii\db\ActiveRecord|Mediafile
      */
-    public function getThumbnail()
+    public function getThumbnailModel()
     {
         return OwnersMediafiles::getOwnerThumbnail($this->type, $this->id);
     }

@@ -1,9 +1,10 @@
 <?php
 
-use app\modules\files\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\modules\files\Module;
 use app\modules\files\models\Album;
+use app\modules\files\helpers\Html;
 use app\modules\files\widgets\FileSetter;
 use app\modules\files\interfaces\UploadModelInterface;
 use Itstructure\FieldWidgets\{Fields, FieldType};
@@ -11,6 +12,8 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 /* @var $this yii\web\View */
 /* @var $model app\modules\files\models\Album */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $thumbnailModel app\modules\files\models\Mediafile|null */
+/* @var $ownerParams array */
 ?>
 
 <style>
@@ -49,17 +52,20 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 'form'  => $form,
             ]) ?>
 
-            <div id="thumbnail-container"></div>
+            <div id="thumbnail-container">
+                <?php if (null !== $thumbnailModel): ?>
+                    <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
+                <?php endif; ?>
+            </div>
 
-            <?php echo FileSetter::widget([
-                'name' => UploadModelInterface::FILE_TYPE_IMAGE,
-                'buttonName' => Module::t('main', 'Set thumbnail'),
-                'mediafileContainer' => '#thumbnail-container',
-                'owner' => 'post',
-                'ownerId' => 2,
-                'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE,
-                'subDir' => 'post'
-            ]); ?>
+            <?php echo FileSetter::widget(ArrayHelper::merge([
+                    'model' => $model,
+                    'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+                    'buttonName' => Module::t('main', 'Set thumbnail'),
+                    'mediafileContainer' => '#thumbnail-container',
+                    'subDir' => Album::tableName()
+                ], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
+            ); ?>
 
         </div>
     </div>

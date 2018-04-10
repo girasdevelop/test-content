@@ -3,11 +3,12 @@
 namespace app\modules\files\controllers;
 
 use Yii;
-use app\modules\files\models\Album;
-use app\modules\files\models\AlbumSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\{VerbFilter, AccessControl};
+use app\modules\files\interfaces\UploadModelInterface;
+use app\modules\files\models\Album;
+use app\modules\files\models\AlbumSearch;
 
 /**
  * AlbumController implements the CRUD actions for Album model.
@@ -125,6 +126,12 @@ class AlbumController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'thumbnailModel' => $model->getThumbnailModel(),
+            'ownerParams' => [
+                'owner' => $model->type,
+                'ownerId' => $model->primaryKey,
+                'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB
+            ]
         ]);
     }
 

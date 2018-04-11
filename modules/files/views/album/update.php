@@ -2,7 +2,7 @@
 use app\modules\files\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\files\models\Album */
+/* @var $model app\modules\files\models\album\Album */
 /* @var $thumbnailModel app\modules\files\models\Mediafile|null */
 /* @var $ownerParams array */
 

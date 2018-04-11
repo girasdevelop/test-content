@@ -4,7 +4,7 @@ namespace app\modules\files\behaviors;
 
 use yii\db\ActiveRecord;
 use yii\base\Behavior as BaseBehavior;
-use app\modules\files\models\Album;
+use app\modules\files\models\album\Album;
 use app\modules\files\models\Mediafile;
 
 /**

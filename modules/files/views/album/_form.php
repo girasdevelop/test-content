@@ -3,16 +3,17 @@
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\modules\files\Module;
-use app\modules\files\models\Album;
+use app\modules\files\models\album\Album;
 use app\modules\files\helpers\Html;
 use app\modules\files\widgets\FileSetter;
+use app\modules\files\models\Mediafile;
 use app\modules\files\interfaces\UploadModelInterface;
 use Itstructure\FieldWidgets\{Fields, FieldType};
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\files\models\Album */
+/* @var $model Album */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $thumbnailModel app\modules\files\models\Mediafile|null */
+/* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
 ?>
 
@@ -53,7 +54,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
             ]) ?>
 
             <div id="thumbnail-container">
-                <?php if (null !== $thumbnailModel): ?>
+                <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
                     <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
                 <?php endif; ?>
             </div>

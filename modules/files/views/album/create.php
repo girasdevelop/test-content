@@ -2,7 +2,7 @@
 use app\modules\files\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\files\models\Album */
+/* @var $model app\modules\files\models\album\Album */
 
 $this->title = Module::t('album', 'Create album');
 $this->params['breadcrumbs'][] = ['label' => Module::t('album', 'Albums'), 'url' => ['index']];

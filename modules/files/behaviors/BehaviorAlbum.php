@@ -2,7 +2,7 @@
 
 namespace app\modules\files\behaviors;
 
-use app\modules\files\models\Album;
+use app\modules\files\models\album\Album;
 
 /**
  * Class BehaviorAlbum

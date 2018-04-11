@@ -89,7 +89,12 @@ $config = [
             'controllerMap' => [
                 'api/local-upload' => app\modules\files\controllers\api\LocalUploadController::class,
                 'api/managers' => app\modules\files\controllers\ManagersController::class,
-                'album' => app\modules\files\controllers\AlbumController::class,
+                'image-album' => app\modules\files\controllers\album\ImageAlbumController::class,
+                'audio-album' => app\modules\files\controllers\album\AudioAlbumController::class,
+                'video-album' => app\modules\files\controllers\album\VideoAlbumController::class,
+                'app-album' => app\modules\files\controllers\album\AppAlbumController::class,
+                'text-album' => app\modules\files\controllers\album\TextAlbumController::class,
+                'other-album' => app\modules\files\controllers\album\OtherAlbumController::class,
             ],
             'components' => [
                 'local-upload-component' => [

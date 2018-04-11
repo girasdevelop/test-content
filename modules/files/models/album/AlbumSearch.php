@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\files\models;
+namespace app\modules\files\models\album;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -16,8 +16,22 @@ class AlbumSearch extends Album
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'description', 'type'], 'safe'],
+            [
+                [
+                    'id',
+                    'created_at',
+                    'updated_at'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'title',
+                    'description',
+                    'type'
+                ],
+                'safe'
+            ],
         ];
     }
 

@@ -3,10 +3,10 @@
 use yii\helpers\{Html, Url};
 use yii\grid\GridView;
 use app\modules\files\Module;
-use app\modules\files\models\Album;
+use app\modules\files\models\album\Album;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\files\models\AlbumSearch */
+/* @var $searchModel app\modules\files\models\album\AlbumSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Module::t('album', 'Albums');

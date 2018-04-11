@@ -3,6 +3,8 @@
 namespace app\modules\files\models;
 
 use yii\db\ActiveQuery;
+use yii\base\InvalidArgumentException;
+use app\modules\files\models\album\Album;
 
 /**
  * This is the model class for table "owners_albums".
@@ -111,12 +113,16 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      *
      * @return ActiveRecord[]
      */
-    public static function getAlbums(string $owner, int $ownerId, string $ownerAttribute)
+    public static function getAlbums(string $owner, int $ownerId, string $ownerAttribute = null)
     {
         return Album::find()
             ->where(
                 [
-                    'id' =>  static::getAlbumIds($owner, $ownerId, $ownerAttribute)->asArray()
+                    'id' =>  static::getAlbumIds([
+                        'owner' => $owner,
+                        'ownerId' => $ownerId,
+                        'ownerAttribute' => $ownerAttribute,
+                    ])->asArray()
                 ]
             )->all();
     }
@@ -202,22 +208,44 @@ class OwnersAlbums extends \yii\db\ActiveRecord
     /**
      * Get Id's by owner.
      *
-     * @param string $owner
-     * @param int    $ownerId
-     * @param string $ownerAttribute
+     * @param array $args. It can be an array of the next params: owner{string}, ownerId{int}, ownerAttribute{string}.
+     *
+     * @throws InvalidArgumentException
      *
      * @return ActiveQuery
      */
-    private static function getAlbumIds(string $owner, int $ownerId, string $ownerAttribute):ActiveQuery
+    private static function getAlbumIds(array $args):ActiveQuery
     {
-        return static::find()
-            ->select('albumId')
-            ->where(
-                [
-                    'owner' => $owner,
-                    'ownerId' => $ownerId,
-                    'ownerAttribute' => $ownerAttribute,
-                ]
-            );
+        $conditions = [];
+
+        if (isset($args['owner'])){
+            if (!is_string($args['owner']) || empty($args['owner'])){
+                throw new InvalidArgumentException('Parameter owner must be a string.');
+            }
+            $conditions['owner'] = $args['owner'];
+
+            if (isset($args['ownerId'])){
+                if (!is_numeric($args['ownerId'])){
+                    throw new InvalidArgumentException('Parameter ownerId must be numeric.');
+                }
+                $conditions['ownerId'] = $args['ownerId'];
+            }
+        }
+
+        if (isset($args['ownerAttribute'])){
+            if (!is_string($args['owner']) || empty($args['ownerAttribute'])){
+                throw new InvalidArgumentException('Parameter ownerAttribute must be a string.');
+            }
+            $conditions['ownerAttribute'] = $args['ownerAttribute'];
+        }
+
+        $query = static::find()
+            ->select('albumId');
+
+        if (count($conditions) > 0){
+            return $query->where($conditions);
+        }
+
+        return $query;
     }
 }

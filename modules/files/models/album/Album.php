@@ -1,14 +1,16 @@
 <?php
-namespace app\modules\files\models;
+namespace app\modules\files\models\album;
 
 use yii\helpers\ArrayHelper;
 use app\modules\files\Module;
+use app\modules\files\models\{ActiveRecord, OwnersAlbums, OwnersMediafiles, Mediafile};
 use app\modules\files\behaviors\BehaviorMediafile;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * This is the model class for table "albums".
  *
+ * @property int|string $thumbnail
  * @property int $id
  * @property string $title
  * @property string $description
@@ -18,7 +20,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  *
  * @property OwnersAlbums[] $ownersAlbums
  *
- * @package Itstructure\FilesModule\models
+ * @package Itstructure\FilesModule\models\album
  */
 class Album extends ActiveRecord
 {
@@ -30,7 +32,7 @@ class Album extends ActiveRecord
     const ALBUM_TYPE_OTHER = UploadModelInterface::FILE_TYPE_OTHER . 'Album';
 
     /**
-     * @var int thumbnail(mediafile) id.
+     * @var int|string thumbnail(mediafile id or url).
      */
     public $thumbnail;
 
@@ -70,10 +72,13 @@ class Album extends ActiveRecord
                 'max' => 255,
             ],
             [
-                [
-                    'thumbnail'
-                ],
-                'integer',
+                'thumbnail',
+                function($attribute){
+                    if (!is_numeric($this->{$attribute}) && !is_string($this->{$attribute})){
+                        $this->addError($attribute, 'Tumbnail content must be a numeric or string.');
+                    }
+                },
+                'skipOnError' => false,
             ],
             [
                 [
@@ -98,22 +103,6 @@ class Album extends ActiveRecord
             'created_at' => Module::t('main', 'Created date'),
             'updated_at' => Module::t('main', 'Updated date'),
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'mediafile' => [
-                'class' => BehaviorMediafile::class,
-                'name' => self::ALBUM_TYPE_IMAGE,
-                'attributes' => [
-                    'thumbnail',
-                ],
-            ]
-        ]);
     }
 
     /**
@@ -221,65 +210,5 @@ class Album extends ActiveRecord
     public function getThumbnailModel()
     {
         return OwnersMediafiles::getOwnerThumbnail($this->type, $this->id);
-    }
-
-    /**
-     * Get album's images.
-     *
-     * @return ActiveRecord[]
-     */
-    public function getImageFiles()
-    {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_IMAGE);
-    }
-
-    /**
-     * Get album's audio.
-     *
-     * @return ActiveRecord[]
-     */
-    public function getAudioFiles()
-    {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_AUDIO);
-    }
-
-    /**
-     * Get album's video.
-     *
-     * @return ActiveRecord[]
-     */
-    public function getVideoFiles()
-    {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_VIDEO);
-    }
-
-    /**
-     * Get album's application files.
-     *
-     * @return ActiveRecord[]
-     */
-    public function getAppFiles()
-    {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_APP);
-    }
-
-    /**
-     * Get album's text files.
-     *
-     * @return ActiveRecord[]
-     */
-    public function getTextFiles()
-    {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_TEXT);
-    }
-
-    /**
-     * Get album's other files.
-     *
-     * @return ActiveRecord[]
-     */
-    public function getOtherFiles()
-    {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_OTHER);
     }
 }

@@ -258,13 +258,13 @@ class Mediafile extends ActiveRecord
         $module = $this->getModule();
 
         if ($this->isExcel()){
-            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_EXCEL];
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP_EXCEL];
 
         } elseif ($this->isPdf()){
-            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_PDF];
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP_PDF];
 
         } elseif ($this->isWord()){
-            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_WORD];
+            $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP_WORD];
 
         } else {
             $url = $root . $module->thumbStubUrls[UploadModelInterface::FILE_TYPE_APP];
@@ -450,7 +450,7 @@ class Mediafile extends ActiveRecord
      */
     public function isExcel(): bool
     {
-        return strpos($this->type, UploadModelInterface::FILE_TYPE_EXCEL) !== false;
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_APP_EXCEL) !== false;
     }
 
     /**
@@ -460,7 +460,7 @@ class Mediafile extends ActiveRecord
      */
     public function isPdf(): bool
     {
-        return strpos($this->type, UploadModelInterface::FILE_TYPE_PDF) !== false;
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_APP_PDF) !== false;
     }
 
     /**
@@ -470,6 +470,6 @@ class Mediafile extends ActiveRecord
      */
     public function isWord(): bool
     {
-        return strpos($this->type, UploadModelInterface::FILE_TYPE_WORD) !== false;
+        return strpos($this->type, UploadModelInterface::FILE_TYPE_APP_WORD) !== false;
     }
 }

@@ -12,7 +12,7 @@ use yii\helpers\{ArrayHelper, Html as BaseHtml};
 class Html extends BaseHtml
 {
     /**
-     * Render html5 audio tag structure.
+     * Render html 5 audio tag structure.
      *
      * @param string $src
      * @param array $options
@@ -57,7 +57,7 @@ class Html extends BaseHtml
     }
 
     /**
-     * Render html5 video tag structure.
+     * Render html 5 video tag structure.
      *
      * @param string $src
      * @param array $options

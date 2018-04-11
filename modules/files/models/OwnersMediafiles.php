@@ -2,8 +2,8 @@
 
 namespace app\modules\files\models;
 
-use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
+use yii\base\InvalidArgumentException;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
@@ -133,7 +133,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
     {
         return Mediafile::find()
             ->where([
-                'id' => static::getMediafileIds($args)->asArray()
+                'id' => static::getMediafileIdsQuery($args)->asArray()
             ]);
     }
 
@@ -147,7 +147,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      */
     public static function getOwnerThumbnail(string $owner, int $ownerId)
     {
-        $mediafileId = static::getMediafileIds([
+        $mediafileId = static::getMediafileIdsQuery([
             'owner' => $owner,
             'ownerId' => $ownerId,
             'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
@@ -250,7 +250,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      *
      * @return ActiveQuery
      */
-    private static function getMediafileIds(array $args): ActiveQuery
+    private static function getMediafileIdsQuery(array $args): ActiveQuery
     {
         $conditions = [];
 

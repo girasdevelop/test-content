@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\files\Module;
-use app\modules\files\models\Album;
+use app\modules\files\models\album\Album;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\files\models\Album */
+/* @var $model Album */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Module::t('album', 'Albums'), 'url' => ['index']];

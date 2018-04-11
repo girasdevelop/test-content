@@ -20,4 +20,14 @@ class OtherAlbumController extends AlbumController
     {
         return OtherAlbum::class;
     }
+
+    /**
+     * Returns the type of other album.
+     *
+     * @return string
+     */
+    protected function getAlbumType():string
+    {
+        return OtherAlbum::ALBUM_TYPE_OTHER;
+    }
 }

@@ -20,4 +20,14 @@ class ImageAlbumController extends AlbumController
     {
         return ImageAlbum::class;
     }
+
+    /**
+     * Returns the type of image album.
+     *
+     * @return string
+     */
+    protected function getAlbumType():string
+    {
+        return ImageAlbum::ALBUM_TYPE_IMAGE;
+    }
 }

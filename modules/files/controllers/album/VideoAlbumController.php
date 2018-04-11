@@ -20,4 +20,14 @@ class VideoAlbumController extends AlbumController
     {
         return VideoAlbum::class;
     }
+
+    /**
+     * Returns the type of video album.
+     *
+     * @return string
+     */
+    protected function getAlbumType():string
+    {
+        return VideoAlbum::ALBUM_TYPE_VIDEO;
+    }
 }

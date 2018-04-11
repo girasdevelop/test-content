@@ -3,7 +3,7 @@
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\modules\files\Module;
-use app\modules\files\models\album\Album;
+use app\modules\files\models\album\{Album};
 use app\modules\files\helpers\Html;
 use app\modules\files\widgets\FileSetter;
 use app\modules\files\models\Mediafile;
@@ -58,15 +58,36 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                     <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
                 <?php endif; ?>
             </div>
-
             <?php echo FileSetter::widget(ArrayHelper::merge([
                     'model' => $model,
                     'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
                     'buttonName' => Module::t('main', 'Set thumbnail'),
                     'mediafileContainer' => '#thumbnail-container',
                     'subDir' => Album::tableName()
-                ], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
+                ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
             ); ?>
+
+            <?php if (!$model->isNewRecord): ?>
+                <?php foreach ($model->getMediaFiles()): ?>
+
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            <div id="image-container">
+                <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
+                    <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
+                <?php endif; ?>
+            </div>
+            <?php echo FileSetter::widget(ArrayHelper::merge([
+                'model' => $model,
+                'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+                'buttonName' => Module::t('main', 'Set thumbnail'),
+                'mediafileContainer' => '#thumbnail-container',
+                'subDir' => Album::tableName()
+            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
+            ); ?>
+
+            <?php echo $model::ALBUM_TYPE_IMAGE ?>
 
         </div>
     </div>

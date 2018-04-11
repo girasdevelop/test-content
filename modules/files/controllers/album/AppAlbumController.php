@@ -20,4 +20,14 @@ class AppAlbumController extends AlbumController
     {
         return AppAlbum::class;
     }
+
+    /**
+     * Returns the type of application album.
+     *
+     * @return string
+     */
+    protected function getAlbumType():string
+    {
+        return AppAlbum::ALBUM_TYPE_APP;
+    }
 }

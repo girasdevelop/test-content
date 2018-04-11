@@ -20,4 +20,14 @@ class TextAlbumController extends AlbumController
     {
         return TextAlbum::class;
     }
+
+    /**
+     * Returns the type of text album.
+     *
+     * @return string
+     */
+    protected function getAlbumType():string
+    {
+        return TextAlbum::ALBUM_TYPE_TEXT;
+    }
 }

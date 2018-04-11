@@ -20,4 +20,14 @@ class AudioAlbumController extends AlbumController
     {
         return AudioAlbum::class;
     }
+
+    /**
+     * Returns the type of audio album.
+     *
+     * @return string
+     */
+    protected function getAlbumType():string
+    {
+        return AudioAlbum::ALBUM_TYPE_AUDIO;
+    }
 }

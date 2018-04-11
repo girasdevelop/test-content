@@ -3,6 +3,7 @@
 namespace app\modules\files\controllers\album;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\base\UnknownMethodException;
 use yii\web\{Controller, BadRequestHttpException, NotFoundHttpException};
 use yii\filters\{VerbFilter, AccessControl};
@@ -35,6 +36,13 @@ abstract class AlbumController extends Controller
      * @return string
      */
     abstract protected function getModelName():string;
+
+    /**
+     * Returns the type of album.
+     *
+     * @return string
+     */
+    abstract protected function getAlbumType():string;
 
     /**
      * Initializer.
@@ -116,7 +124,12 @@ abstract class AlbumController extends Controller
     public function actionIndex()
     {
         $searchModel = new AlbumSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchParams = ArrayHelper::merge(Yii::$app->request->queryParams, [
+            $searchModel->formName() => [
+                'type' => $this->getAlbumType()
+            ]
+        ]);
+        $dataProvider = $searchModel->search($searchParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -159,6 +172,7 @@ abstract class AlbumController extends Controller
 
         return $this->render('create', [
             'model' => $this->model,
+            'type' => $this->getAlbumType()
         ]);
     }
 
@@ -185,11 +199,11 @@ abstract class AlbumController extends Controller
 
         return $this->render('update', [
             'model' => $this->model,
+            'type' => $this->getAlbumType(),
             'thumbnailModel' => $this->model->getThumbnailModel(),
             'ownerParams' => [
                 'owner' => $this->model->type,
                 'ownerId' => $this->model->primaryKey,
-                'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB
             ]
         ]);
     }

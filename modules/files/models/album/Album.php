@@ -195,11 +195,13 @@ class Album extends ActiveRecord
     /**
      * Get album's mediafiles.
      *
-     * @return ActiveRecord[]
+     * @param string|null $ownerAttribute
+     *
+     * @return \app\modules\files\models\ActiveRecord[]
      */
-    public function getMediaFiles()
+    public function getMediaFiles(string $ownerAttribute = null)
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, $ownerAttribute);
     }
 
     /**

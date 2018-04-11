@@ -1,9 +1,12 @@
 <?php
 use app\modules\files\Module;
+use app\modules\files\models\album\Album;
+use app\modules\files\models\Mediafile;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\files\models\album\Album */
-/* @var $thumbnailModel app\modules\files\models\Mediafile|null */
+/* @var $model Album */
+/* @var $type string */
+/* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
 
 $this->title = Module::t('album', 'Update album') . ': ' . $model->title;
@@ -15,6 +18,7 @@ $this->params['breadcrumbs'][] = Module::t('main', 'Update');
 
     <?php echo $this->render('_form', [
         'model' => $model,
+        'type' => $type,
         'thumbnailModel' => $thumbnailModel,
         'ownerParams' => $ownerParams,
     ]) ?>

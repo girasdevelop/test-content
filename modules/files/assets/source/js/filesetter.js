@@ -34,11 +34,11 @@ $(document).ready(function() {
     $('[role="filemanager-load"]').on("click", function(e) {
         e.preventDefault();
 
-        var modal = $('div[role="filemanager-modal"]');
-        var srcToFiles = modal.attr("data-src-to-files");
-        var owner = modal.attr("data-owner");
-        var ownerId = modal.attr("data-owner-id");
-        var ownerAttribute = modal.attr("data-owner-attribute");
+        var modal = $('[role="filemanager-modal"][data-btn-id="'+$(this).attr('id')+'"]'),
+            srcToFiles = modal.attr("data-src-to-files"),
+            owner = modal.attr("data-owner"),
+            ownerId = modal.attr("data-owner-id"),
+            ownerAttribute = modal.attr("data-owner-attribute");
 
         var paramsArray = [];
         var paramsQuery = '';

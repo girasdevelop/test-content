@@ -77,7 +77,7 @@ class FileSetter extends InputWidget
     /**
      * @var array button html options
      */
-    public $buttonOptions = ['class' => 'btn btn-default'];
+    public $buttonOptions = [];
 
     /**
      * @var string reset button html tag
@@ -92,7 +92,7 @@ class FileSetter extends InputWidget
     /**
      * @var array reset button html options
      */
-    public $resetButtonOptions = ['class' => 'btn btn-default'];
+    public $resetButtonOptions = [];
 
     /**
      * @var string Optional, if set, in container will be inserted selected image
@@ -135,6 +135,14 @@ class FileSetter extends InputWidget
 
         if (empty($this->buttonOptions['id'])) {
             $this->buttonOptions['id'] = $this->options['id'] . '-btn';
+        }
+
+        if (empty($this->buttonOptions['class'])) {
+            $this->buttonOptions['class'] = 'btn btn-default';
+        }
+
+        if (empty($this->resetButtonOptions['class'])) {
+            $this->resetButtonOptions['class'] = 'btn btn-default';
         }
 
         $this->buttonOptions['role'] = 'filemanager-load';

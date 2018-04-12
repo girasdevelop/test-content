@@ -23,13 +23,24 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 $baseUrl = FileSetterAsset::register($this)->baseUrl;
 ?>
 
+<style>
+    #thumbnail-sector, #new-mediafiles-sector, #existing-mediafiles-sector {
+        margin: 15px;
+        border-top: 1px solid #8ca68c;
+    }
+    h5 {
+        border-top: 1px solid #8ca68c;
+        font-weight: bold;
+        padding: 5px;
+    }
+</style>
+
 <div class="album-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
         <div class="col-md-4">
-
             <?php echo Fields::widget([
                 'fields' => [
                     [
@@ -52,21 +63,58 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                 'model' => $model,
                 'form'  => $form,
             ]) ?>
+        </div>
+    </div>
 
+    <!-- Thumbnail begin -->
+    <div class="row">
+        <div class="col-md-4">
+            <h5><?php echo Module::t('main', 'Thumbnail'); ?></h5>
             <div id="thumbnail-container">
                 <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
                     <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
                 <?php endif; ?>
             </div>
             <?php echo FileSetter::widget(ArrayHelper::merge([
-                    'model' => $model,
-                    'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
-                    'buttonName' => Module::t('main', 'Set thumbnail'),
-                    'mediafileContainer' => '#thumbnail-container',
-                    'subDir' => Album::tableName()
-                ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
+                'model' => $model,
+                'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+                'buttonName' => Module::t('main', 'Set thumbnail'),
+                'buttonOptions' => [
+                    'id' => $type . '-thumbnail-btn'
+                ],
+                'mediafileContainer' => '#thumbnail-container',
+                'subDir' => Album::tableName()
+            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
             ); ?>
+        </div>
+    </div>
+    <!-- Thumbnail end -->
 
+    <!-- New files begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <h5><?php echo Module::t('main', 'New files'); ?></h5>
+            <div id="mediafile-container-new">
+            </div>
+            <?php echo FileSetter::widget(ArrayHelper::merge([
+                'model' => $model,
+                'attribute' => $model->getFileType($type),
+                'buttonName' => Module::t('main', 'Set '.$model->getFileType($type)),
+                'buttonOptions' => [
+                    'id' => $type . '-' . $model->getFileType($type) . '-btn'
+                ],
+                'mediafileContainer' => '#mediafile-container-new',
+                'subDir' => Album::tableName()
+            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $model->getFileType($type)], $ownerParams) : [])
+            ); ?>
+        </div>
+    </div>
+    <!-- New files end -->
+
+    <!-- Existing files begin -->
+    <div class="row">
+        <div class="col-md-12">
+            <h5><?php echo Module::t('main', 'Existing files'); ?></h5>
             <?php if (!$model->isNewRecord): ?>
                 <?php $i=0; ?>
                 <?php foreach ($model->getMediaFiles($model->getFileType($model->type)) as $mediafile): ?>
@@ -77,31 +125,25 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                     <?php echo FileSetter::widget(ArrayHelper::merge([
                         'model' => $model,
                         'attribute' => $model->getFileType($model->type),
-                        'buttonName' => Module::t('main', 'Set thumbnail'),
+                        'buttonName' => Module::t('main', 'Set '.$model->getFileType($model->type)),
+                        'buttonOptions' => [
+                            'id' => $model->type . '-' . $model->getFileType($model->type) . '-btn-' . $i
+                        ],
                         'mediafileContainer' => '#mediafile-container-' . $i,
                         'subDir' => Album::tableName()
                     ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $model->getFileType($model->type)], $ownerParams) : [])
                     ); ?>
-
                 <?php endforeach; ?>
             <?php endif; ?>
-
-            <div id="mediafile-container-new">
-            </div>
-            <?php echo FileSetter::widget(ArrayHelper::merge([
-                'model' => $model,
-                'attribute' => $model->getFileType($type),
-                'buttonName' => Module::t('main', 'Set thumbnail'),
-                'mediafileContainer' => '#mediafile-container-new',
-                'subDir' => Album::tableName()
-            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $model->getFileType($type)], $ownerParams) : [])
-            ); ?>
-
         </div>
     </div>
+    <!-- Existing files end -->
 
     <div class="form-group">
-        <?php echo Html::submitButton(Module::t('main', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?php echo Html::submitButton(Module::t('main', 'Save'), [
+            'class' => 'btn btn-success',
+            'style' => 'margin-top: 15px;'
+        ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

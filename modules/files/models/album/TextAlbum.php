@@ -62,6 +62,6 @@ class TextAlbum extends Album
      */
     public function getTextFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_TEXT);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, static::getFileType(self::ALBUM_TYPE_TEXT));
     }
 }

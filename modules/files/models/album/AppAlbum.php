@@ -62,6 +62,6 @@ class AppAlbum extends Album
      */
     public function getAppFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_APP);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, static::getFileType(self::ALBUM_TYPE_APP));
     }
 }

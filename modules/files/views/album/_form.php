@@ -3,25 +3,25 @@
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\modules\files\Module;
+use app\modules\files\models\Mediafile;
 use app\modules\files\models\album\{Album};
 use app\modules\files\helpers\Html;
 use app\modules\files\widgets\FileSetter;
-use app\modules\files\models\Mediafile;
+use app\modules\files\assets\FileSetterAsset;
 use app\modules\files\interfaces\UploadModelInterface;
 use Itstructure\FieldWidgets\{Fields, FieldType};
 
 /* @var $this yii\web\View */
 /* @var $model Album */
+/* @var $type string */
+/* @var $mediafile Mediafile */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
-?>
+/* @var $baseUrl string */
 
-<style>
-    #thumbnail-container img {
-        width: 300px;
-    }
-</style>
+$baseUrl = FileSetterAsset::register($this)->baseUrl;
+?>
 
 <div class="album-form">
 
@@ -45,7 +45,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                     [
                         'name' => 'type',
                         'type' => FieldType::FIELD_TYPE_DROPDOWN,
-                        'data' => Album::getTypes(),
+                        'data' => Album::getAlbumTypes(),
                         'label' => Module::t('album', 'Type'),
                     ],
                 ],
@@ -68,26 +68,34 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
             ); ?>
 
             <?php if (!$model->isNewRecord): ?>
-                <?php foreach ($model->getMediaFiles()): ?>
+                <?php $i=0; ?>
+                <?php foreach ($model->getMediaFiles($model->getFileType($model->type)) as $mediafile): ?>
+                    <?php $i+=1; ?>
+                    <div id="mediafile-container-<?php echo $i; ?>">
+                        <?php echo $mediafile->getPreview($baseUrl, $mediafile->isImage() ? ['width' => 300] : []); ?>
+                    </div>
+                    <?php echo FileSetter::widget(ArrayHelper::merge([
+                        'model' => $model,
+                        'attribute' => $model->getFileType($model->type),
+                        'buttonName' => Module::t('main', 'Set thumbnail'),
+                        'mediafileContainer' => '#mediafile-container-' . $i,
+                        'subDir' => Album::tableName()
+                    ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $model->getFileType($model->type)], $ownerParams) : [])
+                    ); ?>
 
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <div id="image-container">
-                <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
-                    <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
-                <?php endif; ?>
+            <div id="mediafile-container-new">
             </div>
             <?php echo FileSetter::widget(ArrayHelper::merge([
                 'model' => $model,
-                'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+                'attribute' => $model->getFileType($type),
                 'buttonName' => Module::t('main', 'Set thumbnail'),
-                'mediafileContainer' => '#thumbnail-container',
+                'mediafileContainer' => '#mediafile-container-new',
                 'subDir' => Album::tableName()
-            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
+            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $model->getFileType($type)], $ownerParams) : [])
             ); ?>
-
-            <?php echo $model::ALBUM_TYPE_IMAGE ?>
 
         </div>
     </div>

@@ -62,6 +62,6 @@ class VideoAlbum extends Album
      */
     public function getVideoFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_VIDEO);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, static::getFileType(self::ALBUM_TYPE_VIDEO));
     }
 }

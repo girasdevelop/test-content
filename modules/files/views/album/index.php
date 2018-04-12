@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'label' =>  Module::t('album', 'Type'),
                 'value' => function($data) {
-                    return Album::getTypes($data->type);
+                    return Album::getAlbumTypes($data->type);
                 }
             ],
             [

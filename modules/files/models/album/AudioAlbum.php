@@ -62,6 +62,6 @@ class AudioAlbum extends Album
      */
     public function getAudioFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_AUDIO);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, static::getFileType(self::ALBUM_TYPE_AUDIO));
     }
 }

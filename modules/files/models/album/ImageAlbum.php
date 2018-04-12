@@ -62,6 +62,6 @@ class ImageAlbum extends Album
      */
     public function getImageFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_IMAGE);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, static::getFileType(self::ALBUM_TYPE_IMAGE));
     }
 }

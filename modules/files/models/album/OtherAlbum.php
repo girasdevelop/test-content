@@ -62,6 +62,6 @@ class OtherAlbum extends Album
      */
     public function getOtherFiles()
     {
-        return OwnersMediafiles::getMediaFiles($this->type, $this->id, UploadModelInterface::FILE_TYPE_OTHER);
+        return OwnersMediafiles::getMediaFiles($this->type, $this->id, static::getFileType(self::ALBUM_TYPE_OTHER));
     }
 }

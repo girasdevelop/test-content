@@ -112,7 +112,7 @@ class Album extends ActiveRecord
      *
      * @return mixed
      */
-    public static function getTypes(string $key = null)
+    public static function getAlbumTypes(string $key = null)
     {
         $types = [
             self::ALBUM_TYPE_IMAGE => Module::t('album', 'Image album'),
@@ -124,10 +124,31 @@ class Album extends ActiveRecord
         ];
 
         if (null !== $key){
-            return $types[$key];
+            return array_key_exists($key, $types) ? $types[$key] : [];
         }
 
         return $types;
+    }
+
+    /**
+     * Get file type by album type.
+     *
+     * @param string $albumType
+     *
+     * @return mixed|null
+     */
+    public static function getFileType(string $albumType)
+    {
+        $albumTypes = [
+            self::ALBUM_TYPE_IMAGE => UploadModelInterface::FILE_TYPE_IMAGE,
+            self::ALBUM_TYPE_AUDIO => UploadModelInterface::FILE_TYPE_AUDIO,
+            self::ALBUM_TYPE_VIDEO => UploadModelInterface::FILE_TYPE_VIDEO,
+            self::ALBUM_TYPE_APP   => UploadModelInterface::FILE_TYPE_APP,
+            self::ALBUM_TYPE_TEXT  => UploadModelInterface::FILE_TYPE_TEXT,
+            self::ALBUM_TYPE_OTHER => UploadModelInterface::FILE_TYPE_OTHER,
+        ];
+
+        return array_key_exists($albumType, $albumTypes) ? $albumTypes[$albumType] : null;
     }
 
     /**

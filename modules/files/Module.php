@@ -30,6 +30,7 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
 class Module extends BaseModule
 {
     const DEFAULT_THUMB_ALIAS = 'default';
+    const ORIGINAL_THUMB_ALIAS = 'original';
     const SMALL_THUMB_ALIAS   = 'small';
     const MEDIUM_THUMB_ALIAS  = 'medium';
     const LARGE_THUMB_ALIAS   = 'large';

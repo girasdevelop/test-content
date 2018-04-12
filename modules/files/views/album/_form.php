@@ -24,10 +24,6 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
 ?>
 
 <style>
-    #thumbnail-sector, #new-mediafiles-sector, #existing-mediafiles-sector {
-        margin: 15px;
-        border-top: 1px solid #8ca68c;
-    }
     h5 {
         border-top: 1px solid #8ca68c;
         font-weight: bold;
@@ -98,7 +94,7 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
             </div>
             <?php echo FileSetter::widget(ArrayHelper::merge([
                 'model' => $model,
-                'attribute' => $model->getFileType($type),
+                'attribute' => $model->getFileType($type).'[]',
                 'buttonName' => Module::t('main', 'Set '.$model->getFileType($type)),
                 'buttonOptions' => [
                     'id' => $type . '-' . $model->getFileType($type) . '-btn'
@@ -120,11 +116,11 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                 <?php foreach ($model->getMediaFiles($model->getFileType($model->type)) as $mediafile): ?>
                     <?php $i+=1; ?>
                     <div id="mediafile-container-<?php echo $i; ?>">
-                        <?php echo $mediafile->getPreview($baseUrl, $mediafile->isImage() ? ['width' => 300] : []); ?>
+                        <?php echo $mediafile->getPreview($baseUrl, $mediafile->isImage() ? ['width' => 300, 'thumbAlias' => Module::ORIGINAL_THUMB_ALIAS] : []); ?>
                     </div>
                     <?php echo FileSetter::widget(ArrayHelper::merge([
                         'model' => $model,
-                        'attribute' => $model->getFileType($model->type),
+                        'attribute' => $model->getFileType($model->type).'[]',
                         'buttonName' => Module::t('main', 'Set '.$model->getFileType($model->type)),
                         'buttonOptions' => [
                             'id' => $model->type . '-' . $model->getFileType($model->type) . '-btn-' . $i

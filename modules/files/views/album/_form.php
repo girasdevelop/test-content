@@ -41,12 +41,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                         'type' => FieldType::FIELD_TYPE_TEXT_AREA,
                         'label' => Module::t('album', 'Description')
                     ],
-                    [
-                        'name' => 'type',
-                        'type' => FieldType::FIELD_TYPE_DROPDOWN,
-                        'data' => Album::getAlbumTypes(),
-                        'label' => Module::t('album', 'Type'),
-                    ],
                 ],
                 'model' => $model,
                 'form'  => $form,
@@ -54,31 +48,55 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
         </div>
     </div>
 
+    <?php echo Html::activeHiddenInput($model, 'type', [
+        'value' => $albumType
+    ]); ?>
+
     <!-- Thumbnail begin -->
-    <?php echo $this->render('_thumbnail', [
-        'model' => $model,
-        'thumbnailModel' => isset($thumbnailModel) && $thumbnailModel instanceof Mediafile ? $thumbnailModel : null,
-        'albumType' => $albumType,
-        'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
-    ]) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <h5><?php echo Module::t('main', 'Thumbnail'); ?></h5>
+            <?php echo $this->render('_thumbnail', [
+                'model' => $model,
+                'thumbnailModel' => isset($thumbnailModel) && $thumbnailModel instanceof Mediafile ? $thumbnailModel : null,
+                'albumType' => $albumType,
+                'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
+            ]) ?>
+        </div>
+    </div>
     <!-- Thumbnail end -->
 
     <!-- New files begin -->
-    <?php echo $this->render('_new-mediafiles', [
-        'model' => $model,
-        'albumType' => $albumType,
-        'fileType' => $fileType,
-        'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
-    ]) ?>
+    <div class="row">
+        <div class="col-md-12">
+            <h5><?php echo Module::t('main', 'New files'); ?></h5>
+            <?php for ($i=1; $i < 5; $i++): ?>
+                <?php echo $this->render('_new-mediafiles', [
+                    'model' => $model,
+                    'albumType' => $albumType,
+                    'fileType' => $fileType,
+                    'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
+                    'number' => $i,
+                ]) ?>
+            <?php endfor; ?>
+        </div>
+    </div>
     <!-- New files end -->
 
     <!-- Existing files begin -->
-    <?php echo $this->render('_existing-mediafiles', [
-        'model' => $model,
-        'albumType' => $albumType,
-        'fileType' => $fileType,
-        'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
-    ]) ?>
+    <?php if (!$model->isNewRecord): ?>
+        <div class="row">
+            <div class="col-md-12">
+                <h5><?php echo Module::t('main', 'Existing files'); ?></h5>
+                <?php echo $this->render('_existing-mediafiles', [
+                    'model' => $model,
+                    'albumType' => $albumType,
+                    'fileType' => $fileType,
+                    'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
+                ]) ?>
+            </div>
+        </div>
+    <?php endif; ?>
     <!-- Existing files end -->
 
     <div class="form-group">

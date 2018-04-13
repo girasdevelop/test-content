@@ -108,11 +108,6 @@ class FileSetter extends InputWidget
      * @var string This data will be inserted in input field
      */
     public $insertedData = self::INSERTED_DATA_ID;
-
-    /**
-     * @var array widget html options
-     */
-    public $options = ['class' => 'form-control'];
     
     /**
      *
@@ -132,6 +127,10 @@ class FileSetter extends InputWidget
     public function init()
     {
         parent::init();
+
+        if (empty($this->options['class'])) {
+            $this->options['class'] = 'form-control';
+        }
 
         if (empty($this->buttonOptions['id'])) {
             $this->buttonOptions['id'] = $this->options['id'] . '-btn';

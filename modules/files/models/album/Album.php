@@ -97,9 +97,9 @@ class Album extends ActiveRecord
     {
         return [
             'id' => Module::t('main', 'ID'),
-            'title' => Module::t('album', 'Type'),
+            'title' => Module::t('album', 'Title'),
             'description' => Module::t('album', 'Description'),
-            'type' => Module::t('album', 'Title'),
+            'type' => Module::t('album', 'Type'),
             'created_at' => Module::t('main', 'Created date'),
             'updated_at' => Module::t('main', 'Updated date'),
         ];

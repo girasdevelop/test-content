@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\ArrayHelper;
+use yii\helpers\{ArrayHelper, Html};
 use app\modules\files\Module;
 use app\modules\files\models\album\{Album};
 use app\modules\files\widgets\FileSetter;
@@ -9,23 +9,23 @@ use app\modules\files\widgets\FileSetter;
 /* @var $albumType string */
 /* @var $fileType string */
 /* @var $ownerParams array */
+/* @var $number int */
 ?>
 
-<div class="row">
-    <div class="col-md-12">
-        <h5><?php echo Module::t('main', 'New files'); ?></h5>
-        <div id="mediafile-container-new">
-        </div>
-        <?php echo FileSetter::widget(ArrayHelper::merge([
-            'model' => $model,
-            'attribute' => $fileType.'[]',
-            'buttonName' => Module::t('main', 'Set '.$fileType),
-            'buttonOptions' => [
-                'id' => $albumType . '-' . $fileType . '-btn'
-            ],
-            'mediafileContainer' => '#mediafile-container-new',
-            'subDir' => Album::tableName()
-        ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
-        ); ?>
-    </div>
+
+<div id="mediafile-container-new<?php if (isset($number)): ?>-n<?php echo $number; ?><?php endif; ?>">
 </div>
+<?php echo FileSetter::widget(ArrayHelper::merge([
+    'model' => $model,
+    'attribute' => $fileType.'[]',
+    'buttonName' => Module::t('main', 'Set '.$fileType),
+    'options' => [
+        'id' => Html::getInputId($model, $fileType) . (isset($number) ? '-n' . $number : '')
+    ],
+    'buttonOptions' => [
+        'id' => $albumType . '-' . $fileType . '-btn' . (isset($number) ? '-n' . $number : '')
+    ],
+    'mediafileContainer' => '#mediafile-container-new' . (isset($number) ? '-n' . $number : ''),
+    'subDir' => Album::tableName()
+], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
+); ?>

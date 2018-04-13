@@ -43,6 +43,9 @@ class Module extends BaseModule
 
     const BACK_URL_PARAM = '__backUrl';
 
+    const ORIGINAL_PREVIEW_WIDTH = 300;
+    const ORIGINAL_PREVIEW_HEIGHT = 240;
+
     /**
      * Login url.
      *

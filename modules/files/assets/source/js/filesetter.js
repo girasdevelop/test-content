@@ -20,7 +20,22 @@ $(document).ready(function() {
             mainInput.trigger("fileInsert", [insertedData]);
 
             if (mediafileContainer) {
-                mediafileContainer.html('<img src="' + fileInputs.attr("data-file-url") + '">');
+                var fileType = fileInputs.attr("data-file-type"),
+                    fileTypeShort = fileType.split('/')[0],
+                    fileUrl = fileInputs.attr("data-file-url"),
+                    baseUrl = fileInputs.attr("data-base-url"),
+                    previewOptions = {
+                        fileType: fileType,
+                        fileUrl: fileUrl,
+                        baseUrl: baseUrl
+                    };
+
+                if (fileTypeShort === 'image' || fileTypeShort === 'video' || fileTypeShort === 'audio'){
+                    previewOptions.main = {width: fileInputs.attr("data-original-width")};
+                }
+
+                var preview = getPreview(previewOptions);
+                mediafileContainer.html(preview);
             }
 
             mainInput.val(fileInputs.attr("data-file-" + insertedData));

@@ -2,6 +2,7 @@
 
 namespace app\modules\files\helpers;
 
+use app\modules\files\Module;
 use yii\helpers\{ArrayHelper, Html as BaseHtml};
 
 /**
@@ -23,7 +24,8 @@ class Html extends BaseHtml
     {
         /** Main options */
         $mainOptions = [
-            'controls' => 'controls'
+            'controls' => 'controls',
+            'width' => Module::ORIGINAL_PREVIEW_WIDTH,
         ];
         if (isset($options['main']) && is_array($options['main'])){
             $mainOptions = ArrayHelper::merge($mainOptions, $options['main']);
@@ -69,8 +71,8 @@ class Html extends BaseHtml
         /** Main options */
         $mainOptions = [
             'controls' => 'controls',
-            'width' => 300,
-            'height' => 240
+            'width' => Module::ORIGINAL_PREVIEW_WIDTH,
+            'height' => Module::ORIGINAL_PREVIEW_HEIGHT
         ];
         if (isset($options['main']) && is_array($options['main'])){
             $mainOptions = ArrayHelper::merge($mainOptions, $options['main']);

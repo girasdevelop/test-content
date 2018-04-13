@@ -28,11 +28,13 @@ $bundle = FilemanagerAsset::register($this);
 <div class="inputs" role="file-inputs"
      data-file-id="<?php echo $model->id ?>"
      data-file-url="<?php echo $model->url ?>"
+     data-file-type="<?php echo $model->type ?>"
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
      data-is-image="<?php echo $model->isImage() ?>"
-     data-base-url="<?php echo $bundle->baseUrl ?>">
+     data-base-url="<?php echo $bundle->baseUrl ?>"
+     data-original-width="<?php echo Module::ORIGINAL_PREVIEW_WIDTH ?>">
 
     <?php if ($model->isImage()): ?>
         <div class="input-group input-group-sm">

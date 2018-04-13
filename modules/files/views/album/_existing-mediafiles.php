@@ -25,7 +25,7 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
             <?php foreach ($model->getMediaFiles($fileType) as $mediafile): ?>
                 <?php $i+=1; ?>
                 <div id="mediafile-container-<?php echo $i; ?>">
-                    <?php echo $mediafile->getPreview($baseUrl, $mediafile->isImage() ? ['width' => 300, 'thumbAlias' => Module::ORIGINAL_THUMB_ALIAS] : []); ?>
+                    <?php echo $mediafile->getPreview($baseUrl, $mediafile->isImage() ? ['width' => Module::ORIGINAL_PREVIEW_WIDTH, 'thumbAlias' => Module::ORIGINAL_THUMB_ALIAS] : []); ?>
                 </div>
                 <?php echo FileSetter::widget(ArrayHelper::merge([
                     'model' => $model,

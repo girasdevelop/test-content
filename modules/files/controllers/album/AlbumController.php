@@ -172,7 +172,8 @@ abstract class AlbumController extends Controller
 
         return $this->render('create', [
             'model' => $this->model,
-            'type' => $this->getAlbumType()
+            'albumType' => $this->getAlbumType(),
+            'fileType' => $this->model->getFileType($this->getAlbumType()),
         ]);
     }
 
@@ -199,7 +200,8 @@ abstract class AlbumController extends Controller
 
         return $this->render('update', [
             'model' => $this->model,
-            'type' => $this->getAlbumType(),
+            'albumType' => $this->getAlbumType(),
+            'fileType' => $this->model->getFileType($this->getAlbumType()),
             'thumbnailModel' => $this->model->getThumbnailModel(),
             'ownerParams' => [
                 'owner' => $this->model->type,

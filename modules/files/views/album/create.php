@@ -4,7 +4,8 @@ use app\modules\files\models\album\Album;
 
 /* @var $this yii\web\View */
 /* @var $model Album */
-/* @var $type string */
+/* @var $albumType string */
+/* @var $fileType string */
 
 $this->title = Module::t('album', 'Create album');
 $this->params['breadcrumbs'][] = ['label' => Module::t('album', 'Albums'), 'url' => ['index']];
@@ -14,7 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php echo $this->render('_form', [
         'model' => $model,
-        'type' => $type
+        'albumType' => $albumType,
+        'fileType' => $fileType,
     ]) ?>
 
 </div>

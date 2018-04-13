@@ -48,7 +48,7 @@ class ManagersController extends Controller
         try {
             $request = \Yii::$app->request;
 
-            if (null !== $request->get('owner') || null !== $request->get('ownerAttribute')) {
+            if ((null !== $request->get('owner') && null !== $request->get('ownerId')) || null !== $request->get('ownerAttribute')) {
                 $query = OwnersMediafiles::getMediaFilesQuery([
                     'owner' => $request->get('owner'),
                     'ownerId' => $request->get('ownerId'),
@@ -57,7 +57,9 @@ class ManagersController extends Controller
                     'not in', 'id', OwnersMediafiles::find()->select('mediafileId')->asArray()
                 ]);
             } else {
-                $query = Mediafile::find()->orderBy('id DESC');
+                $query = Mediafile::find()->where([
+                    'not in', 'id', OwnersMediafiles::find()->select('mediafileId')->asArray()
+                ])->orderBy('id DESC');
             }
 
             $pagination = new Pagination([

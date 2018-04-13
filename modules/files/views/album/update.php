@@ -5,7 +5,8 @@ use app\modules\files\models\Mediafile;
 
 /* @var $this yii\web\View */
 /* @var $model Album */
-/* @var $type string */
+/* @var $albumType string */
+/* @var $fileType string */
 /* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
 
@@ -18,7 +19,8 @@ $this->params['breadcrumbs'][] = Module::t('main', 'Update');
 
     <?php echo $this->render('_form', [
         'model' => $model,
-        'type' => $type,
+        'albumType' => $albumType,
+        'fileType' => $fileType,
         'thumbnailModel' => $thumbnailModel,
         'ownerParams' => $ownerParams,
     ]) ?>

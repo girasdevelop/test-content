@@ -19,6 +19,7 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property string $title
  * @property string $description
  * @property string $thumbs
+ * @property string $storage
  * @property string $advance
  * @property int $created_at
  * @property int $updated_at
@@ -54,6 +55,7 @@ class Mediafile extends ActiveRecord
                     'type',
                     'url',
                     'size',
+                    'storage',
                 ],
                 'required',
             ],
@@ -63,6 +65,7 @@ class Mediafile extends ActiveRecord
                     'title',
                     'description',
                     'thumbs',
+                    'storage',
                     'advance',
                 ],
                 'string',
@@ -107,6 +110,7 @@ class Mediafile extends ActiveRecord
             'title' => 'Title',
             'description' => 'Description',
             'thumbs' => 'Thumbs',
+            'storage' => 'Storage',
             'advance' => 'Advance',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -181,7 +185,7 @@ class Mediafile extends ActiveRecord
      */
     public static function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool
     {
-        $deleted = OwnersMediafiles::findOne([
+        $deleted = OwnersMediafiles::deleteAll([
             'ownerId' => $ownerId,
             'owner' => $owner,
             'ownerAttribute' => $ownerAttribute,

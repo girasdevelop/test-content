@@ -2,6 +2,7 @@
 
 namespace app\modules\files\models\upload;
 
+use app\modules\files\Module;
 use Yii;
 use yii\imagine\Image;
 use yii\base\InvalidConfigException;
@@ -38,6 +39,16 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
         }
 
         $this->uploadRoot = trim($this->uploadRoot, DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * Get storage type - local.
+     *
+     * @return string
+     */
+    protected function getStorage(): string
+    {
+        return Module::STORAGE_TYPE_LOCAL;
     }
 
     /**

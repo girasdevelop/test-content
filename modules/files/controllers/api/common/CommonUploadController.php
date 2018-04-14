@@ -8,9 +8,9 @@ use yii\base\{InvalidConfigException, UnknownMethodException};
 use yii\web\{UploadedFile, BadRequestHttpException, NotFoundHttpException};
 use app\modules\files\Module;
 use app\modules\files\components\LocalUploadComponent;
-use app\modules\files\models\Mediafile;
-use app\modules\files\models\upload\LocalUpload;
 use app\modules\files\assets\UploadmanagerAsset;
+use app\modules\files\models\Mediafile;
+use app\modules\files\models\upload\BaseUpload;
 use app\modules\files\traits\{BehaviorsTrait, ResponseTrait};
 use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
@@ -19,7 +19,7 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * Common upload controller class to upload files in local directory.
  *
  * @property UploadComponentInterface|LocalUploadComponent $uploadComponent
- * @property UploadModelInterface|LocalUpload $uploadModel
+ * @property UploadModelInterface|BaseUpload $uploadModel
  * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\api\common
@@ -34,7 +34,7 @@ abstract class CommonUploadController extends RestController
     protected $uploadComponent = null;
 
     /**
-     * @var UploadModelInterface|LocalUpload
+     * @var UploadModelInterface|BaseUpload
      */
     private $uploadModel;
 

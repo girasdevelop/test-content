@@ -46,6 +46,8 @@ class Module extends BaseModule
     const ORIGINAL_PREVIEW_WIDTH = 300;
     const ORIGINAL_PREVIEW_HEIGHT = 240;
 
+    const STORAGE_TYPE_LOCAL = 'local';
+
     /**
      * Login url.
      *

@@ -278,9 +278,4 @@ class Album extends ActiveRecord
     {
         return OwnersMediafiles::getOwnerThumbnail($this->type, $this->id);
     }
-
-    public function afterDelete()
-    {
-        parent::afterDelete();
-    }
 }

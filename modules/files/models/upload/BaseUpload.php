@@ -255,6 +255,13 @@ abstract class BaseUpload extends Model
     abstract protected function createThumb(ThumbConfigInterface $thumbConfig): string;
 
     /**
+     * Get storage type (local, s3, e.t.c...).
+     *
+     * @return string
+     */
+    abstract protected function getStorage(): string;
+
+    /**
      * Scenarios.
      *
      * @return array
@@ -425,7 +432,7 @@ abstract class BaseUpload extends Model
         if (!$this->validate()){
             return false;
         }
-        //var_dump($this->owner.'|'.$this->ownerId.'|'.$this->ownerAttribute);die();
+
         if (null !== $this->file){
 
             $this->setParamsForSave();
@@ -442,6 +449,7 @@ abstract class BaseUpload extends Model
             $this->mediafileModel->url = $this->databaseDir;
             $this->mediafileModel->filename = $this->outFileName;
             $this->mediafileModel->size = $this->file->size;
+            $this->mediafileModel->storage = $this->getStorage();
         }
 
         $this->mediafileModel->alt = $this->alt;

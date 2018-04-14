@@ -11,7 +11,7 @@ use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\assets\UploadmanagerAsset;
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\BaseUpload;
-use app\modules\files\traits\{BehaviorsTrait, ResponseTrait};
+use app\modules\files\traits\{BehaviorsTrait, ResponseTrait, MediaFilesTrait};
 use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
 /**
@@ -26,7 +26,7 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  */
 abstract class CommonUploadController extends RestController
 {
-    use BehaviorsTrait, ResponseTrait;
+    use BehaviorsTrait, ResponseTrait, MediaFilesTrait;
 
     /**
      * @var null|UploadComponentInterface|LocalUploadComponent
@@ -135,7 +135,7 @@ abstract class CommonUploadController extends RestController
     public function actionDelete()
     {
         try {
-            $deleted = $this->deleteMediafileEntry(Yii::$app->request->post('id'));
+            $deleted = $this->deleteMediafileEntry(Yii::$app->request->post('id'), $this->module);
 
             if (!$deleted){
                 return $this->getFailResponse(
@@ -170,37 +170,6 @@ abstract class CommonUploadController extends RestController
     }
 
     /**
-     * Find the media model entry.
-     *
-     * @param int $id
-     *
-     * @throws UnknownMethodException
-     * @throws NotFoundHttpException
-     *
-     * @return Mediafile
-     */
-    private function findMediafileModel(int $id): Mediafile
-    {
-        $modelObject = new Mediafile();
-
-        if (!method_exists($modelObject, 'findOne')){
-            $class = (new\ReflectionClass($modelObject));
-            throw new UnknownMethodException('Method findOne does not exists in ' . $class->getNamespaceName() . '\\' . $class->getShortName().' class.');
-        }
-
-        $result = call_user_func([
-            $modelObject,
-            'findOne',
-        ], $id);
-
-        if ($result !== null) {
-            return $result;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    /**
      * Returns an intermediate model for working with the main.
      *
      * @param int|null $id
@@ -216,39 +185,6 @@ abstract class CommonUploadController extends RestController
             return new Mediafile();
         } else {
             return $this->findMediafileModel($id);
-        }
-    }
-
-    /**
-     * Delete mediafile record with files.
-     *
-     * @param array|int|string $id
-     *
-     * @return bool|int
-     */
-    private function deleteMediafileEntry($id)
-    {
-        if (is_array($id)){
-            $i = 0;
-            foreach ($id as $item) {
-                if (!$this->deleteMediafileEntry((int)$item)){
-                    return false;
-                }
-                $i += 1;
-            }
-            return $i;
-
-        } else {
-
-            $this->uploadModel = $this->getUploadComponent()->setModelForDelete(
-                $this->findMediafileModel((int)$id)
-            );
-
-            if (!$this->uploadModel->delete()){
-                return false;
-            }
-
-            return 1;
         }
     }
 }

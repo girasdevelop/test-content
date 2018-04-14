@@ -2,18 +2,15 @@
 
 namespace app\modules\files\controllers\album;
 
-use app\modules\files\Module;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
-use yii\base\{InvalidConfigException, UnknownMethodException};
+use yii\base\UnknownMethodException;
 use yii\web\{Controller, BadRequestHttpException, NotFoundHttpException};
 use yii\filters\{VerbFilter, AccessControl};
-use app\modules\files\models\Mediafile;
-use app\modules\files\models\upload\BaseUpload;
+use app\modules\files\Module;
 use app\modules\files\models\album\{Album, AlbumSearch};
-use app\modules\files\components\LocalUploadComponent;
-use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
+use app\modules\files\traits\MediaFilesTrait;
 
 /**
  * AlbumController implements the CRUD actions for Album model.
@@ -23,11 +20,14 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * AlbumController implements the CRUD actions for Album model.
  *
  * @property Album $model
+ * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\album
  */
 abstract class AlbumController extends Controller
 {
+    use MediaFilesTrait;
+
     /**
      * Model object record.
      *
@@ -244,14 +244,20 @@ abstract class AlbumController extends Controller
      * @param integer $id
      *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws BadRequestHttpException
      *
      * @return mixed
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        if ($model->delete()){
+            $this->deleteMediafiles($model->type, $model->id, $model->getFileType($model->type), $this->module);
+            return $this->redirect(['index']);
+        }
+
+        throw new BadRequestHttpException('Record is not deleted.');
     }
 
     /**
@@ -312,84 +318,5 @@ abstract class AlbumController extends Controller
         $model = null === $key ? $this->getNewModel() : $this->findModel($key);
 
         $this->setModel($model);
-    }
-
-    /**
-     * Find the media model entry.
-     *
-     * @param int $id
-     *
-     * @throws UnknownMethodException
-     * @throws NotFoundHttpException
-     *
-     * @return Mediafile
-     */
-    private function findMediafileModel(int $id): Mediafile
-    {
-        $modelObject = new Mediafile();
-
-        if (!method_exists($modelObject, 'findOne')){
-            $class = (new\ReflectionClass($modelObject));
-            throw new UnknownMethodException('Method findOne does not exists in ' . $class->getNamespaceName() . '\\' . $class->getShortName().' class.');
-        }
-
-        $result = call_user_func([
-            $modelObject,
-            'findOne',
-        ], $id);
-
-        if ($result !== null) {
-            return $result;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    /**
-     * Delete mediafile record with files.
-     *
-     * @param $id
-     *
-     * @throws InvalidConfigException
-     *
-     * @return bool|int
-     */
-    private function deleteMediafileEntry($id)
-    {
-        if (is_array($id)){
-            $i = 0;
-            foreach ($id as $item) {
-                if (!$this->deleteMediafileEntry((int)$item)){
-                    return false;
-                }
-                $i += 1;
-            }
-            return $i;
-
-        } else {
-
-            $mediafileModel = $this->findMediafileModel((int)$id);
-
-            switch ($mediafileModel->storage) {
-                case Module::STORAGE_TYPE_LOCAL: {
-                    /** @var UploadComponentInterface|LocalUploadComponent $uploadComponent */
-                    $uploadComponent = $this->module->get('local-upload-component');
-                    break;
-                }
-
-                default: {
-                    throw new InvalidConfigException('Unknown type of the file storage');
-                }
-            }
-
-            /** @var UploadModelInterface|BaseUpload $uploadModel */
-            $uploadModel = $uploadComponent->setModelForDelete($mediafileModel);
-
-            if (!$uploadModel->delete()){
-                return false;
-            }
-
-            return 1;
-        }
     }
 }

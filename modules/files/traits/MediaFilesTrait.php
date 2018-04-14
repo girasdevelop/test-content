@@ -18,12 +18,16 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
 trait MediaFilesTrait
 {
     /**
+     * Delete mediafiles from owner.
+     *
      * @param string $owner
      * @param int $ownerId
      * @param string $ownerAttribute
      * @param Module $module
+     *
+     * @return void
      */
-    private function deleteMediafiles(string $owner, int $ownerId, string $ownerAttribute, Module $module)
+    private function deleteMediafiles(string $owner, int $ownerId, string $ownerAttribute, Module $module): void
     {
         $mediafileIds = OwnersMediafiles::getMediaFilesQuery([
             'owner' => $owner,
@@ -33,7 +37,7 @@ trait MediaFilesTrait
         ->select('id')
         ->all();
 
-        $mediafileIds = array_map(function ($data) {return $data->id;}, $mediafileIds);
+        $mediafileIds = array_map(function ($data) {return $data->id;}, $mediafileIds);echo '<pre>';
 
         $this->deleteMediafileEntry($mediafileIds, $module);
     }
@@ -107,10 +111,10 @@ trait MediaFilesTrait
                 }
             }
 
-            /** @var UploadModelInterface|BaseUpload $uploadModel */
-            $uploadModel = $uploadComponent->setModelForDelete($mediafileModel);
+            /** @var UploadModelInterface|BaseUpload $deleteModel */
+            $deleteModel = $uploadComponent->setModelForDelete($mediafileModel);
 
-            if (!$uploadModel->delete()){
+            if (!$deleteModel->delete()){
                 return false;
             }
 

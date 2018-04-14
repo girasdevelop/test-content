@@ -22,9 +22,6 @@ use app\modules\files\interfaces\UploadModelInterface;
     'model' => $model,
     'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
     'buttonName' => Module::t('main', 'Set thumbnail'),
-    'buttonOptions' => [
-        'id' => $albumType . '-thumbnail-btn'
-    ],
     'mediafileContainer' => '#thumbnail-container',
     'subDir' => Album::tableName()
 ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])

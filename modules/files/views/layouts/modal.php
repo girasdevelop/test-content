@@ -4,6 +4,8 @@
 /** @var int $btnId */
 /** @var int $inputId */
 /** @var string $mediafileContainer */
+/** @var string $titleContainer */
+/** @var string $descriptionContainer */
 /** @var string $insertedData */
 /** @var string $thumb */
 /** @var string $owner */
@@ -17,6 +19,8 @@
      data-btn-id="<?php echo $btnId ?>"
      data-input-id="<?php echo $inputId ?>"
      data-mediafile-container="<?php echo isset($mediafileContainer) ? $mediafileContainer : '' ?>"
+     data-title-container="<?php echo isset($titleContainer) ? $titleContainer : '' ?>"
+     data-description-container="<?php echo isset($descriptionContainer) ? $descriptionContainer : '' ?>"
      data-inserted-data="<?php echo isset($insertedData) ? $insertedData : '' ?>"
      data-owner="<?php echo $owner ?>"
      data-owner-id="<?php echo $ownerId ?>"

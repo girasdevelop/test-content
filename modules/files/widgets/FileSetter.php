@@ -10,20 +10,71 @@ use app\modules\files\assets\FileSetterAsset;
 /**
  * Class FileSetter
  *
- * Example:
+ * Example 1 (for thumbnail):
  *
- * Container to display selected mediafile (example for image).
- * <div id="thumbnail-container"></div>
+ * Container to display selected thumbnail.
+ * <div id="thumbnail-container">
+ *  <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
+ *      <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
+ *  <?php endif; ?>
+ * </div>
+ *
+ * <?php echo FileSetter::widget([
+ *    'name' => UploadModelInterface::FILE_TYPE_THUMB,
+ *    'buttonName' => Module::t('main', 'Set thumbnail'),
+ *    'mediafileContainer' => '#thumbnail-container',
+ *    'owner' => 'post',
+ *    'ownerId' => {current owner id, post id, page id e.t.c.},
+ *    'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
+ *    'subDir' => 'post'
+ * ]); ?>
+ *
+ *
+ * Example 2 (for image):
+ *
+ * $number - number of the file (Can be rendered by cycle)
+ *
+ * <div class="media">
+ *      <div id="mediafile-container-new<?php if (isset($number)): ?>-<?php echo $number; ?><?php endif; ?>">
+ *      </div>
+ *      <div class="media-body">
+ *          <h4 id="title-container-new<?php if (isset($number)): ?>-<?php echo $number; ?><?php endif; ?>" class="media-heading"></h4>
+ *          <div id="description-container-new<?php if (isset($number)): ?>-<?php echo $number; ?><?php endif; ?>"></div>
+ *      </div>
+ * </div>
  *
  * <?php echo FileSetter::widget([
  *    'name' => UploadModelInterface::FILE_TYPE_IMAGE,
- *    'buttonName' => Module::t('main', 'Set thumbnail'),
- *    'mediafileContainer' => '#thumbnail-container',
+ *    'buttonName' => Module::t('main', 'Set image'),
+ *    'options' => [
+ *       'id' => Html::getInputId($model, UploadModelInterface::FILE_TYPE_IMAGE) . (isset($number) ? '-new-' . $number : '')
+ *    ],
+ *    'mediafileContainer' => '#mediafile-container-new' . (isset($number) ? '-' . $number : ''),
+ *    'titleContainer' => '#title-container-new' . (isset($number) ? '-' . $number : ''),
+ *    'descriptionContainer' => '#description-container-new' . (isset($number) ? '-' . $number : ''),
  *    'owner' => 'post',
  *    'ownerId' => {current owner id, post id, page id e.t.c.},
  *    'ownerAttribute' => UploadModelInterface::FILE_TYPE_IMAGE,
  *    'subDir' => 'post'
  * ]); ?>
+ *
+ * @property string|null $owner Owner name (post, article, page e.t.c.).
+ * @property int|null $ownerId Owner id.
+ * @property string|null $ownerAttribute Owner attribute (thumbnail, image e.t.c.).
+ * @property string $subDir Subdirectory to upload files.
+ * @property string $template Template to display widget elements.
+ * @property string $buttonHtmlTag Button html tag.
+ * @property string $buttonName Button name.
+ * @property array $buttonOptions Button html options.
+ * @property string $resetButtonHtmlTag Reset button html tag.
+ * @property string $resetButtonName Reset button name.
+ * @property array $resetButtonOptions Reset button html options.
+ * @property string $mediafileContainer In this container will be inserted selected mediafile.
+ * @property string $titleContainer In this container will be inserted title of selected mediafile.
+ * @property string $descriptionContainer In this container will be inserted description of selected mediafile.
+ * @property string $callbackBeforeInsert JS function. That will be called before insert file data in to the input.
+ * @property string $insertedData This data will be inserted in to the input field.
+ * @property string $srcToFiles Src to get files by filemanager.
  *
  * @package app\modules\files\widgets
  *
@@ -60,56 +111,91 @@ class FileSetter extends InputWidget
     public $subDir = '';
 
     /**
-     * @var string template to display widget elements
+     * Template to display widget elements.
+     *
+     * @var string
      */
     public $template = '<div class="input-group">{input}<span class="input-group-btn">{button}{reset-button}</span></div>';
 
     /**
-     * @var string button html tag
+     * Button html tag.
+     *
+     * @var string
      */
     public $buttonHtmlTag = 'button';
 
     /**
-     * @var string button name
+     * Button name.
+     *
+     * @var string
      */
     public $buttonName = 'Browse';
 
     /**
-     * @var array button html options
+     * Button html options.
+     *
+     * @var array
      */
     public $buttonOptions = [];
 
     /**
-     * @var string reset button html tag
+     * Reset button html tag.
+     *
+     * @var string
      */
     public $resetButtonHtmlTag = 'button';
 
     /**
-     * @var string reset button name
+     * Reset button name.
+     *
+     * @var string
      */
     public $resetButtonName = '<span class="text-danger glyphicon glyphicon-remove"></span>';
 
     /**
-     * @var array reset button html options
+     * Reset button html options.
+     *
+     * @var array
      */
     public $resetButtonOptions = [];
 
     /**
-     * @var string Optional, if set, in container will be inserted selected image
+     * Optional, if set, in container will be inserted selected mediafile.
+     *
+     * @var string|null
      */
-    public $mediafileContainer = '';
+    public $mediafileContainer = null;
 
     /**
-     * @var string JS function. That will be called before insert file data in to the input.
+     * Optional, if set, in container will be inserted title of selected mediafile.
+     *
+     * @var string|null
+     */
+    public $titleContainer = null;
+
+    /**
+     * Optional, if set, in container will be inserted description of selected mediafile.
+     *
+     * @var string|null
+     */
+    public $descriptionContainer = null;
+
+    /**
+     * JS function. That will be called before insert file data in to the input.
+     *
+     * @var string
      */
     public $callbackBeforeInsert = '';
 
     /**
-     * @var string This data will be inserted in input field
+     * This data will be inserted in to the input field.
+     *
+     * @var string
      */
     public $insertedData = self::INSERTED_DATA_ID;
     
     /**
+     * Src to get files by filemanager.
      *
      * @var string
      */
@@ -177,6 +263,8 @@ class FileSetter extends InputWidget
             'btnId' => $this->buttonOptions['id'],
             'srcToFiles' => Url::to([$this->srcToFiles]),
             'mediafileContainer' => $this->mediafileContainer,
+            'titleContainer' => $this->titleContainer,
+            'descriptionContainer' => $this->descriptionContainer,
             'insertedData' => $this->insertedData,
             'owner' => $this->owner,
             'ownerId' => $this->ownerId,

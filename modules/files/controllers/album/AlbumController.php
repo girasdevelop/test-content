@@ -4,10 +4,10 @@ namespace app\modules\files\controllers\album;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\data\Pagination;
 use yii\base\UnknownMethodException;
 use yii\web\{Controller, BadRequestHttpException, NotFoundHttpException};
 use yii\filters\{VerbFilter, AccessControl};
-use app\modules\files\interfaces\UploadModelInterface;
 use app\modules\files\models\album\{Album, AlbumSearch};
 
 /**
@@ -148,8 +148,20 @@ abstract class AlbumController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $mediafilesQuery = $model->getMediaFilesQuery($model->getFileType($model->type));
+        $pages = new Pagination([
+            'defaultPageSize' => 6,
+            'totalCount' => $mediafilesQuery->count()
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'mediafiles' => $mediafilesQuery->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all(),
+            'pages' => $pages,
         ]);
     }
 
@@ -198,10 +210,20 @@ abstract class AlbumController extends Controller
             ]);
         }
 
+        $mediafilesQuery = $this->model->getMediaFilesQuery($this->model->getFileType($this->model->type));
+        $pages = new Pagination([
+            'defaultPageSize' => 6,
+            'totalCount' => $mediafilesQuery->count()
+        ]);
+
         return $this->render('update', [
             'model' => $this->model,
-            'albumType' => $this->getAlbumType(),
-            'fileType' => $this->model->getFileType($this->getAlbumType()),
+            'mediafiles' => $mediafilesQuery->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all(),
+            'pages' => $pages,
+            'albumType' => $this->model->type,
+            'fileType' => $this->model->getFileType($this->model->type),
             'thumbnailModel' => $this->model->getThumbnailModel(),
             'ownerParams' => [
                 'owner' => $this->model->type,
@@ -235,9 +257,9 @@ abstract class AlbumController extends Controller
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      *
-     * @return mixed
+     * @return Album
      */
-    protected function findModel($key)
+    protected function findModel($key): Album
     {
         if (null === $key){
             throw new BadRequestHttpException('Key parameter is not defined in findModel method.');

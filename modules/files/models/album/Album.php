@@ -1,10 +1,10 @@
 <?php
 namespace app\modules\files\models\album;
 
-use yii\helpers\ArrayHelper;
+use yii\db\ActiveQuery;
+use yii\helpers\Html;
 use app\modules\files\Module;
 use app\modules\files\models\{ActiveRecord, OwnersAlbums, OwnersMediafiles, Mediafile};
-use app\modules\files\behaviors\BehaviorMediafile;
 use app\modules\files\interfaces\UploadModelInterface;
 
 /**
@@ -206,7 +206,7 @@ class Album extends ActiveRecord
     /**
      * Get album's owners.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getOwners()
     {
@@ -226,6 +226,50 @@ class Album extends ActiveRecord
     }
 
     /**
+     * Get album's mediafiles query.
+     *
+     * @param string|null $ownerAttribute
+     *
+     * @return ActiveQuery
+     */
+    public function getMediaFilesQuery(string $ownerAttribute = null)
+    {
+        return OwnersMediafiles::getMediaFilesQuery([
+            'owner' => $this->type,
+            'ownerId' => $this->id,
+            'ownerAttribute' => $ownerAttribute,
+        ]);
+    }
+
+    /**
+     * Get album thumb image.
+     *
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function getDefaultThumbImage(array $options = []): string
+    {
+        $thumbnailModel = $this->getThumbnailModel();
+
+        if (null === $thumbnailModel){
+            return '';
+        }
+
+        $url = $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+
+        if (empty($url)) {
+            return '';
+        }
+
+        if (empty($options['alt'])) {
+            $options['alt'] = $thumbnailModel->alt;
+        }
+
+        return Html::img($url, $options);
+    }
+
+    /**
      * Get album's thumbnail.
      *
      * @return array|null|\yii\db\ActiveRecord|Mediafile
@@ -233,5 +277,10 @@ class Album extends ActiveRecord
     public function getThumbnailModel()
     {
         return OwnersMediafiles::getOwnerThumbnail($this->type, $this->id);
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
     }
 }

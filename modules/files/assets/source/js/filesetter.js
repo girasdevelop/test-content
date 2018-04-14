@@ -14,6 +14,8 @@ $(document).ready(function() {
 
             var fileInputs = $(this).parents('[role="file-inputs"]'),
                 mediafileContainer = $(modal.attr("data-mediafile-container")),
+                titleContainer = $(modal.attr("data-title-container")),
+                descriptionContainer = $(modal.attr("data-description-container")),
                 insertedData = modal.attr("data-inserted-data"),
                 mainInput = $("#" + modal.attr("data-input-id"));
 
@@ -36,6 +38,18 @@ $(document).ready(function() {
 
                 var preview = getPreview(previewOptions);
                 mediafileContainer.html(preview);
+
+                /* Set title */
+                if (titleContainer){
+                    var titleValue = $(fileInputs.contents().find('[role="file-title"]')).val();
+                    titleContainer.html(titleValue);
+                }
+
+                /* Set description */
+                if (descriptionContainer){
+                    var descriptionValue = $(fileInputs.contents().find('[role="file-description"]')).val();
+                    descriptionContainer.html(descriptionValue);
+                }
             }
 
             mainInput.val(fileInputs.attr("data-file-" + insertedData));

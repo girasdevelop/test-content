@@ -12,20 +12,25 @@ use app\modules\files\widgets\FileSetter;
 /* @var $number int */
 ?>
 
-
-<div id="mediafile-container-new<?php if (isset($number)): ?>-n<?php echo $number; ?><?php endif; ?>">
+<div class="media">
+    <div class="media-left" id="mediafile-container-new<?php if (isset($number)): ?>-<?php echo $number; ?><?php endif; ?>">
+    </div>
+    <div class="media-body">
+        <h4 id="title-container-new<?php if (isset($number)): ?>-<?php echo $number; ?><?php endif; ?>" class="media-heading"></h4>
+        <div id="description-container-new<?php if (isset($number)): ?>-<?php echo $number; ?><?php endif; ?>"></div>
+    </div>
 </div>
+
 <?php echo FileSetter::widget(ArrayHelper::merge([
     'model' => $model,
     'attribute' => $fileType.'[]',
     'buttonName' => Module::t('main', 'Set '.$fileType),
     'options' => [
-        'id' => Html::getInputId($model, $fileType) . (isset($number) ? '-n' . $number : '')
+        'id' => Html::getInputId($model, $fileType) . (isset($number) ? '-new-' . $number : '')
     ],
-    'buttonOptions' => [
-        'id' => $albumType . '-' . $fileType . '-btn' . (isset($number) ? '-n' . $number : '')
-    ],
-    'mediafileContainer' => '#mediafile-container-new' . (isset($number) ? '-n' . $number : ''),
+    'mediafileContainer' => '#mediafile-container-new' . (isset($number) ? '-' . $number : ''),
+    'titleContainer' => '#title-container-new' . (isset($number) ? '-' . $number : ''),
+    'descriptionContainer' => '#description-container-new' . (isset($number) ? '-' . $number : ''),
     'subDir' => Album::tableName()
 ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
 ); ?>

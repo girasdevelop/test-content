@@ -1,4 +1,5 @@
 <?php
+use yii\data\Pagination;
 use yii\widgets\ActiveForm;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
@@ -8,6 +9,8 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 
 /* @var $this yii\web\View */
 /* @var $model Album */
+/* @var $mediafiles Mediafile[] */
+/* @var $pages Pagination */
 /* @var $albumType string */
 /* @var $fileType string */
 /* @var $form yii\widgets\ActiveForm */
@@ -90,6 +93,8 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 <h5><?php echo Module::t('main', 'Existing files'); ?></h5>
                 <?php echo $this->render('_existing-mediafiles', [
                     'model' => $model,
+                    'mediafiles' => $mediafiles,
+                    'pages' => $pages,
                     'albumType' => $albumType,
                     'fileType' => $fileType,
                     'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,

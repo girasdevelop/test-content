@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => Module::t('main', 'ID'),
                 'value' => function($data) {
+                    /* @var $data Album */
                     return Html::a(
                         Html::encode($data->id),
                         Url::to(['view', 'id' => $data->id])
@@ -35,8 +36,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             [
+                'label' => Module::t('main', 'Thumbnail'),
+                'value' => function($data) {
+                    /* @var $data Album */
+                    $defaultThumbImage = $data->getDefaultThumbImage();
+                    return !empty($defaultThumbImage) ? Html::a($defaultThumbImage, Url::to([
+                        'view',
+                        'id' => $data->id
+                    ])) : '';
+                },
+                'format' => 'raw',
+            ],
+            [
                 'label' => Module::t('album', 'Title'),
                 'value' => function($data) {
+                    /* @var $data Album */
                     return Html::a(
                         Html::encode($data->title),
                         Url::to(['view', 'id' => $data->id])
@@ -52,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'label' =>  Module::t('album', 'Type'),
                 'value' => function($data) {
+                    /* @var Album */
                     return Album::getAlbumTypes($data->type);
                 }
             ],

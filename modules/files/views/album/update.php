@@ -1,10 +1,13 @@
 <?php
+use yii\data\Pagination;
 use app\modules\files\Module;
-use app\modules\files\models\album\Album;
 use app\modules\files\models\Mediafile;
+use app\modules\files\models\album\Album;
 
 /* @var $this yii\web\View */
 /* @var $model Album */
+/* @var $mediafiles Mediafile[] */
+/* @var $pages Pagination */
 /* @var $albumType string */
 /* @var $fileType string */
 /* @var $thumbnailModel Mediafile|null */
@@ -19,6 +22,8 @@ $this->params['breadcrumbs'][] = Module::t('main', 'Update');
 
     <?php echo $this->render('_form', [
         'model' => $model,
+        'mediafiles' => $mediafiles,
+        'pages' => $pages,
         'albumType' => $albumType,
         'fileType' => $fileType,
         'thumbnailModel' => $thumbnailModel,

@@ -7,7 +7,7 @@ use yii\web\UploadedFile;
 use yii\imagine\Image;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
-use app\modules\files\interfaces\ThumbConfigInterface;
+use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 
 /**
  * Class BaseUpload
@@ -123,9 +123,25 @@ abstract class BaseUpload extends Model
      * @var array
      */
     public $fileExtensions = [
-        'png', 'jpg', 'jpeg', 'gif',
-        'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
-        'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip', 'jar', 'mcd'
+        UploadModelInterface::FILE_TYPE_THUMB => [
+            'png', 'jpg', 'jpeg', 'gif',
+        ],
+        UploadModelInterface::FILE_TYPE_IMAGE => [
+            'png', 'jpg', 'jpeg', 'gif',
+        ],
+        UploadModelInterface::FILE_TYPE_AUDIO => [
+            'mp3',
+        ],
+        UploadModelInterface::FILE_TYPE_VIDEO => [
+            'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
+        ],
+        UploadModelInterface::FILE_TYPE_APP => [
+            'doc', 'docx', 'rtf', 'pdf', 'rar', 'zip', 'jar', 'mcd'
+        ],
+        UploadModelInterface::FILE_TYPE_TEXT => [
+            'txt'
+        ],
+        UploadModelInterface::FILE_TYPE_OTHER => null,
     ];
 
     /**
@@ -301,6 +317,32 @@ abstract class BaseUpload extends Model
     {
         return [
             [
+                [
+                    'owner',
+                ],
+                'string',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                ],
+            ],
+            [
+                'ownerId',
+                'integer',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                ],
+            ],
+            [
+                [
+                    'ownerAttribute',
+                ],
+                'string',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                    self::SCENARIO_UPDATE,
+                ],
+            ],
+            [
                 'file',
                 'required',
                 'on' => [
@@ -315,7 +357,7 @@ abstract class BaseUpload extends Model
                     self::SCENARIO_UPDATE,
                 ],
                 'skipOnEmpty' => true,
-                'extensions' => $this->fileExtensions,
+                'extensions' => array_key_exists($this->ownerAttribute, $this->fileExtensions) ? $this->fileExtensions[$this->ownerAttribute] : null,
                 'checkExtensionByMimeType' => $this->checkExtensionByMimeType,
                 'maxSize' => $this->fileMaxSize
             ],
@@ -350,23 +392,6 @@ abstract class BaseUpload extends Model
                 'on' => [
                     self::SCENARIO_UPLOAD,
                     self::SCENARIO_UPDATE,
-                ],
-            ],
-            [
-                [
-                    'owner',
-                    'ownerAttribute',
-                ],
-                'string',
-                'on' => [
-                    self::SCENARIO_UPLOAD,
-                ],
-            ],
-            [
-                'ownerId',
-                'integer',
-                'on' => [
-                    self::SCENARIO_UPLOAD,
                 ],
             ],
         ];

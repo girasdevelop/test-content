@@ -2,7 +2,7 @@
 use yii\helpers\ArrayHelper;
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
-use app\modules\files\models\album\{Album};
+use app\modules\files\models\album\Album;
 use app\modules\files\widgets\FileSetter;
 use app\modules\files\interfaces\UploadModelInterface;
 
@@ -21,8 +21,9 @@ use app\modules\files\interfaces\UploadModelInterface;
 <?php echo FileSetter::widget(ArrayHelper::merge([
     'model' => $model,
     'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+    'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
     'buttonName' => Module::t('main', 'Set thumbnail'),
     'mediafileContainer' => '#thumbnail-container',
-    'subDir' => Album::tableName()
-], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
+    'subDir' => strtolower($albumType)
+], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
 ); ?>

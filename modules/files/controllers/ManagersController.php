@@ -48,12 +48,19 @@ class ManagersController extends Controller
         try {
             $request = \Yii::$app->request;
 
-            if ((null !== $request->get('owner') && null !== $request->get('ownerId')) || null !== $request->get('ownerAttribute')) {
-                $query = OwnersMediafiles::getMediaFilesQuery([
-                    'owner' => $request->get('owner'),
-                    'ownerId' => $request->get('ownerId'),
-                    'ownerAttribute' => $request->get('ownerAttribute')
-                ])->orWhere([
+            $requestParams = [];
+
+            if ((null !== $request->get('owner') && null !== $request->get('ownerId'))) {
+                $requestParams['owner'] = $request->get('owner');
+                $requestParams['ownerId'] = $request->get('ownerId');
+            }
+
+            if ((null !== $request->get('ownerAttribute') && null !== $request->get('ownerAttribute'))) {
+                $requestParams['ownerAttribute'] = $request->get('ownerAttribute');
+            }
+
+            if (count($requestParams) > 0) {
+                $query = OwnersMediafiles::getMediaFilesQuery($requestParams)->orWhere([
                     'not in', 'id', OwnersMediafiles::find()->select('mediafileId')->asArray()
                 ]);
             } else {

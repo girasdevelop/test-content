@@ -269,7 +269,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
         }
 
         if (isset($args['ownerAttribute'])){
-            if (!is_string($args['owner']) || empty($args['ownerAttribute'])){
+            if (!is_string($args['ownerAttribute']) || empty($args['ownerAttribute'])){
                 throw new InvalidArgumentException('Parameter ownerAttribute must be a string.');
             }
             $conditions['ownerAttribute'] = $args['ownerAttribute'];

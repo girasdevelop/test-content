@@ -252,7 +252,7 @@ abstract class AlbumController extends Controller
     {
         $model = $this->findModel($id);
 
-        $this->deleteMediafiles($model->type, $model->id, $model->getFileType($model->type), $this->module);
+        $this->deleteMediafiles($model->type, $model->id, $this->module);
 
         if ($model->delete()){
             return $this->redirect(['index']);

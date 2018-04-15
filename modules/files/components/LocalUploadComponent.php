@@ -38,12 +38,12 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var string
      */
     public $uploadDirs = [
-        LocalUpload::FILE_TYPE_IMAGE => 'uploads'.DIRECTORY_SEPARATOR.'images',
-        LocalUpload::FILE_TYPE_AUDIO => 'uploads'.DIRECTORY_SEPARATOR.'audio',
-        LocalUpload::FILE_TYPE_VIDEO => 'uploads'.DIRECTORY_SEPARATOR.'video',
-        LocalUpload::FILE_TYPE_APP => 'uploads'.DIRECTORY_SEPARATOR.'application',
-        LocalUpload::FILE_TYPE_TEXT => 'uploads'.DIRECTORY_SEPARATOR.'text',
-        LocalUpload::FILE_TYPE_OTHER => 'uploads'.DIRECTORY_SEPARATOR.'other',
+        UploadModelInterface::FILE_TYPE_IMAGE => 'uploads'.DIRECTORY_SEPARATOR.'images',
+        UploadModelInterface::FILE_TYPE_AUDIO => 'uploads'.DIRECTORY_SEPARATOR.'audio',
+        UploadModelInterface::FILE_TYPE_VIDEO => 'uploads'.DIRECTORY_SEPARATOR.'video',
+        UploadModelInterface::FILE_TYPE_APP => 'uploads'.DIRECTORY_SEPARATOR.'application',
+        UploadModelInterface::FILE_TYPE_TEXT => 'uploads'.DIRECTORY_SEPARATOR.'text',
+        UploadModelInterface::FILE_TYPE_OTHER => 'uploads'.DIRECTORY_SEPARATOR.'other',
     ];
 
     /**
@@ -59,9 +59,25 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
      * @var array
      */
     public $fileExtensions = [
-        'png', 'jpg', 'jpeg', 'gif',
-        'mp3', 'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
-        'doc', 'docx', 'rtf', 'pdf', 'txt', 'rar', 'zip', 'jar', 'mcd'
+        UploadModelInterface::FILE_TYPE_THUMB => [
+            'png', 'jpg', 'jpeg', 'gif',
+        ],
+        UploadModelInterface::FILE_TYPE_IMAGE => [
+            'png', 'jpg', 'jpeg', 'gif',
+        ],
+        UploadModelInterface::FILE_TYPE_AUDIO => [
+            'mp3',
+        ],
+        UploadModelInterface::FILE_TYPE_VIDEO => [
+            'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
+        ],
+        UploadModelInterface::FILE_TYPE_APP => [
+            'doc', 'docx', 'rtf', 'pdf', 'rar', 'zip', 'jar', 'mcd'
+        ],
+        UploadModelInterface::FILE_TYPE_TEXT => [
+            'txt'
+        ],
+        UploadModelInterface::FILE_TYPE_OTHER => null,
     ];
 
     /**

@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\{ArrayHelper, Html};
 use app\modules\files\Module;
-use app\modules\files\models\album\{Album};
+use app\modules\files\models\album\Album;
 use app\modules\files\widgets\FileSetter;
 
 /* @var $this yii\web\View */
@@ -24,6 +24,7 @@ use app\modules\files\widgets\FileSetter;
 <?php echo FileSetter::widget(ArrayHelper::merge([
     'model' => $model,
     'attribute' => $fileType.'[]',
+    'ownerAttribute' => $fileType,
     'buttonName' => Module::t('main', 'Set '.$fileType),
     'options' => [
         'id' => Html::getInputId($model, $fileType) . (isset($number) ? '-new-' . $number : '')
@@ -31,6 +32,6 @@ use app\modules\files\widgets\FileSetter;
     'mediafileContainer' => '#mediafile-container-new' . (isset($number) ? '-' . $number : ''),
     'titleContainer' => '#title-container-new' . (isset($number) ? '-' . $number : ''),
     'descriptionContainer' => '#description-container-new' . (isset($number) ? '-' . $number : ''),
-    'subDir' => Album::tableName()
-], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
+    'subDir' => strtolower($albumType)
+], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
 ); ?>

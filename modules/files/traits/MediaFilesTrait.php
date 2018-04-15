@@ -22,17 +22,15 @@ trait MediaFilesTrait
      *
      * @param string $owner
      * @param int $ownerId
-     * @param string $ownerAttribute
      * @param Module $module
      *
      * @return void
      */
-    private function deleteMediafiles(string $owner, int $ownerId, string $ownerAttribute, Module $module): void
+    private function deleteMediafiles(string $owner, int $ownerId, Module $module): void
     {
         $mediafileIds = OwnersMediafiles::getMediaFilesQuery([
             'owner' => $owner,
             'ownerId' => $ownerId,
-            'ownerAttribute' => $ownerAttribute,
         ])
         ->select('id')
         ->all();
@@ -96,7 +94,6 @@ trait MediaFilesTrait
             return $i;
 
         } else {
-
             $mediafileModel = $this->findMediafileModel((int)$id);
 
             switch ($mediafileModel->storage) {

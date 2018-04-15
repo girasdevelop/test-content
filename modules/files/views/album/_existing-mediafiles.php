@@ -5,7 +5,7 @@ use yii\widgets\LinkPager;
 use yii\helpers\{ArrayHelper, Html};
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
-use app\modules\files\models\album\{Album};
+use app\modules\files\models\album\Album;
 use app\modules\files\widgets\FileSetter;
 use app\modules\files\assets\FileSetterAsset;
 
@@ -50,6 +50,7 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
             <?php echo FileSetter::widget(ArrayHelper::merge([
                 'model' => $model,
                 'attribute' => $fileType.'[]',
+                'ownerAttribute' => $fileType,
                 'buttonName' => Module::t('main', 'Set '.$fileType),
                 'options' => [
                     'id' => Html::getInputId($model, $fileType) . '-' . $i
@@ -57,8 +58,8 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                 'mediafileContainer' => '#mediafile-container-' . $i,
                 'titleContainer' => '#title-container-' . $i,
                 'descriptionContainer' => '#description-container-' . $i,
-                'subDir' => Album::tableName()
-            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
+                'subDir' => strtolower($albumType)
+            ], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
             ); ?>
         </div>
     <?php endforeach; ?>

@@ -50,7 +50,7 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
             <?php echo FileSetter::widget(ArrayHelper::merge([
                 'model' => $model,
                 'attribute' => $fileType.'[]',
-                'ownerAttribute' => $fileType,
+                'neededFileType' => $fileType,
                 'buttonName' => Module::t('main', 'Set '.$fileType),
                 'options' => [
                     'id' => Html::getInputId($model, $fileType) . '-' . $i
@@ -59,7 +59,7 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                 'titleContainer' => '#title-container-' . $i,
                 'descriptionContainer' => '#description-container-' . $i,
                 'subDir' => strtolower($albumType)
-            ], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
+            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
             ); ?>
         </div>
     <?php endforeach; ?>

@@ -20,6 +20,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property string $owner
  * @property int $ownerId
  * @property string $ownerAttribute
+ * @property string $neededFileType Needed file type for validation (thumbnail, image e.t.c.).
  * @property bool $renameFiles
  * @property string $directorySeparator
  * @property array $fileExtensions
@@ -102,6 +103,13 @@ abstract class BaseUpload extends Model
      * @var string
      */
     public $ownerAttribute;
+
+    /**
+     * Needed file type for validation (thumbnail, image e.t.c.).
+     *
+     * @var string
+     */
+    public $neededFileType;
 
     /**
      * Rename file after upload.
@@ -303,6 +311,7 @@ abstract class BaseUpload extends Model
             'owner',
             'ownerId',
             'ownerAttribute',
+            'neededFileType',
             'alt',
             'title',
             'description',
@@ -318,23 +327,7 @@ abstract class BaseUpload extends Model
         return [
             [
                 [
-                    'owner',
-                ],
-                'string',
-                'on' => [
-                    self::SCENARIO_UPLOAD,
-                ],
-            ],
-            [
-                'ownerId',
-                'integer',
-                'on' => [
-                    self::SCENARIO_UPLOAD,
-                ],
-            ],
-            [
-                [
-                    'ownerAttribute',
+                    'neededFileType',
                 ],
                 'string',
                 'on' => [
@@ -357,7 +350,7 @@ abstract class BaseUpload extends Model
                     self::SCENARIO_UPDATE,
                 ],
                 'skipOnEmpty' => true,
-                'extensions' => array_key_exists($this->ownerAttribute, $this->fileExtensions) ? $this->fileExtensions[$this->ownerAttribute] : null,
+                'extensions' => array_key_exists($this->neededFileType, $this->fileExtensions) ? $this->fileExtensions[$this->neededFileType] : null,
                 'checkExtensionByMimeType' => $this->checkExtensionByMimeType,
                 'maxSize' => $this->fileMaxSize
             ],
@@ -392,6 +385,23 @@ abstract class BaseUpload extends Model
                 'on' => [
                     self::SCENARIO_UPLOAD,
                     self::SCENARIO_UPDATE,
+                ],
+            ],
+            [
+                [
+                    'owner',
+                    'ownerAttribute',
+                ],
+                'string',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
+                ],
+            ],
+            [
+                'ownerId',
+                'integer',
+                'on' => [
+                    self::SCENARIO_UPLOAD,
                 ],
             ],
         ];

@@ -55,6 +55,7 @@ $(document).ready(function() {
             owner = window.fileManagerModalContainer.attr("data-owner"),
             ownerId = window.fileManagerModalContainer.attr("data-owner-id"),
             ownerAttribute = window.fileManagerModalContainer.attr("data-owner-attribute"),
+            neededFileType = window.fileManagerModalContainer.attr("data-needed-file-type"),
             file = window.preparedFiles[fileNumber],
             fileType = file.type,
             params = {
@@ -84,6 +85,10 @@ $(document).ready(function() {
 
         if (ownerAttribute && ownerAttribute != ''){
             params.ownerAttribute = ownerAttribute;
+        }
+
+        if (neededFileType && neededFileType != ''){
+            params.neededFileType = neededFileType;
         }
 
         AJAX(url, 'POST', params, true, function () {

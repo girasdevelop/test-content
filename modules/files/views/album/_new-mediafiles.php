@@ -24,7 +24,7 @@ use app\modules\files\widgets\FileSetter;
 <?php echo FileSetter::widget(ArrayHelper::merge([
     'model' => $model,
     'attribute' => $fileType.'[]',
-    'ownerAttribute' => $fileType,
+    'neededFileType' => $fileType,
     'buttonName' => Module::t('main', 'Set '.$fileType),
     'options' => [
         'id' => Html::getInputId($model, $fileType) . (isset($number) ? '-new-' . $number : '')
@@ -33,5 +33,5 @@ use app\modules\files\widgets\FileSetter;
     'titleContainer' => '#title-container-new' . (isset($number) ? '-' . $number : ''),
     'descriptionContainer' => '#description-container-new' . (isset($number) ? '-' . $number : ''),
     'subDir' => strtolower($albumType)
-], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
+], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
 ); ?>

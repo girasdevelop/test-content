@@ -21,9 +21,9 @@ use app\modules\files\interfaces\UploadModelInterface;
 <?php echo FileSetter::widget(ArrayHelper::merge([
     'model' => $model,
     'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
-    'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB,
+    'neededFileType' => UploadModelInterface::FILE_TYPE_THUMB,
     'buttonName' => Module::t('main', 'Set thumbnail'),
     'mediafileContainer' => '#thumbnail-container',
     'subDir' => strtolower($albumType)
-], isset($ownerParams) && is_array($ownerParams) ? $ownerParams : [])
+], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
 ); ?>

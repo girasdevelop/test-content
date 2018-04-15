@@ -20,7 +20,9 @@ use app\modules\files\assets\FileSetterAsset;
  * </div>
  *
  * <?php echo FileSetter::widget([
- *    'name' => UploadModelInterface::FILE_TYPE_THUMB,
+ *    'model' => $model,
+ *    'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+ *    'neededFileType' => UploadModelInterface::FILE_TYPE_THUMB,
  *    'buttonName' => Module::t('main', 'Set thumbnail'),
  *    'mediafileContainer' => '#thumbnail-container',
  *    'owner' => 'post',
@@ -44,7 +46,9 @@ use app\modules\files\assets\FileSetterAsset;
  * </div>
  *
  * <?php echo FileSetter::widget([
- *    'name' => UploadModelInterface::FILE_TYPE_IMAGE,
+ *    'model' => $model,
+ *    'attribute' => UploadModelInterface::FILE_TYPE_IMAGE,
+ *    'neededFileType' => UploadModelInterface::FILE_TYPE_IMAGE,
  *    'buttonName' => Module::t('main', 'Set image'),
  *    'options' => [
  *       'id' => Html::getInputId($model, UploadModelInterface::FILE_TYPE_IMAGE) . (isset($number) ? '-new-' . $number : '')
@@ -61,6 +65,7 @@ use app\modules\files\assets\FileSetterAsset;
  * @property string|null $owner Owner name (post, article, page e.t.c.).
  * @property int|null $ownerId Owner id.
  * @property string|null $ownerAttribute Owner attribute (thumbnail, image e.t.c.).
+ * @property string|null $neededFileType Needed file type for validation (thumbnail, image e.t.c.).
  * @property string $subDir Subdirectory to upload files.
  * @property string $template Template to display widget elements.
  * @property string $buttonHtmlTag Button html tag.
@@ -102,6 +107,13 @@ class FileSetter extends InputWidget
      * @var string|null
      */
     public $ownerAttribute = null;
+
+    /**
+     * Needed file type for validation (thumbnail, image e.t.c.).
+     *
+     * @var string|null
+     */
+    public $neededFileType = null;
 
     /**
      * Subdirectory to upload files.
@@ -269,6 +281,7 @@ class FileSetter extends InputWidget
             'owner' => $this->owner,
             'ownerId' => $this->ownerId,
             'ownerAttribute' => $this->ownerAttribute,
+            'neededFileType' => $this->neededFileType,
             'subDir' => $this->subDir,
         ]);
 

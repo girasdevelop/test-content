@@ -74,10 +74,10 @@ $(document).ready(function() {
 
         if (owner){
             paramsArray.owner = owner;
+        }
 
-            if (ownerId){
-                paramsArray.ownerId = ownerId;
-            }
+        if (ownerId){
+            paramsArray.ownerId = ownerId;
         }
 
         if (ownerAttribute){

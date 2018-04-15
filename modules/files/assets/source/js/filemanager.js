@@ -58,7 +58,7 @@ $(document).ready(function() {
             baseUrl = fileInputs.attr("data-base-url"),
             popupElement = $('[role="popup"]'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
-            ownerAttribute = window.fileManagerModalContainer.attr("data-owner-attribute"),
+            neededFileType = window.fileManagerModalContainer.attr("data-needed-file-type"),
             params = {
                 _csrf: yii.getCsrfToken(),
                 id: fileInputs.attr("data-file-id"),
@@ -74,8 +74,8 @@ $(document).ready(function() {
             params.subDir = subDir;
         }
 
-        if (ownerAttribute){
-            params.ownerAttribute = ownerAttribute;
+        if (neededFileType){
+            params.neededFileType = neededFileType;
         }
 
         var fileInputField = $('[role="file-new"]');

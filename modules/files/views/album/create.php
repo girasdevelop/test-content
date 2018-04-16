@@ -7,8 +7,13 @@ use app\modules\files\models\album\Album;
 /* @var $albumType string */
 /* @var $fileType string */
 
-$this->title = Module::t('album', 'Create album');
-$this->params['breadcrumbs'][] = ['label' => Module::t('album', 'Albums'), 'url' => ['index']];
+$this->title = Module::t('album', 'Create '.$fileType.' album');
+$this->params['breadcrumbs'][] = [
+    'label' => Module::t('album', ucfirst($fileType).' albums'),
+    'url' => [
+        'index'
+    ]
+];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="album-create">

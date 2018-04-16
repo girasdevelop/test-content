@@ -105,6 +105,9 @@ $(document).ready(function() {
                     fileBlock.find('[role="delete-file-button"]').attr('data-file-id', data.data.files[0].id);
                 }
 
+                $(fileBlock.find('[role="file-title"]')).attr('disabled', 'disabled');
+                $(fileBlock.find('[role="file-description"]')).attr('disabled', 'disabled');
+
             } else {
                 showPopup(progressBlock, data.data.errors, true, 0);
             }

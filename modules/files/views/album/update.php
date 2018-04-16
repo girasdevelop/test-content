@@ -13,9 +13,19 @@ use app\modules\files\models\album\Album;
 /* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
 
-$this->title = Module::t('album', 'Update album') . ': ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('album', 'Albums'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->title = Module::t('album', 'Update '.$fileType.' album') . ': ' . $model->title;
+$this->params['breadcrumbs'][] = [
+    'label' => Module::t('album', ucfirst($fileType).' albums'),
+    'url' => [
+        'index'
+    ]
+];
+$this->params['breadcrumbs'][] = [
+    'label' => $model->title,
+    'url' => [
+        'view', 'id' => $model->id
+    ]
+];
 $this->params['breadcrumbs'][] = Module::t('main', 'Update');
 ?>
 <div class="album-update">

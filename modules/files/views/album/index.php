@@ -6,10 +6,11 @@ use app\modules\files\Module;
 use app\modules\files\models\album\Album;
 
 /* @var $this yii\web\View */
+/* @var $fileType string */
 /* @var $searchModel app\modules\files\models\album\AlbumSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('album', 'Albums');
+$this->title = isset($fileType) ? Module::t('album', ucfirst($fileType).' albums') : Module::t('album', 'Albums');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="album-index">

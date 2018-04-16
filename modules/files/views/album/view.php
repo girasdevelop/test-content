@@ -12,9 +12,15 @@ use app\modules\files\models\album\Album;
 /* @var $model Album */
 /* @var $mediafiles Mediafile[] */
 /* @var $pages Pagination */
+/* @var $fileType string */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('album', 'Albums'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = [
+    'label' => Module::t('album', ucfirst($fileType).' albums'),
+    'url' => [
+        'index'
+    ]
+];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

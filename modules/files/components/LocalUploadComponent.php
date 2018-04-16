@@ -72,10 +72,10 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
             'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
         ],
         UploadModelInterface::FILE_TYPE_APP => [
-            'doc', 'docx', 'rtf', 'pdf', 'rar', 'zip', 'jar', 'mcd'
+            'doc', 'docx', 'rtf', 'pdf', 'rar', 'zip', 'jar', 'mcd', 'xls',
         ],
         UploadModelInterface::FILE_TYPE_TEXT => [
-            'txt'
+            'txt',
         ],
         UploadModelInterface::FILE_TYPE_OTHER => null,
     ];

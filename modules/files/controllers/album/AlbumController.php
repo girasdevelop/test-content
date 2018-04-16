@@ -139,6 +139,7 @@ abstract class AlbumController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'fileType' => $searchModel->getFileType($this->getAlbumType()),
         ]);
     }
 
@@ -167,6 +168,7 @@ abstract class AlbumController extends Controller
                 ->limit($pages->limit)
                 ->all(),
             'pages' => $pages,
+            'fileType' => $model->getFileType($this->getAlbumType()),
         ]);
     }
 

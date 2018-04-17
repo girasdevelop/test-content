@@ -9,13 +9,23 @@ use app\modules\files\models\{ActiveRecord, OwnersMediafiles};
 /**
  * This is the model class for audio album.
  *
- * @property array $audio
+ * @property array $audio Audio field. Corresponds to the file type of audio.
+ * In the thml form field should also be called.
+ * Can have the values according with the selected type of:
+ * FileSetter::INSERTED_DATA_ID
+ * FileSetter::INSERTED_DATA_URL
  *
  * @package Itstructure\FilesModule\models\album
  */
 class AudioAlbum extends Album
 {
     /**
+     * Audio field. Corresponds to the file type of audio.
+     * In the thml form field should also be called.
+     * Can have the values according with the selected type of:
+     * FileSetter::INSERTED_DATA_ID
+     * FileSetter::INSERTED_DATA_URL
+     *
      * @var array audio(array of 'mediafile id' or 'mediafile url').
      */
     public $audio;

@@ -9,10 +9,10 @@ use app\modules\files\interfaces\UploadModelInterface;
 /**
  * This is the model class for table "owners_mediafiles".
  *
- * @property int $mediafileId
- * @property int $ownerId
- * @property string $owner
- * @property string $ownerAttribute
+ * @property int $mediafileId Mediafile id.
+ * @property int $ownerId Owner id.
+ * @property string $owner Owner name (post, article, page e.t.c.).
+ * @property string $ownerAttribute Owner attribute (thumbnail, image e.t.c.).
  *
  * @property Mediafile $mediafile
  *

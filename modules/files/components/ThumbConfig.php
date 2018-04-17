@@ -7,11 +7,11 @@ use app\modules\files\interfaces\ThumbConfigInterface;
 /**
  * Class ThumbConfig
  *
- * @property string $alias
- * @property string $name
- * @property int $width
- * @property int $height
- * @property string $mode
+ * @property string $alias Alias name.
+ * @property string $name Config name.
+ * @property int $width Thumb width.
+ * @property int $height Thumb height.
+ * @property string $mode Thumb mode.
  *
  * @package app\components
  */

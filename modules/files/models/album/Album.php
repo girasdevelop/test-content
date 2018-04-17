@@ -10,7 +10,11 @@ use app\modules\files\interfaces\UploadModelInterface;
 /**
  * This is the model class for table "albums".
  *
- * @property int|string $thumbnail
+ * @property int|string $thumbnail Thumbnail field. Corresponds to the file type of thumbnail.
+ * In the thml form field should also be called.
+ * Can have the values according with the selected type of:
+ * FileSetter::INSERTED_DATA_ID
+ * FileSetter::INSERTED_DATA_URL
  * @property int $id
  * @property string $title
  * @property string $description
@@ -32,6 +36,12 @@ class Album extends ActiveRecord
     const ALBUM_TYPE_OTHER = UploadModelInterface::FILE_TYPE_OTHER . 'Album';
 
     /**
+     * Thumbnail field. Corresponds to the file type of thumbnail.
+     * In the thml form field should also be called.
+     * Can have the values according with the selected type of:
+     * FileSetter::INSERTED_DATA_ID
+     * FileSetter::INSERTED_DATA_URL
+     *
      * @var int|string thumbnail(mediafile id or url).
      */
     public $thumbnail;

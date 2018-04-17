@@ -9,10 +9,10 @@ use app\modules\files\models\album\Album;
 /**
  * This is the model class for table "owners_albums".
  *
- * @property int $albumId
- * @property int $ownerId
- * @property string $owner
- * @property string $ownerAttribute
+ * @property int $albumId Album id.
+ * @property int $ownerId Owner id.
+ * @property string $owner Owner name (post, article, page e.t.c.).
+ * @property string $ownerAttribute Owner attribute (thumbnail, image e.t.c.).
  *
  * @property Album $album
  *

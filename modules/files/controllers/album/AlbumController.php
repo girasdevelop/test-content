@@ -19,7 +19,7 @@ use app\modules\files\traits\MediaFilesTrait;
 /**
  * AlbumController implements the CRUD actions for Album model.
  *
- * @property Album $model
+ * @property Album $model Model object record.
  * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\album

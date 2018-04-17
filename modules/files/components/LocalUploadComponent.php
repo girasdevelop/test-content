@@ -12,14 +12,15 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * Class LocalUploadComponent
  * Component class to upload files in local space.
  *
- * @property string $uploadRoot
- * @property array $uploadDirs
- * @property bool $renameFiles
- * @property array $fileExtensions
- * @property bool $checkExtensionByMimeType
- * @property int $fileMaxSize
- * @property array $thumbsConfig
- * @property string $thumbFilenameTemplate
+ * @property string $uploadRoot Root directory for local uploaded files.
+ * @property array $uploadDirs Directory for uploaded files.
+ * @property bool $renameFiles Rename file after upload.
+ * @property array $fileExtensions File extensions.
+ * @property bool $checkExtensionByMimeType Check extension by MIME type (they are must match).
+ * @property int $fileMaxSize Maximum file size.
+ * @property array $thumbsConfig Thumbs config with their types and sizes.
+ * @property string $thumbFilenameTemplate Thumbnails name template.
+ * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
  *
  * @package Itstructure\FilesModule\components
  */
@@ -95,6 +96,8 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     public $fileMaxSize = 1024*1024*64;
 
     /**
+     * Thumbs config with their types and sizes.
+     *
      * @var array
      */
     public $thumbsConfig = [];

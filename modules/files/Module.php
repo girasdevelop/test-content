@@ -13,17 +13,18 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
 /**
  * Files module class.
  *
- * @property null|string|array $loginUrl
- * @property array $accessRoles
- * @property array|null $authenticator
- * @property array|null $rateLimiter
- * @property array|null $contentNegotiator
- * @property string $fileAttributeName
- * @property array $thumbsConfig
- * @property string $thumbFilenameTemplate
- * @property array $thumbStubUrls
- * @property bool $enableCsrfValidation
- * @property View $_view
+ * @property null|string|array $loginUrl Login url.
+ * @property array $accessRoles Array of roles to module access.
+ * @property array|null $authenticator Auth filter.
+ * @property array|null $rateLimiter Rate limit filter.
+ * @property array|null $contentNegotiator Content negotiator filter.
+ * @property string $fileAttributeName Name of the file field.
+ * @property array $thumbsConfig Thumbs config with their types and sizes.
+ * @property string $thumbFilenameTemplate Thumbnails name template.
+ * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
+ * @property array $thumbStubUrls Default thumbnail stub urls according with file type.
+ * @property bool $enableCsrfValidation Csrf validation.
+ * @property View $_view View component to render content.
  *
  * @package Itstructure\FilesModule
  */
@@ -91,6 +92,8 @@ class Module extends BaseModule
     public $fileAttributeName = 'file';
 
     /**
+     * Thumbs config with their types and sizes.
+     *
      * @var array of thumbnails.
      */
     public $thumbsConfig = [

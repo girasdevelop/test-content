@@ -12,30 +12,31 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 /**
  * Class BaseUpload
  *
- * @property string $alt
- * @property string $title
- * @property string $description
- * @property string $advance
- * @property string $subDir
- * @property string $owner
- * @property int $ownerId
- * @property string $ownerAttribute
+ * @property string $alt Alt text for the file.
+ * @property string $title Title for the file.
+ * @property string $description File description.
+ * @property string $advance Advance value.
+ * @property string $subDir Addition sub-directory for uploaded files.
+ * @property string $owner Owner name (post, page, article e.t.c.).
+ * @property int $ownerId Owner id.
+ * @property string $ownerAttribute Owner attribute (image, audio, thumbnail e.t.c.).
  * @property string $neededFileType Needed file type for validation (thumbnail, image e.t.c.).
- * @property bool $renameFiles
- * @property string $directorySeparator
- * @property array $fileExtensions
- * @property bool $checkExtensionByMimeType
- * @property int $fileMaxSize
- * @property array $thumbsConfig
- * @property string $thumbFilenameTemplate
- * @property string $uploadRoot
- * @property string $directoryForDelete
- * @property string $uploadDir
- * @property string $uploadPath
- * @property string $outFileName
- * @property string $databaseDir
- * @property UploadedFile $file
- * @property Mediafile $mediafileModel
+ * @property bool $renameFiles Rename file after upload.
+ * @property string $directorySeparator Directory separator.
+ * @property array $fileExtensions File extensions.
+ * @property bool $checkExtensionByMimeType Check extension by MIME type (they are must match).
+ * @property int $fileMaxSize Maximum file size.
+ * @property array $thumbsConfig Thumbs config with their types and sizes.
+ * @property string $thumbFilenameTemplate Thumbnails name template.
+ * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
+ * @property string $uploadRoot Root directory for uploaded files.
+ * @property string $directoryForDelete Directory for delete with all content.
+ * @property string $uploadDir Directory for uploaded files.
+ * @property string $uploadPath Full directory path to upload file.
+ * @property string $outFileName Prepared file name to save in database and storage.
+ * @property string $databaseUrl File url path for database.
+ * @property UploadedFile $file File object.
+ * @property Mediafile $mediafileModel Mediafile model to save files data.
  *
  * @package Itstructure\FilesModule\models
  */
@@ -167,6 +168,8 @@ abstract class BaseUpload extends Model
     public $fileMaxSize = 1024*1024*64;
 
     /**
+     * Thumbs config with their types and sizes.
+     *
      * @var array
      */
     public $thumbsConfig = [];
@@ -215,11 +218,11 @@ abstract class BaseUpload extends Model
     protected $outFileName;
 
     /**
-     * File directory path for database.
+     * File url path for database.
      *
      * @var string
      */
-    protected $databaseDir;
+    protected $databaseUrl;
 
     /**
      * File object.
@@ -241,7 +244,7 @@ abstract class BaseUpload extends Model
      * $this->uploadDir
      * $this->uploadPath
      * $this->outFileName
-     * $this->databaseDir
+     * $this->databaseUrl
      * $this->mediafileModel->type
      *
      * @return void
@@ -481,7 +484,7 @@ abstract class BaseUpload extends Model
                 $this->deleteFiles();
             }
 
-            $this->mediafileModel->url = $this->databaseDir;
+            $this->mediafileModel->url = $this->databaseUrl;
             $this->mediafileModel->filename = $this->outFileName;
             $this->mediafileModel->size = $this->file->size;
             $this->mediafileModel->storage = $this->getStorage();

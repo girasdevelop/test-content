@@ -9,13 +9,23 @@ use app\modules\files\models\{ActiveRecord, OwnersMediafiles};
 /**
  * This is the model class for text album.
  *
- * @property array $text
+ * @property array $text Text field. Corresponds to the file type of text.
+ * In the thml form field should also be called.
+ * Can have the values according with the selected type of:
+ * FileSetter::INSERTED_DATA_ID
+ * FileSetter::INSERTED_DATA_URL
  *
  * @package Itstructure\FilesModule\models\album
  */
 class TextAlbum extends Album
 {
     /**
+     * Text field. Corresponds to the file type of text.
+     * In the thml form field should also be called.
+     * Can have the values according with the selected type of:
+     * FileSetter::INSERTED_DATA_ID
+     * FileSetter::INSERTED_DATA_URL
+     *
      * @var array text(array of 'mediafile id' or 'mediafile url').
      */
     public $text;

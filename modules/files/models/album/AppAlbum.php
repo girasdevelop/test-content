@@ -9,13 +9,23 @@ use app\modules\files\models\{ActiveRecord, OwnersMediafiles};
 /**
  * This is the model class for application album.
  *
- * @property array $application
+ * @property array $application Application field. Corresponds to the file type of application.
+ * In the thml form field should also be called.
+ * Can have the values according with the selected type of:
+ * FileSetter::INSERTED_DATA_ID
+ * FileSetter::INSERTED_DATA_URL
  *
  * @package Itstructure\FilesModule\models\album
  */
 class AppAlbum extends Album
 {
     /**
+     * Application field. Corresponds to the file type of application.
+     * In the thml form field should also be called.
+     * Can have the values according with the selected type of:
+     * FileSetter::INSERTED_DATA_ID
+     * FileSetter::INSERTED_DATA_URL
+     *
      * @var array application(array of 'mediafile id' or 'mediafile url').
      */
     public $application;

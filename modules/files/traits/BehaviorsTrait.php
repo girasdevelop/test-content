@@ -8,9 +8,9 @@ use yii\base\InvalidConfigException;
 /**
  * Trait BehaviorsTrait
  *
- * @property array|null $authenticator
- * @property array|null $rateLimiter
- * @property array|null $contentNegotiator
+ * @property array|null $authenticator Auth filter.
+ * @property array|null $rateLimiter Rate limit filter.
+ * @property array|null $contentNegotiator Content negotiator filter.
  *
  * @package Itstructure\FilesModule\traits
  */

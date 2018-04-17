@@ -11,9 +11,9 @@ use app\modules\files\models\Mediafile;
  * Class Behavior
  * Base Behavior class to add, update and remove owners of media model.
  *
- * @property string $name
- * @property array $attributes
- * @property string $findModelKey
+ * @property string $name Owner name.
+ * @property array $attributes Owner attribute names.
+ * @property string $findModelKey Key, which is used to find model record.
  *
  * @package Itstructure\AdminModule\behaviors
  */

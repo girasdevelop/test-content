@@ -13,7 +13,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 /**
  * Class LocalUpload
  *
- * @property array $uploadDirs
+ * @property array $uploadDirs Directories for local uploaded files.
  *
  * @package Itstructure\FilesModule\models
  */
@@ -57,7 +57,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * $this->uploadDir
      * $this->uploadPath
      * $this->outFileName
-     * $this->databaseDir
+     * $this->databaseUrl
      * $this->mediafileModel->type
      *
      * @throws InvalidConfigException
@@ -84,7 +84,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
 
-        $this->databaseDir = DIRECTORY_SEPARATOR . $this->uploadDir . DIRECTORY_SEPARATOR . $this->outFileName;
+        $this->databaseUrl = DIRECTORY_SEPARATOR . $this->uploadDir . DIRECTORY_SEPARATOR . $this->outFileName;
 
         $this->mediafileModel->type = $this->file->type;
     }

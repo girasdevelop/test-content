@@ -19,6 +19,7 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property array|null $rateLimiter Rate limit filter.
  * @property array|null $contentNegotiator Content negotiator filter.
  * @property string $fileAttributeName Name of the file field.
+ * @property array $previewOptions Preview options for som types of mediafiles according with their location.
  * @property array $thumbsConfig Thumbs config with their types and sizes.
  * @property string $thumbFilenameTemplate Thumbnails name template.
  * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
@@ -46,6 +47,7 @@ class Module extends BaseModule
 
     const ORIGINAL_PREVIEW_WIDTH = 300;
     const ORIGINAL_PREVIEW_HEIGHT = 240;
+    const SCANTY_PREVIEW_SIZE = 50;
 
     const STORAGE_TYPE_LOCAL = 'local';
 
@@ -92,6 +94,65 @@ class Module extends BaseModule
     public $fileAttributeName = 'file';
 
     /**
+     * Preview options for som types of mediafiles according with their location.
+     *
+     * @var array
+     */
+    public $previewOptions = [
+        UploadModelInterface::FILE_TYPE_IMAGE => [
+            'existing' => [
+                'alias' => self::MEDIUM_THUMB_ALIAS
+            ],
+            'fileinfo' => [
+                'alias' => self::DEFAULT_THUMB_ALIAS
+            ],
+            'fileitem' => [
+                'alias' => self::DEFAULT_THUMB_ALIAS
+            ],
+        ],
+        UploadModelInterface::FILE_TYPE_AUDIO => [
+            'existing' => [
+                'width' => self::ORIGINAL_PREVIEW_WIDTH
+            ],
+            'fileinfo' => [
+                'width' => self::ORIGINAL_PREVIEW_WIDTH
+            ],
+            'fileitem' => [
+                'width' => self::ORIGINAL_PREVIEW_WIDTH
+            ],
+        ],
+        UploadModelInterface::FILE_TYPE_VIDEO => [
+            'existing' => [
+                'width' => self::ORIGINAL_PREVIEW_WIDTH,
+                'height' => self::ORIGINAL_PREVIEW_HEIGHT,
+            ],
+            'fileinfo' => [
+                'width' => self::ORIGINAL_PREVIEW_WIDTH,
+                'height' => self::ORIGINAL_PREVIEW_HEIGHT,
+            ],
+            'fileitem' => [
+                'width' => self::ORIGINAL_PREVIEW_WIDTH,
+                'height' => self::ORIGINAL_PREVIEW_HEIGHT,
+            ],
+        ],
+        UploadModelInterface::FILE_TYPE_APP => [
+            'fileitem' => [
+                'width' => self::SCANTY_PREVIEW_SIZE,
+            ],
+        ],
+        UploadModelInterface::FILE_TYPE_TEXT => [
+            'fileitem' => [
+                'width' => self::SCANTY_PREVIEW_SIZE,
+            ],
+        ],
+        UploadModelInterface::FILE_TYPE_OTHER => [
+            'fileitem' => [
+                'width' => self::SCANTY_PREVIEW_SIZE,
+            ],
+        ],
+    ];
+
+    /**
      * Thumbs config with their types and sizes.
      *
      * @var array of thumbnails.
@@ -103,7 +164,7 @@ class Module extends BaseModule
         ],
         self::MEDIUM_THUMB_ALIAS => [
             'name' => 'Medium size',
-            'size' => [400, 300],
+            'size' => [300, 240],
         ],
         self::LARGE_THUMB_ALIAS => [
             'name' => 'Large size',
@@ -242,6 +303,40 @@ class Module extends BaseModule
     }
 
     /**
+     * Default thumb config
+     *
+     * @return array
+     */
+    public static function getDefaultThumbConfig(): array
+    {
+        return [
+            'name' => 'Default size',
+            'size' => [150, 150],
+        ];
+    }
+
+    /**
+     * Get preview options for som types of mediafiles according with their location.
+     *
+     * @param string $fileType
+     * @param string $location
+     *
+     * @return array
+     */
+    public function getPreviewOptions(string $fileType, string $location): array
+    {
+        if (!isset($this->previewOptions[$fileType]) || !is_array($this->previewOptions[$fileType])){
+            return [];
+        }
+
+        if (!isset($this->previewOptions[$fileType][$location]) || !is_array($this->previewOptions[$fileType][$location])){
+            return [];
+        }
+
+        return $this->previewOptions[$fileType][$location];
+    }
+
+    /**
      * Module translator.
      *
      * @param       $category
@@ -258,19 +353,6 @@ class Module extends BaseModule
         }
 
         return Yii::t('modules/files/' . $category, $message, $params, $language);
-    }
-
-    /**
-     * Default thumb config
-     *
-     * @return array
-     */
-    public static function getDefaultThumbConfig(): array
-    {
-        return [
-            'name' => 'Default size',
-            'size' => [150, 150],
-        ];
     }
 
     /**

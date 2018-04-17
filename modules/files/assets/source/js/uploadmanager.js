@@ -108,6 +108,10 @@ $(document).ready(function() {
                 $(fileBlock.find('[role="file-title"]')).attr('disabled', 'disabled');
                 $(fileBlock.find('[role="file-description"]')).attr('disabled', 'disabled');
 
+                if (fileType.split('/')[0] == 'image'){
+                    $(fileBlock.find('[role="file-alt"]')).attr('disabled', 'disabled');
+                }
+
             } else {
                 showPopup(progressBlock, data.data.errors, true, 0);
             }

@@ -36,7 +36,7 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
             <?php $i+=1; ?>
             <div class="media">
                 <div class="media-left" id="mediafile-container-<?php echo $i; ?>">
-                    <?php echo $mediafile->getPreview($baseUrl, $mediafile->isImage() ? ['width' => Module::ORIGINAL_PREVIEW_WIDTH, 'thumbAlias' => Module::ORIGINAL_THUMB_ALIAS] : []); ?>
+                    <?php echo $mediafile->getPreview($baseUrl, 'existing'); ?>
                 </div>
                 <div class="media-body">
                     <h4 id="title-container-<?php echo $i; ?>" class="media-heading">

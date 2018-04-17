@@ -87,10 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php $i+=1; ?>
                         <div class="media">
                             <div class="media-left" id="mediafile-container-<?php echo $i; ?>">
-                                <?php echo $mediafile->getPreview(BaseAsset::register($this)->baseUrl, $mediafile->isImage() ? [
-                                    'width' => Module::ORIGINAL_PREVIEW_WIDTH,
-                                    'thumbAlias' => Module::ORIGINAL_THUMB_ALIAS
-                                ] : []); ?>
+                                <?php echo $mediafile->getPreview(BaseAsset::register($this)->baseUrl, 'existing'); ?>
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">

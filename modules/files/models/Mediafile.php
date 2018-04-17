@@ -31,9 +31,9 @@ use app\modules\files\interfaces\UploadModelInterface;
 class Mediafile extends ActiveRecord
 {
     /**
-     * @var null|Module
+     * @var Module
      */
-    private $_module = null;
+    private $_module;
 
     /**
      * {@inheritdoc}
@@ -118,7 +118,7 @@ class Mediafile extends ActiveRecord
     }
 
     /**
-     * @return Module|null|static
+     * @return Module
      */
     public function getModule(): Module
     {
@@ -206,24 +206,30 @@ class Mediafile extends ActiveRecord
      * Get preview html.
      *
      * @param string $baseUrl
+     * @param string $location
      * @param array $options
      *
      * @return string
      */
-    public function getPreview($baseUrl = '', array $options = []): string
+    public function getPreview($baseUrl = '', string $location, array $options = []): string
     {
+        $module = $this->getModule();
+
         if ($this->isImage()){
+            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_IMAGE, $location), $options);
+
             if (empty($options['alt'])) {
                 $options['alt'] = $this->alt;
             }
 
-            if (isset($options['thumbAlias']) && is_string($options['thumbAlias'])){
-                return Html::img($this->getDefaultThumbUrl($baseUrl, $options['thumbAlias']), $options);
+            if (isset($options['alias']) && is_string($options['alias'])){
+                return Html::img($this->getDefaultThumbUrl($baseUrl, $options['alias']), $options);
             }
 
             return Html::img($this->getDefaultThumbUrl($baseUrl), $options);
 
         } elseif ($this->isAudio()){
+            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_AUDIO, $location), $options);
             return Html::audio($this->url, ArrayHelper::merge([
                     'source' => [
                         'type' => $this->type
@@ -232,6 +238,7 @@ class Mediafile extends ActiveRecord
             );
 
         } elseif ($this->isVideo()){
+            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_VIDEO, $location), $options);
             return Html::video($this->url, ArrayHelper::merge([
                     'source' => [
                         'type' => $this->type
@@ -240,12 +247,15 @@ class Mediafile extends ActiveRecord
             );
 
         } elseif ($this->isApp()){
+            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_APP, $location), $options);
             return Html::img($this->getAppPreviewUrl($baseUrl), $options);
 
         } elseif ($this->isText()){
+            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_TEXT, $location), $options);
             return Html::img($this->getTextPreviewUrl($baseUrl), $options);
 
         } else {
+            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_OTHER, $location), $options);
             return Html::img($this->getOtherPreviewUrl($baseUrl), $options);
         }
     }

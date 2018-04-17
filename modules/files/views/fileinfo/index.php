@@ -14,7 +14,7 @@ $bundle = FilemanagerAsset::register($this);
 
 <div class="media">
     <div <?php if ($model->isImage() || $model->isApp()): ?>class="media-left"<?php endif; ?> >
-        <?php echo $model->getPreview($bundle->baseUrl) ?>
+        <?php echo $model->getPreview($bundle->baseUrl, 'fileinfo') ?>
     </div>
     <div class="media-body">
         <h4 class="media-heading"><?php echo Module::t('filemanager', 'File information') ?></h4>
@@ -34,7 +34,7 @@ $bundle = FilemanagerAsset::register($this);
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
      data-is-image="<?php echo $model->isImage() ?>"
      data-base-url="<?php echo $bundle->baseUrl ?>"
-     data-original-width="<?php echo Module::ORIGINAL_PREVIEW_WIDTH ?>">
+     data-original-preview-width="<?php echo Module::ORIGINAL_PREVIEW_WIDTH ?>">
 
     <?php if ($model->isImage()): ?>
         <div class="input-group input-group-sm">

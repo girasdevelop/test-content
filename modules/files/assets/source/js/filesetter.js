@@ -33,7 +33,7 @@ $(document).ready(function() {
                     };
 
                 if (fileTypeShort === 'image' || fileTypeShort === 'video' || fileTypeShort === 'audio'){
-                    previewOptions.main = {width: fileInputs.attr("data-original-width")};
+                    previewOptions.main = {width: fileInputs.attr("data-original-preview-width")};
                 }
 
                 var preview = getPreview(previewOptions);

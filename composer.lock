@@ -294,7 +294,6 @@
                 "html"
             ],
             "time": "2018-02-23T01:58:20+00:00"
-<<<<<<< HEAD
         },
         {
             "name": "imagine/imagine",
@@ -353,8 +352,6 @@
                 "image processing"
             ],
             "time": "2018-02-12T12:28:52+00:00"
-=======
->>>>>>> master
         },
         {
             "name": "itstructure/yii2-admin-module",

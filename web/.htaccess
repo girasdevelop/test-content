@@ -6,9 +6,5 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_METHOD} (PUT|POST|GET|DELETE)
 
-<limit get="" post="" put="" delete="">
-order deny,allow
-allow from all
-</limit>
 # otherwise forward it to index.php
 RewriteRule . index.php

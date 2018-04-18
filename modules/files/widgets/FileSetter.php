@@ -74,6 +74,10 @@ use app\modules\files\assets\FileSetterAsset;
  * @property string $resetButtonHtmlTag Reset button html tag.
  * @property string $resetButtonName Reset button name.
  * @property array $resetButtonOptions Reset button html options.
+ * @property string $deleteBoxName Delete box name (text).
+ * @property string $deleteBoxAttribute Delete box attribute.
+ * @property array $deleteBoxOptions Delete box html options.
+ * @property bool $deleteBoxDisplay Display or not delete box.
  * @property string $mediafileContainer In this container will be inserted selected mediafile.
  * @property string $titleContainer In this container will be inserted title of selected mediafile.
  * @property string $descriptionContainer In this container will be inserted description of selected mediafile.

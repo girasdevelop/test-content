@@ -210,7 +210,14 @@ abstract class AlbumController extends Controller
     {
         $this->setModelByConditions($id);
 
-        if ($this->model->load(Yii::$app->request->post()) && $this->model->save()) {
+        $post = Yii::$app->request->post();
+
+        if ($this->model->load($post) && $this->model->save()) {
+
+            if (isset($post['delete']) && is_array($post)){
+                $this->deleteMediafileEntry($post['delete'], $this->module);
+            }
+
             return $this->redirect([
                 'view',
                 'id' => $this->model->id

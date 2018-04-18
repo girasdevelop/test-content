@@ -223,10 +223,10 @@ class Mediafile extends ActiveRecord
             }
 
             if (isset($options['alias']) && is_string($options['alias'])){
-                return Html::img($this->getDefaultThumbUrl($baseUrl, $options['alias']), $options);
+                return Html::img($this->getThumbUrl($options['alias']), $options);
             }
 
-            return Html::img($this->getDefaultThumbUrl($baseUrl), $options);
+            return Html::img($this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS), $options);
 
         } elseif ($this->isAudio()){
             $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_AUDIO, $location), $options);
@@ -384,14 +384,13 @@ class Mediafile extends ActiveRecord
      * Get default thumbnail url.
      *
      * @param string $baseUrl
-     * @param string $thumbAlias
      *
      * @return string
      */
-    public function getDefaultThumbUrl($baseUrl = '', string $thumbAlias = Module::DEFAULT_THUMB_ALIAS): string
+    public function getDefaultThumbUrl($baseUrl = ''): string
     {
         if ($this->isImage()){
-            return $this->getThumbUrl($thumbAlias);
+            return $this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
 
         } elseif ($this->isApp()){
             return $this->getAppPreviewUrl($baseUrl);

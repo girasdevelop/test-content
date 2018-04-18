@@ -52,8 +52,14 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                 'attribute' => $fileType.'[]',
                 'neededFileType' => $fileType,
                 'buttonName' => Module::t('main', 'Set '.$fileType),
+                'resetButtonName' => Module::t('main', 'Clear'),
                 'options' => [
                     'id' => Html::getInputId($model, $fileType) . '-' . $i
+                ],
+                'deleteBoxDisplay' => true,
+                'deleteBoxName' => Module::t('main', 'Delete'),
+                'deleteBoxOptions' => [
+                    'value' => $mediafile->id
                 ],
                 'mediafileContainer' => '#mediafile-container-' . $i,
                 'titleContainer' => '#title-container-' . $i,

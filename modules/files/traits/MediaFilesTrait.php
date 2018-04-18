@@ -13,10 +13,19 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
 /**
  * Trait DeleteFilesTrait
  *
+ * @property UploadComponentInterface[]|LocalUploadComponent[] $tmpUploadComponents Upload components to delete files according with their different types.
+ *
  * @package Itstructure\FilesModule\traits
  */
 trait MediaFilesTrait
 {
+    /**
+     * Upload components to delete files according with their different types.
+     *
+     * @var UploadComponentInterface[]|LocalUploadComponent[]
+     */
+    protected $tmpUploadComponents = [];
+
     /**
      * Delete mediafiles from owner.
      *
@@ -26,7 +35,7 @@ trait MediaFilesTrait
      *
      * @return void
      */
-    private function deleteMediafiles(string $owner, int $ownerId, Module $module): void
+    protected function deleteMediafiles(string $owner, int $ownerId, Module $module): void
     {
         $mediafileIds = OwnersMediafiles::getMediaFilesQuery([
             'owner' => $owner,
@@ -50,7 +59,7 @@ trait MediaFilesTrait
      *
      * @return Mediafile
      */
-    private function findMediafileModel(int $id): Mediafile
+    protected function findMediafileModel(int $id): Mediafile
     {
         $modelObject = new Mediafile();
 
@@ -81,7 +90,7 @@ trait MediaFilesTrait
      *
      * @return bool|int
      */
-    private function deleteMediafileEntry($id, Module $module)
+    protected function deleteMediafileEntry($id, Module $module)
     {
         if (is_array($id)){
             $i = 0;
@@ -98,8 +107,7 @@ trait MediaFilesTrait
 
             switch ($mediafileModel->storage) {
                 case Module::STORAGE_TYPE_LOCAL: {
-                    /** @var UploadComponentInterface|LocalUploadComponent $uploadComponent */
-                    $uploadComponent = $module->get('local-upload-component');
+                    $this->setComponentIfNotIsset($mediafileModel->storage, $module->get('local-upload-component'));
                     break;
                 }
 
@@ -109,13 +117,28 @@ trait MediaFilesTrait
             }
 
             /** @var UploadModelInterface|BaseUpload $deleteModel */
-            $deleteModel = $uploadComponent->setModelForDelete($mediafileModel);
+            $deleteModel = $this->tmpUploadComponents[$mediafileModel->storage]->setModelForDelete($mediafileModel);
 
             if (!$deleteModel->delete()){
                 return false;
             }
 
             return 1;
+        }
+    }
+
+    /**
+     * Set tmp upload component if not isset.
+     *
+     * @param string $storage
+     * @param UploadComponentInterface $component
+     *
+     * @return void
+     */
+    private function setComponentIfNotIsset(string $storage, UploadComponentInterface $component): void
+    {
+        if (!isset($this->tmpUploadComponents[$storage])){
+            $this->tmpUploadComponents[$storage] = $component;
         }
     }
 }

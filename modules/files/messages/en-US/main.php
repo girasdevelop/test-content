@@ -9,6 +9,7 @@ return [
     'Delete' => 'Delete',
     'Save' => 'Save',
     'Insert' => 'Insert',
+    'Clear' => 'Clear',
     'Active' => 'Active',
     'Blocked' => 'Blocked',
     'Default' => 'Default',

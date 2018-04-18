@@ -164,6 +164,7 @@ abstract class AlbumController extends Controller
 
         return $this->render('view', [
             'model' => $model,
+            'thumbnailModel' => $model->getThumbnailModel(),
             'mediafiles' => $mediafilesQuery->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all(),

@@ -4,6 +4,10 @@ namespace app\modules\files\assets;
 
 class FileSetterAsset extends BaseAsset
 {
+    public $css = [
+        'css/filesetter.css',
+    ];
+
     public $js = [
         'js/filesetter.js',
     ];

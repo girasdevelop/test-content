@@ -127,7 +127,7 @@ class FileSetter extends InputWidget
      *
      * @var string
      */
-    public $template = '<div class="input-group">{input}<span class="input-group-btn">{button}{reset-button}</span></div>';
+    public $template = '<div class="input-group">{input}<span class="input-group-btn">{button}{reset-button}</span><span class="delete-box">{delete-box}</span></div>';
 
     /**
      * Button html tag.
@@ -162,7 +162,7 @@ class FileSetter extends InputWidget
      *
      * @var string
      */
-    public $resetButtonName = '<span class="text-danger glyphicon glyphicon-remove"></span>';
+    public $resetButtonName = 'Clear';
 
     /**
      * Reset button html options.
@@ -170,6 +170,34 @@ class FileSetter extends InputWidget
      * @var array
      */
     public $resetButtonOptions = [];
+
+    /**
+     * Delete box name (text).
+     *
+     * @var string
+     */
+    public $deleteBoxName = 'Delete';
+
+    /**
+     * Delete box attribute.
+     *
+     * @var string
+     */
+    public $deleteBoxAttribute = 'delete[]';
+
+    /**
+     * Delete box html options.
+     *
+     * @var array
+     */
+    public $deleteBoxOptions = [];
+
+    /**
+     * Display or not delete box.
+     *
+     * @var bool
+     */
+    public $deleteBoxDisplay = false;
 
     /**
      * Optional, if set, in container will be inserted selected mediafile.
@@ -261,6 +289,7 @@ class FileSetter extends InputWidget
 
         $replace['{button}'] = Html::tag($this->buttonHtmlTag, $this->buttonName, $this->buttonOptions);
         $replace['{reset-button}'] = Html::tag($this->resetButtonHtmlTag, $this->resetButtonName, $this->resetButtonOptions);
+        $replace['{delete-box}'] = $this->deleteBoxDisplay ? Html::checkbox($this->deleteBoxAttribute, false, $this->deleteBoxOptions).' '.$this->deleteBoxName : '';
 
         FileSetterAsset::register($this->view);
 

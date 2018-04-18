@@ -26,6 +26,7 @@ use app\modules\files\widgets\FileSetter;
     'attribute' => $fileType.'[]',
     'neededFileType' => $fileType,
     'buttonName' => Module::t('main', 'Set '.$fileType),
+    'resetButtonName' => Module::t('main', 'Clear'),
     'options' => [
         'id' => Html::getInputId($model, $fileType) . (isset($number) ? '-new-' . $number : '')
     ],

@@ -206,9 +206,29 @@ class Mediafile extends ActiveRecord
     /**
      * Get preview html.
      *
-     * @param string $baseUrl
-     * @param string $location
-     * @param array $options
+     * @param string $baseUrl Url to asset files which is formed on the BaseAsset.
+     * @param string $location Where is this function calling:
+     *      existing - if view template renders files, which are exist;
+     *      fileinfo - for "fileinfo/index" view template of "filemanager";
+     *      fileitem - for "_fileItem" view template of "filemanager".
+     * You can set new location attributes by custom in Module "previewOptions"
+     * before using in this getPreview() function inside the view template.
+     * It is necessary to set location attributes for certain types of mediafiles.
+     * See how it's done in "preview-options" config file as an example.
+     * @param array $options Options for the next tags, which must be the keys of the options array:
+     *      1. Main tag:
+     *      mainTag - main preview html tag. Can contain different html tag options.
+     *                And also can contain "alias" from the number of module constant aliases:
+     *                default, original, small, medium, large.
+     *      2. Addition tags:
+     *      leftTag - tag that is located to the left of the "mainTag";
+     *      rightTag - tag that is located to the right of the "mainTag";
+     *      externalTag - tag in which the mainTag with leftTag and rightTag are embedded.
+     * Importantly! Addition tag keys must contain the next attributes:
+     * name - the name of addition tag.
+     * options - html options of addition tag.
+     * By default, the mainTag is already in the "preview-options" configuration file.
+     * You can insert configurations values of addition tags through the third parameter of this function.
      *
      * @return string
      */

@@ -5,6 +5,24 @@ use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Preview options for som types of mediafiles according with their location.
+ *
+ * Keys of the first level - the file types, for which the following location parameters are specified:
+ *      existing - if view template renders files, which are exist;
+ *      fileinfo - for "fileinfo/index" view template of "filemanager";
+ *      fileitem - for "_fileItem" view template of "filemanager".
+ * Each location parametr(array key) must contain mainTag attribute.
+ * mainTag - main preview html tag. Can contain different html tag options.
+ *           And also can contain "alias" from the number of module constant aliases:
+ *           default, original, small, medium, large.
+ * Else each location parametr(array key) can contain addition attributes:
+ *      leftTag - tag that is located to the left of the "mainTag";
+ *      rightTag - tag that is located to the right of the "mainTag";
+ *      externalTag - tag in which the mainTag with leftTag and rightTag are embedded.
+ * Importantly! Addition tag keys must contain the next attributes:
+ * name - the name of addition tag.
+ * options - html options of addition tag.
+ * You can insert configurations values of addition tags through the third parameter
+ * of getPreview() function from Mediafile model.
  */
 return [
     UploadModelInterface::FILE_TYPE_IMAGE => [

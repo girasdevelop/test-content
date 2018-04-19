@@ -7,7 +7,7 @@ use yii\web\View;
 use yii\helpers\ArrayHelper;
 use yii\base\{Module as BaseModule, InvalidConfigException};
 use Imagine\Image\ImageInterface;
-use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
+use app\modules\files\interfaces\ThumbConfigInterface;
 use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
 
 /**
@@ -95,6 +95,7 @@ class Module extends BaseModule
 
     /**
      * Preview options for som types of mediafiles according with their location.
+     * See how it's done in "preview-options" config file as an example.
      *
      * @var array
      */
@@ -105,20 +106,7 @@ class Module extends BaseModule
      *
      * @var array of thumbnails.
      */
-    public $thumbsConfig = [
-        self::SMALL_THUMB_ALIAS => [
-            'name' => 'Small size',
-            'size' => [120, 80],
-        ],
-        self::MEDIUM_THUMB_ALIAS => [
-            'name' => 'Medium size',
-            'size' => [300, 240],
-        ],
-        self::LARGE_THUMB_ALIAS => [
-            'name' => 'Large size',
-            'size' => [800, 600],
-        ],
-    ];
+    public $thumbsConfig = [];
 
     /**
      * Thumbnails name template.
@@ -131,16 +119,9 @@ class Module extends BaseModule
     /**
      * Default thumbnail stub urls according with file type.
      *
-     * @var string
+     * @var array
      */
-    public $thumbStubUrls = [
-        UploadModelInterface::FILE_TYPE_APP => 'images'.DIRECTORY_SEPARATOR.'app.png',
-        UploadModelInterface::FILE_TYPE_APP_WORD => 'images'.DIRECTORY_SEPARATOR.'word.png',
-        UploadModelInterface::FILE_TYPE_APP_EXCEL => 'images'.DIRECTORY_SEPARATOR.'excel.png',
-        UploadModelInterface::FILE_TYPE_APP_PDF => 'images'.DIRECTORY_SEPARATOR.'pdf.png',
-        UploadModelInterface::FILE_TYPE_OTHER => 'images'.DIRECTORY_SEPARATOR.'other.png',
-        UploadModelInterface::FILE_TYPE_TEXT => 'images'.DIRECTORY_SEPARATOR.'text.png',
-    ];
+    public $thumbStubUrls = [];
 
     /**
      * Csrf validation.
@@ -182,16 +163,23 @@ class Module extends BaseModule
          * Set Rbac validate component
          */
         $this->setComponents(
-            ArrayHelper::merge(
-                $this->getLocalUploadComponentConfig(),
-                $this->components
-            )
+            ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
         );
 
         $this->previewOptions = ArrayHelper::merge(
-                require __DIR__ . '/config/preview-options.php',
-                $this->previewOptions
-            );
+            require __DIR__ . '/config/preview-options.php',
+            $this->previewOptions
+        );
+
+        $this->thumbStubUrls = ArrayHelper::merge(
+            require __DIR__ . '/config/thumb-stub-urls.php',
+            $this->thumbStubUrls
+        );
+
+        $this->thumbsConfig = ArrayHelper::merge(
+            require __DIR__ . '/config/thumbs-config.php',
+            $this->thumbsConfig
+        );
     }
 
     /**

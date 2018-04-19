@@ -633,12 +633,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "0c46b4bf8338691feaaa869d3e8790da090ecadd"
+                "reference": "a302394d6d9d2060ede2a4d32aa6d1505dfd30be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/0c46b4bf8338691feaaa869d3e8790da090ecadd",
-                "reference": "0c46b4bf8338691feaaa869d3e8790da090ecadd",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/a302394d6d9d2060ede2a4d32aa6d1505dfd30be",
+                "reference": "a302394d6d9d2060ede2a4d32aa6d1505dfd30be",
                 "shasum": ""
             },
             "require": {
@@ -725,7 +725,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2018-04-16T10:22:54+00:00"
+            "time": "2018-04-18T21:01:00+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1772,19 +1772,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
+                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
-                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
+                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
-                "sebastian/comparator": "^1.1|^2.0",
+                "sebastian/comparator": "^1.1|^2.0|^3.0",
                 "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
@@ -1827,7 +1827,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-02-19T10:16:54+00:00"
+            "time": "2018-04-18T13:57:24+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1835,12 +1835,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "a23ddc74c1c1c896ad2aa740d0c4183203a34d07"
+                "reference": "99d77487b58d70937d469cde6d43f04b07aa57ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a23ddc74c1c1c896ad2aa740d0c4183203a34d07",
-                "reference": "a23ddc74c1c1c896ad2aa740d0c4183203a34d07",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/99d77487b58d70937d469cde6d43f04b07aa57ef",
+                "reference": "99d77487b58d70937d469cde6d43f04b07aa57ef",
                 "shasum": ""
             },
             "require": {
@@ -1890,7 +1890,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-12T05:33:32+00:00"
+            "time": "2018-04-17T12:51:32+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2080,16 +2080,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "dev-master",
+            "version": "7.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d231e0bc5ee605127e78daba85283ad23fd78722"
+                "reference": "6d51299e307dc510149e0b7cd1931dd11770e1cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d231e0bc5ee605127e78daba85283ad23fd78722",
-                "reference": "d231e0bc5ee605127e78daba85283ad23fd78722",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6d51299e307dc510149e0b7cd1931dd11770e1cb",
+                "reference": "6d51299e307dc510149e0b7cd1931dd11770e1cb",
                 "shasum": ""
             },
             "require": {
@@ -2108,7 +2108,7 @@
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-timer": "^2.0",
                 "phpunit/phpunit-mock-objects": "^6.1.1",
-                "sebastian/comparator": "^2.1",
+                "sebastian/comparator": "^2.1 || ^3.0",
                 "sebastian/diff": "^3.0",
                 "sebastian/environment": "^3.1",
                 "sebastian/exporter": "^3.1",
@@ -2130,7 +2130,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.2-dev"
+                    "dev-master": "7.1-dev"
                 }
             },
             "autoload": {
@@ -2156,7 +2156,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-16T10:16:32+00:00"
+            "time": "2018-04-18T13:41:53+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2164,12 +2164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "70c740bde8fd9ea9ea295be1cd875dd7b267e157"
+                "reference": "5a8650628d94029eafe1260b2edbaf64de852219"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/70c740bde8fd9ea9ea295be1cd875dd7b267e157",
-                "reference": "70c740bde8fd9ea9ea295be1cd875dd7b267e157",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5a8650628d94029eafe1260b2edbaf64de852219",
+                "reference": "5a8650628d94029eafe1260b2edbaf64de852219",
                 "shasum": ""
             },
             "require": {
@@ -2212,7 +2212,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-04-11T04:50:36+00:00"
+            "time": "2018-04-17T12:53:05+00:00"
         },
         {
             "name": "psr/http-message",
@@ -2311,16 +2311,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "dev-master",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "f77ea710f800679202c6d92c3e2f2f56457a19f2"
+                "reference": "34369daee48eafb2651bea869b4b15d75ccc35f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/f77ea710f800679202c6d92c3e2f2f56457a19f2",
-                "reference": "f77ea710f800679202c6d92c3e2f2f56457a19f2",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/34369daee48eafb2651bea869b4b15d75ccc35f9",
+                "reference": "34369daee48eafb2651bea869b4b15d75ccc35f9",
                 "shasum": ""
             },
             "require": {
@@ -2329,7 +2329,7 @@
                 "sebastian/exporter": "^3.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.5 || ^7.0"
+                "phpunit/phpunit": "^6.4"
             },
             "type": "library",
             "extra": {
@@ -2371,7 +2371,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2018-04-06T14:40:13+00:00"
+            "time": "2018-02-01T13:46:46+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -3336,12 +3336,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "0df1908962e7a3071564e857d86874dad1ef204a"
+                "reference": "20565957b3c4e389de9ef0d6a337a32321f8e47c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/0df1908962e7a3071564e857d86874dad1ef204a",
-                "reference": "0df1908962e7a3071564e857d86874dad1ef204a",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/20565957b3c4e389de9ef0d6a337a32321f8e47c",
+                "reference": "20565957b3c4e389de9ef0d6a337a32321f8e47c",
                 "shasum": ""
             },
             "require": {
@@ -3378,7 +3378,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2018-01-29T19:49:41+00:00"
+            "time": "2018-04-18T14:24:51+00:00"
         },
         {
             "name": "yiisoft/yii2-debug",
@@ -3386,12 +3386,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "250532dc5ee137885e320e45aa765c3fa88bf624"
+                "reference": "051220255462c080b7c56d09192a930db84c72d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/250532dc5ee137885e320e45aa765c3fa88bf624",
-                "reference": "250532dc5ee137885e320e45aa765c3fa88bf624",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/051220255462c080b7c56d09192a930db84c72d9",
+                "reference": "051220255462c080b7c56d09192a930db84c72d9",
                 "shasum": ""
             },
             "require": {
@@ -3425,7 +3425,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2018-04-16T10:54:47+00:00"
+            "time": "2018-04-17T18:34:52+00:00"
         },
         {
             "name": "yiisoft/yii2-faker",

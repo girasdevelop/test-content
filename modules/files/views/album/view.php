@@ -103,7 +103,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php $i+=1; ?>
                             <div class="media">
                                 <div class="media-left" id="mediafile-container-<?php echo $i; ?>">
-                                    <?php echo $mediafile->getPreview(BaseAsset::register($this)->baseUrl, 'existing'); ?>
+                                    <?php echo $mediafile->getPreview(BaseAsset::register($this)->baseUrl, 'existing', $mediafile->isImage() ? [
+                                        'externalTag' => [
+                                            'name' => 'a',
+                                            'options' => [
+                                                'href' => $mediafile->url,
+                                                'target' => '_blank'
+                                            ]
+                                        ]
+                                    ] : []); ?>
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">

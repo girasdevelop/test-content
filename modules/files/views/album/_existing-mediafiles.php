@@ -8,6 +8,7 @@ use app\modules\files\models\Mediafile;
 use app\modules\files\models\album\Album;
 use app\modules\files\widgets\FileSetter;
 use app\modules\files\assets\FileSetterAsset;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /* @var $this yii\web\View */
 /* @var $model Album */
@@ -36,7 +37,15 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
             <?php $i+=1; ?>
             <div class="media">
                 <div class="media-left" id="mediafile-container-<?php echo $i; ?>">
-                    <?php echo $mediafile->getPreview($baseUrl, 'existing'); ?>
+                    <?php echo $mediafile->getPreview($baseUrl, 'existing', $mediafile->isImage() ? [
+                        'externalTag' => [
+                            'name' => 'a',
+                            'options' => [
+                                'href' => $mediafile->url,
+                                'target' => '_blank'
+                            ]
+                        ]
+                    ] : []); ?>
                 </div>
                 <div class="media-body">
                     <h4 id="title-container-<?php echo $i; ?>" class="media-heading">

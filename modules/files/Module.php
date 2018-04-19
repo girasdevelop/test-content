@@ -98,59 +98,7 @@ class Module extends BaseModule
      *
      * @var array
      */
-    public $previewOptions = [
-        UploadModelInterface::FILE_TYPE_IMAGE => [
-            'existing' => [
-                'alias' => self::MEDIUM_THUMB_ALIAS
-            ],
-            'fileinfo' => [
-                'alias' => self::DEFAULT_THUMB_ALIAS
-            ],
-            'fileitem' => [
-                'alias' => self::DEFAULT_THUMB_ALIAS
-            ],
-        ],
-        UploadModelInterface::FILE_TYPE_AUDIO => [
-            'existing' => [
-                'width' => self::ORIGINAL_PREVIEW_WIDTH
-            ],
-            'fileinfo' => [
-                'width' => self::ORIGINAL_PREVIEW_WIDTH
-            ],
-            'fileitem' => [
-                'width' => self::ORIGINAL_PREVIEW_WIDTH
-            ],
-        ],
-        UploadModelInterface::FILE_TYPE_VIDEO => [
-            'existing' => [
-                'width' => self::ORIGINAL_PREVIEW_WIDTH,
-                'height' => self::ORIGINAL_PREVIEW_HEIGHT,
-            ],
-            'fileinfo' => [
-                'width' => self::ORIGINAL_PREVIEW_WIDTH,
-                'height' => self::ORIGINAL_PREVIEW_HEIGHT,
-            ],
-            'fileitem' => [
-                'width' => self::ORIGINAL_PREVIEW_WIDTH,
-                'height' => self::ORIGINAL_PREVIEW_HEIGHT,
-            ],
-        ],
-        UploadModelInterface::FILE_TYPE_APP => [
-            'fileitem' => [
-                'width' => self::SCANTY_PREVIEW_SIZE,
-            ],
-        ],
-        UploadModelInterface::FILE_TYPE_TEXT => [
-            'fileitem' => [
-                'width' => self::SCANTY_PREVIEW_SIZE,
-            ],
-        ],
-        UploadModelInterface::FILE_TYPE_OTHER => [
-            'fileitem' => [
-                'width' => self::SCANTY_PREVIEW_SIZE,
-            ],
-        ],
-    ];
+    public $previewOptions = [];
 
     /**
      * Thumbs config with their types and sizes.
@@ -239,6 +187,11 @@ class Module extends BaseModule
                 $this->components
             )
         );
+
+        $this->previewOptions = ArrayHelper::merge(
+                require __DIR__ . '/config/preview-options.php',
+                $this->previewOptions
+            );
     }
 
     /**
@@ -325,6 +278,10 @@ class Module extends BaseModule
      */
     public function getPreviewOptions(string $fileType, string $location): array
     {
+        if (null === $fileType || null === $location){
+            return [];
+        }
+
         if (!isset($this->previewOptions[$fileType]) || !is_array($this->previewOptions[$fileType])){
             return [];
         }

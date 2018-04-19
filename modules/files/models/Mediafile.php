@@ -3,6 +3,7 @@
 namespace app\modules\files\models;
 
 use yii\helpers\ArrayHelper;
+use yii\base\InvalidConfigException;
 use app\modules\files\Module;
 use app\modules\files\helpers\Html;
 use app\modules\files\interfaces\UploadModelInterface;
@@ -211,53 +212,73 @@ class Mediafile extends ActiveRecord
      *
      * @return string
      */
-    public function getPreview($baseUrl = '', string $location, array $options = []): string
+    public function getPreview($baseUrl = '', string $location = null, array $options = []): string
     {
         $module = $this->getModule();
 
         if ($this->isImage()){
-            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_IMAGE, $location), $options);
+            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_IMAGE, $location), $options);
+            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
 
-            if (empty($options['alt'])) {
-                $options['alt'] = $this->alt;
+            if (!isset($mainTagOptions['alt'])) {
+                $mainTagOptions['alt'] = $this->alt;
             }
 
-            if (isset($options['alias']) && is_string($options['alias'])){
-                return Html::img($this->getThumbUrl($options['alias']), $options);
+            if (isset($mainTagOptions['alias']) && is_string($mainTagOptions['alias'])){
+                $preview = Html::img($this->getThumbUrl($mainTagOptions['alias']), $mainTagOptions);
+            } else {
+                $preview = Html::img($this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS), $mainTagOptions);
             }
-
-            return Html::img($this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS), $options);
 
         } elseif ($this->isAudio()){
-            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_AUDIO, $location), $options);
-            return Html::audio($this->url, ArrayHelper::merge([
+            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_AUDIO, $location), $options);
+            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
+            $preview = Html::audio($this->url, ArrayHelper::merge([
                     'source' => [
                         'type' => $this->type
                     ]
-                ], $options)
+                ], $mainTagOptions)
             );
 
         } elseif ($this->isVideo()){
-            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_VIDEO, $location), $options);
-            return Html::video($this->url, ArrayHelper::merge([
+            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_VIDEO, $location), $options);
+            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
+            $preview = Html::video($this->url, ArrayHelper::merge([
                     'source' => [
                         'type' => $this->type
                     ]
-                ], $options)
+                ], $mainTagOptions)
             );
 
         } elseif ($this->isApp()){
-            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_APP, $location), $options);
-            return Html::img($this->getAppPreviewUrl($baseUrl), $options);
+            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_APP, $location), $options);
+            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
+            $preview = Html::img($this->getAppPreviewUrl($baseUrl), $mainTagOptions);
 
         } elseif ($this->isText()){
-            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_TEXT, $location), $options);
-            return Html::img($this->getTextPreviewUrl($baseUrl), $options);
+            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_TEXT, $location), $options);
+            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
+            $preview = Html::img($this->getTextPreviewUrl($baseUrl), $mainTagOptions);
 
         } else {
-            $options = ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_OTHER, $location), $options);
-            return Html::img($this->getOtherPreviewUrl($baseUrl), $options);
+            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_OTHER, $location), $options);
+            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
+            $preview = Html::img($this->getOtherPreviewUrl($baseUrl), $mainTagOptions);
         }
+
+        if (isset($options['leftTag']) && is_array($options['leftTag'])){
+            $preview = $this->compactPreviewAdditionTags($preview, 'leftTag', $options['leftTag']);
+        }
+
+        if (isset($options['rightTag']) && is_array($options['rightTag'])){
+            $preview = $this->compactPreviewAdditionTags($preview, 'rightTag', $options['rightTag']);
+        }
+
+        if (isset($options['externalTag']) && is_array($options['externalTag'])){
+            $preview = $this->compactPreviewAdditionTags($preview, 'externalTag', $options['externalTag']);
+        }
+
+        return $preview;
     }
 
     /**
@@ -490,5 +511,52 @@ class Mediafile extends ActiveRecord
     public function isWord(): bool
     {
         return strpos($this->type, UploadModelInterface::FILE_TYPE_APP_WORD) !== false;
+    }
+
+    /**
+     * Compact addition tag with the main preview.
+     *
+     * @param string $preview
+     * @param string $additionTagType
+     * @param array $additionTagConfig
+     *
+     * @throws InvalidConfigException
+     *
+     * @return string
+     */
+    private function compactPreviewAdditionTags(string $preview, string $additionTagType, array $additionTagConfig): string
+    {
+        if (!isset($additionTagConfig['name']) || !is_string($additionTagConfig['name'])){
+            throw new InvalidConfigException('Bad name configuration for addition tag: '.$additionTagType);
+        }
+
+        if (!isset($additionTagConfig['options']) || !is_array($additionTagConfig['options'])){
+            throw new InvalidConfigException('Bad options configuration for addition tag: '.$additionTagType);
+        }
+
+        switch ($additionTagType) {
+            case 'leftTag': {
+                $content = isset($additionTagConfig['content']) ? isset($additionTagConfig['content']) : '';
+                $preview = Html::tag($additionTagConfig['name'], $content, $additionTagConfig['options']) . $preview;
+                break;
+            }
+
+            case 'rightTag': {
+                $content = isset($additionTagConfig['content']) ? isset($additionTagConfig['content']) : '';
+                $preview = $preview . Html::tag($additionTagConfig['name'], $content, $additionTagConfig['options']);
+                break;
+            }
+
+            case 'externalTag': {
+                $preview = Html::tag($additionTagConfig['name'], $preview, $additionTagConfig['options']);
+                break;
+            }
+
+            default: {
+                throw new InvalidConfigException('Unknown type of addition tag');
+            }
+        }
+
+        return $preview;
     }
 }

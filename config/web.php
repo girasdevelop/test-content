@@ -105,7 +105,7 @@ $config = [
                 'view' => require __DIR__ . '/admin/view-component.php',
             ],
             /*'authenticator' => [
-                'class' => yii\filters\auth\HttpBearerAuth::class,
+                'class' => yii\filters\auth\QueryParamAuth::class,
             ],*/
         ]
     ],

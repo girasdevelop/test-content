@@ -145,9 +145,7 @@ class Mediafile extends ActiveRecord
 
     /**
      * Search models by file types.
-     *
      * @param array $types
-     *
      * @return ActiveRecord|array
      */
     public static function findByTypes(array $types): ActiveRecord
@@ -157,11 +155,9 @@ class Mediafile extends ActiveRecord
 
     /**
      * Add owner to mediafiles table.
-     *
      * @param int    $ownerId
      * @param string $owner
      * @param string $ownerAttribute
-     *
      * @return bool
      */
     public function addOwner(int $ownerId, string $owner, string $ownerAttribute): bool
@@ -177,11 +173,9 @@ class Mediafile extends ActiveRecord
 
     /**
      * Remove this mediafile owner.
-     *
      * @param int    $ownerId
      * @param string $owner
      * @param string $ownerAttribute
-     *
      * @return bool
      */
     public static function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool
@@ -205,7 +199,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get preview html.
-     *
      * @param string $baseUrl Url to asset files which is formed on the BaseAsset.
      * @param string $location Where is this function calling:
      *      existing - if view template renders files, which are exist;
@@ -229,61 +222,35 @@ class Mediafile extends ActiveRecord
      * options - html options of addition tag.
      * By default, the mainTag is already in the "preview-options" configuration file.
      * You can insert configurations values of addition tags through the third parameter of this function.
-     *
      * @return string
      */
-    public function getPreview($baseUrl = '', string $location = null, array $options = []): string
+    public function getPreview(string $baseUrl = '', string $location = null, array $options = []): string
     {
         $module = $this->getModule();
 
         if ($this->isImage()){
             $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_IMAGE, $location), $options);
-            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
-
-            if (!isset($mainTagOptions['alt'])) {
-                $mainTagOptions['alt'] = $this->alt;
-            }
-
-            if (isset($mainTagOptions['alias']) && is_string($mainTagOptions['alias'])){
-                $preview = Html::img($this->getThumbUrl($mainTagOptions['alias']), $mainTagOptions);
-            } else {
-                $preview = Html::img($this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS), $mainTagOptions);
-            }
+            $preview = $this->getImagePreview(isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isAudio()){
             $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_AUDIO, $location), $options);
-            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
-            $preview = Html::audio($this->url, ArrayHelper::merge([
-                    'source' => [
-                        'type' => $this->type
-                    ]
-                ], $mainTagOptions)
-            );
+            $preview = $this->getAudioPreview(isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isVideo()){
             $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_VIDEO, $location), $options);
-            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
-            $preview = Html::video($this->url, ArrayHelper::merge([
-                    'source' => [
-                        'type' => $this->type
-                    ]
-                ], $mainTagOptions)
-            );
+            $preview = $this->getVideoPreview(isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isApp()){
             $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_APP, $location), $options);
-            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
-            $preview = Html::img($this->getAppPreviewUrl($baseUrl), $mainTagOptions);
+            $preview = $this->getAppPreview($baseUrl, isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isText()){
             $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_TEXT, $location), $options);
-            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
-            $preview = Html::img($this->getTextPreviewUrl($baseUrl), $mainTagOptions);
+            $preview = $this->getTextPreview($baseUrl, isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } else {
             $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_OTHER, $location), $options);
-            $mainTagOptions = isset($options['mainTag']) ? $options['mainTag'] : [];
-            $preview = Html::img($this->getOtherPreviewUrl($baseUrl), $mainTagOptions);
+            $preview = $this->getOtherPreview($baseUrl, isset($options['mainTag']) ? $options['mainTag'] : []);
         }
 
         if (isset($options['leftTag']) && is_array($options['leftTag'])){
@@ -302,10 +269,89 @@ class Mediafile extends ActiveRecord
     }
 
     /**
-     * Get application preview url.
-     *
+     * Get image preview.
+     * @param array $mainTagOptions
+     * @return string
+     */
+    public function getImagePreview(array $mainTagOptions): string
+    {
+        if (!isset($mainTagOptions['alt'])) {
+            $mainTagOptions['alt'] = $this->alt;
+        }
+
+        if (isset($mainTagOptions['alias']) && is_string($mainTagOptions['alias'])){
+            return Html::img($this->getThumbUrl($mainTagOptions['alias']), $mainTagOptions);
+        }
+
+        return Html::img($this->getThumbUrl(Module::DEFAULT_THUMB_ALIAS), $mainTagOptions);
+    }
+
+    /**
+     * Get audio preview.
+     * @param array $mainTagOptions
+     * @return string
+     */
+    public function getAudioPreview(array $mainTagOptions): string
+    {
+        return Html::audio($this->url, ArrayHelper::merge([
+                'source' => [
+                    'type' => $this->type
+                ]
+            ], $mainTagOptions)
+        );
+    }
+
+    /**
+     * Get video preview.
+     * @param array $mainTagOptions
+     * @return string
+     */
+    public function getVideoPreview(array $mainTagOptions): string
+    {
+        return Html::video($this->url, ArrayHelper::merge([
+                'source' => [
+                    'type' => $this->type
+                ]
+            ], $mainTagOptions)
+        );
+    }
+
+    /**
+     * Get application preview.
      * @param string $baseUrl
-     *
+     * @param array $mainTagOptions
+     * @return string
+     */
+    public function getAppPreview(string $baseUrl = '', array $mainTagOptions): string
+    {
+        return Html::img($this->getAppPreviewUrl($baseUrl), $mainTagOptions);
+    }
+
+    /**
+     * Get text preview.
+     * @param string $baseUrl
+     * @param array $mainTagOptions
+     * @return string
+     */
+    public function getTextPreview(string $baseUrl = '', array $mainTagOptions): string
+    {
+        return Html::img($this->getTextPreviewUrl($baseUrl), $mainTagOptions);
+    }
+
+    /**
+     * Get other preview.
+     * @param string $baseUrl
+     * @param array $mainTagOptions
+     * @return string
+     */
+    public function getOtherPreview(string $baseUrl = '', array $mainTagOptions): string
+    {
+        return Html::img($this->getOtherPreviewUrl($baseUrl), $mainTagOptions);
+    }
+
+    /**
+     * Get application preview url.
+     * @param string $baseUrl
      * @return string
      */
     public function getAppPreviewUrl($baseUrl = ''): string
@@ -335,9 +381,7 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get text preview url.
-     *
      * @param string $baseUrl
-     *
      * @return string
      */
     public function getTextPreviewUrl($baseUrl = ''): string
@@ -353,9 +397,7 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get other preview url.
-     *
      * @param string $baseUrl
-     *
      * @return string
      */
     public function getOtherPreviewUrl($baseUrl = ''): string
@@ -372,7 +414,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get thumbnails.
-     *
      * @return array
      */
     public function getThumbs(): array
@@ -382,9 +423,7 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get thumb url.
-     *
      * @param string $alias
-     *
      * @return string
      */
     public function getThumbUrl(string $alias): string
@@ -400,10 +439,8 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get thumb image.
-     *
      * @param string $alias
      * @param array  $options
-     *
      * @return string
      */
     public function getThumbImage(string $alias, array $options = []): string
@@ -423,9 +460,7 @@ class Mediafile extends ActiveRecord
 
     /**
      * Get default thumbnail url.
-     *
      * @param string $baseUrl
-     *
      * @return string
      */
     public function getDefaultThumbUrl($baseUrl = ''): string
@@ -455,7 +490,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is image.
-     *
      * @return bool
      */
     public function isImage(): bool
@@ -465,7 +499,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is audio.
-     *
      * @return bool
      */
     public function isAudio(): bool
@@ -475,7 +508,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is video.
-     *
      * @return bool
      */
     public function isVideo(): bool
@@ -485,7 +517,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is text.
-     *
      * @return bool
      */
     public function isText(): bool
@@ -495,7 +526,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is application.
-     *
      * @return bool
      */
     public function isApp(): bool
@@ -505,7 +535,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is excel.
-     *
      * @return bool
      */
     public function isExcel(): bool
@@ -515,7 +544,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is pdf.
-     *
      * @return bool
      */
     public function isPdf(): bool
@@ -525,7 +553,6 @@ class Mediafile extends ActiveRecord
 
     /**
      * Check if the file is word.
-     *
      * @return bool
      */
     public function isWord(): bool
@@ -535,13 +562,10 @@ class Mediafile extends ActiveRecord
 
     /**
      * Compact addition tag with the main preview.
-     *
      * @param string $preview
      * @param string $additionTagType
      * @param array $additionTagConfig
-     *
      * @throws InvalidConfigException
-     *
      * @return string
      */
     private function compactPreviewAdditionTags(string $preview, string $additionTagType, array $additionTagConfig): string

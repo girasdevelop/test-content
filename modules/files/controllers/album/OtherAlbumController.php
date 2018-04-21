@@ -8,12 +8,13 @@ use app\modules\files\models\album\OtherAlbum;
  * OtherAlbumController extends the base abstract AlbumController.
  *
  * @package Itstructure\FilesModule\controllers\album
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class OtherAlbumController extends AlbumController
 {
     /**
      * Returns the name of the OtherAlbum model.
-     *
      * @return string
      */
     protected function getModelName():string
@@ -23,7 +24,6 @@ class OtherAlbumController extends AlbumController
 
     /**
      * Returns the type of other album.
-     *
      * @return string
      */
     protected function getAlbumType():string

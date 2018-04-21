@@ -9,14 +9,14 @@ use app\modules\files\models\album\Album;
  * BehaviorAlbum class to add, update and remove owners of Album model.
  *
  * @package Itstructure\AdminModule\behaviors
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class BehaviorAlbum extends Behavior
 {
     /**
      * Load Album model by conditions.
-     *
      * @param array $conditions
-     *
      * @return Album
      */
     protected function loadModel(array $conditions): Album
@@ -26,11 +26,9 @@ class BehaviorAlbum extends Behavior
 
     /**
      * Remove owner of Album model.
-     *
      * @param int    $ownerId
      * @param string $owner
      * @param string $ownerAttribute
-     *
      * @return bool
      */
     protected function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool

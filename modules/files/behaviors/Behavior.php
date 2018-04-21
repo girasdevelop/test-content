@@ -16,46 +16,41 @@ use app\modules\files\models\Mediafile;
  * @property string $findModelKey Key, which is used to find model record.
  *
  * @package Itstructure\AdminModule\behaviors
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 abstract class Behavior extends BaseBehavior
 {
     /**
      * Owner name.
-     *
      * @var string
      */
     public $name = '';
 
     /**
      * Owner attribute names.
-     *
      * @var array
      */
     public $attributes = [];
 
     /**
      * Key, which is used to find model record.
-     *
      * @var string
      */
     public $findModelKey = 'id';
 
     /**
      * Load media model by conditions.
-     *
      * @param array $conditions
-     *
      * @return Mediafile|Album
      */
     abstract protected function loadModel(array $conditions);
 
     /**
      * Remove media model owner.
-     *
      * @param int    $ownerId
      * @param string $owner
      * @param string $ownerAttribute
-     *
      * @return bool
      */
     abstract protected function removeOwner(int $ownerId, string $owner, string $ownerAttribute):bool;
@@ -74,7 +69,6 @@ abstract class Behavior extends BaseBehavior
 
     /**
      * Add owners to media model
-     *
      * @return void
      */
     public function addOwners(): void
@@ -86,7 +80,6 @@ abstract class Behavior extends BaseBehavior
 
     /**
      * Update owners of media model
-     *
      * @return void
      */
     public function updateOwners(): void
@@ -98,7 +91,6 @@ abstract class Behavior extends BaseBehavior
 
     /**
      * Delete owners of media model
-     *
      * @return void
      */
     public function deleteOwners(): void
@@ -110,10 +102,8 @@ abstract class Behavior extends BaseBehavior
 
     /**
      * Link media model with owner.
-     *
      * @param $attributeName
      * @param $attributeValue
-     *
      * @return void
      */
     protected function linkModelWithOwner($attributeName, $attributeValue): void

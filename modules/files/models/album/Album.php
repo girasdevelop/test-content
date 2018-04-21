@@ -21,10 +21,11 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property string $type
  * @property int $created_at
  * @property int $updated_at
- *
  * @property OwnersAlbums[] $ownersAlbums
  *
  * @package Itstructure\FilesModule\models\album
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class Album extends ActiveRecord
 {
@@ -41,7 +42,6 @@ class Album extends ActiveRecord
      * Can have the values according with the selected type of:
      * FileSetter::INSERTED_DATA_ID
      * FileSetter::INSERTED_DATA_URL
-     *
      * @var int|string thumbnail(mediafile id or url).
      */
     public $thumbnail;
@@ -117,9 +117,7 @@ class Album extends ActiveRecord
 
     /**
      * Get album types or selected type.
-     *
      * @param string|null $key
-     *
      * @return mixed
      */
     public static function getAlbumTypes(string $key = null)
@@ -142,9 +140,7 @@ class Album extends ActiveRecord
 
     /**
      * Get file type by album type.
-     *
      * @param string $albumType
-     *
      * @return mixed|null
      */
     public static function getFileType(string $albumType)
@@ -163,9 +159,7 @@ class Album extends ActiveRecord
 
     /**
      * Search models by file types.
-     *
      * @param array $types
-     *
      * @return ActiveRecord|array
      */
     public static function findByTypes(array $types): ActiveRecord
@@ -175,11 +169,9 @@ class Album extends ActiveRecord
 
     /**
      * Add owner to mediafiles table.
-     *
      * @param int    $ownerId
      * @param string $owner
      * @param string $ownerAttribute
-     *
      * @return bool
      */
     public function addOwner(int $ownerId, string $owner, string $ownerAttribute): bool
@@ -195,11 +187,9 @@ class Album extends ActiveRecord
 
     /**
      * Remove this mediafile owner.
-     *
      * @param int    $ownerId
      * @param string $owner
      * @param string $ownerAttribute
-     *
      * @return bool
      */
     public static function removeOwner(int $ownerId, string $owner, string $ownerAttribute): bool
@@ -215,7 +205,6 @@ class Album extends ActiveRecord
 
     /**
      * Get album's owners.
-     *
      * @return ActiveQuery
      */
     public function getOwners()
@@ -225,9 +214,7 @@ class Album extends ActiveRecord
 
     /**
      * Get album's mediafiles.
-     *
      * @param string|null $ownerAttribute
-     *
      * @return \app\modules\files\models\ActiveRecord[]
      */
     public function getMediaFiles(string $ownerAttribute = null)
@@ -237,9 +224,7 @@ class Album extends ActiveRecord
 
     /**
      * Get album's mediafiles query.
-     *
      * @param string|null $ownerAttribute
-     *
      * @return ActiveQuery
      */
     public function getMediaFilesQuery(string $ownerAttribute = null)
@@ -253,9 +238,7 @@ class Album extends ActiveRecord
 
     /**
      * Get album thumb image.
-     *
      * @param array  $options
-     *
      * @return string
      */
     public function getDefaultThumbImage(array $options = []): string
@@ -281,7 +264,6 @@ class Album extends ActiveRecord
 
     /**
      * Get album's thumbnail.
-     *
      * @return array|null|\yii\db\ActiveRecord|Mediafile
      */
     public function getThumbnailModel()

@@ -13,6 +13,8 @@ use app\modules\files\models\Mediafile;
  * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class FileinfoController extends Controller
 {
@@ -28,7 +30,6 @@ class FileinfoController extends Controller
 
     /**
      * Get file info.
-     *
      * @return string
      */
     public function actionIndex()

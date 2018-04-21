@@ -13,12 +13,13 @@ use app\modules\files\controllers\api\common\CommonUploadController;
  * @property LocalUploadComponent $localUploadComponent
  *
  * @package Itstructure\FilesModule\controllers
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class LocalUploadController extends CommonUploadController
 {
     /**
      * Get local upload component.
-     *
      * @return UploadComponentInterface|LocalUploadComponent
      */
     protected function getUploadComponent(): UploadComponentInterface

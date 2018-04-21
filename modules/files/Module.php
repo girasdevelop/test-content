@@ -28,6 +28,8 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property View $_view View component to render content.
  *
  * @package Itstructure\FilesModule
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class Module extends BaseModule
 {
@@ -53,42 +55,36 @@ class Module extends BaseModule
 
     /**
      * Login url.
-     *
      * @var null|string|array
      */
     public $loginUrl = null;
 
     /**
      * Array of roles to module access.
-     *
      * @var array
      */
     public $accessRoles = ['@'];
 
     /**
      * Auth filter.
-     *
      * @var array|null
      */
     public $authenticator = null;
 
     /**
      * Rate limit filter.
-     *
      * @var array|null
      */
     public $rateLimiter = null;
 
     /**
      * Content negotiator filter.
-     *
      * @var array|null
      */
     public $contentNegotiator = null;
 
     /**
      * Name of the file field to load using Ajax request.
-     *
      * @var string
      */
     public $fileAttributeName = 'file';
@@ -96,7 +92,6 @@ class Module extends BaseModule
     /**
      * Preview options for som types of mediafiles according with their location.
      * See how it's done in "preview-options" config file as an example.
-     *
      * @var array
      */
     public $previewOptions = [];
@@ -104,7 +99,6 @@ class Module extends BaseModule
     /**
      * Thumbs config with their types and sizes.
      * See how it's done in "thumbs-config" config file as an example.
-     *
      * @var array of thumbnails.
      */
     public $thumbsConfig = [];
@@ -112,7 +106,6 @@ class Module extends BaseModule
     /**
      * Thumbnails name template.
      * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
-     *
      * @var string
      */
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
@@ -120,28 +113,24 @@ class Module extends BaseModule
     /**
      * Default thumbnail stub urls according with file type.
      * See how it's done in "thumb-stub-urls" config file as an example.
-     *
      * @var array
      */
     public $thumbStubUrls = [];
 
     /**
      * Csrf validation.
-     *
      * @var bool
      */
     public $enableCsrfValidation = false;
 
     /**
      * View component to render content.
-     *
      * @var View
      */
     private $_view = null;
 
     /**
      * Module translations.
-     *
      * @var array|null
      */
     private static $_translations = null;
@@ -186,7 +175,6 @@ class Module extends BaseModule
 
     /**
      * Get the view.
-     *
      * @return View
      */
     public function getView()
@@ -200,7 +188,6 @@ class Module extends BaseModule
 
     /**
      * Returns module root directory.
-     *
      * @return string
      */
     public static function getBaseDir(): string
@@ -210,12 +197,9 @@ class Module extends BaseModule
 
     /**
      * Set thumb configuration.
-     *
      * @param string $alias
      * @param array  $config
-     *
      * @throws InvalidConfigException
-     *
      * @return ThumbConfigInterface
      *
      */
@@ -247,7 +231,6 @@ class Module extends BaseModule
 
     /**
      * Default thumb config
-     *
      * @return array
      */
     public static function getDefaultThumbConfig(): array
@@ -260,10 +243,8 @@ class Module extends BaseModule
 
     /**
      * Get preview options for som types of mediafiles according with their location.
-     *
      * @param string $fileType
      * @param string $location
-     *
      * @return array
      */
     public function getPreviewOptions(string $fileType, string $location): array
@@ -285,12 +266,10 @@ class Module extends BaseModule
 
     /**
      * Module translator.
-     *
      * @param       $category
      * @param       $message
      * @param array $params
      * @param null  $language
-     *
      * @return string
      */
     public static function t($category, $message, $params = [], $language = null)
@@ -304,7 +283,6 @@ class Module extends BaseModule
 
     /**
      * Set i18N component.
-     *
      * @return void
      */
     private function registerTranslations(): void
@@ -333,7 +311,6 @@ class Module extends BaseModule
 
     /**
      * File upload component config.
-     *
      * @return array
      */
     private function getLocalUploadComponentConfig(): array

@@ -87,160 +87,138 @@ use app\modules\files\assets\FileSetterAsset;
  *
  * @package app\modules\files\widgets
  *
- * @author Girnik Andrey <girnikandrey@gmail.com>
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class FileSetter extends InputWidget
 {
     /**
      * Owner name (post, article, page e.t.c.).
-     *
      * @var string|null
      */
     public $owner = null;
 
     /**
      * Owner id.
-     *
      * @var int|null
      */
     public $ownerId = null;
 
     /**
      * Owner attribute (thumbnail, image e.t.c.).
-     *
      * @var string|null
      */
     public $ownerAttribute = null;
 
     /**
      * Needed file type for validation (thumbnail, image e.t.c.).
-     *
      * @var string|null
      */
     public $neededFileType = null;
 
     /**
      * Subdirectory to upload files.
-     *
      * @var string
      */
     public $subDir = '';
 
     /**
      * Template to display widget elements.
-     *
      * @var string
      */
     public $template = '<div class="input-group">{input}<span class="input-group-btn">{button}{reset-button}</span><span class="delete-box">{delete-box}</span></div>';
 
     /**
      * Button html tag.
-     *
      * @var string
      */
     public $buttonHtmlTag = 'button';
 
     /**
      * Button name.
-     *
      * @var string
      */
     public $buttonName = 'Browse';
 
     /**
      * Button html options.
-     *
      * @var array
      */
     public $buttonOptions = [];
 
     /**
      * Reset button html tag.
-     *
      * @var string
      */
     public $resetButtonHtmlTag = 'button';
 
     /**
      * Reset button name.
-     *
      * @var string
      */
     public $resetButtonName = 'Clear';
 
     /**
      * Reset button html options.
-     *
      * @var array
      */
     public $resetButtonOptions = [];
 
     /**
      * Delete box name (text).
-     *
      * @var string
      */
     public $deleteBoxName = 'Delete';
 
     /**
      * Delete box attribute.
-     *
      * @var string
      */
     public $deleteBoxAttribute = 'delete[]';
 
     /**
      * Delete box html options.
-     *
      * @var array
      */
     public $deleteBoxOptions = [];
 
     /**
      * Display or not delete box.
-     *
      * @var bool
      */
     public $deleteBoxDisplay = false;
 
     /**
      * Optional, if set, in container will be inserted selected mediafile.
-     *
      * @var string|null
      */
     public $mediafileContainer = null;
 
     /**
      * Optional, if set, in container will be inserted title of selected mediafile.
-     *
      * @var string|null
      */
     public $titleContainer = null;
 
     /**
      * Optional, if set, in container will be inserted description of selected mediafile.
-     *
      * @var string|null
      */
     public $descriptionContainer = null;
 
     /**
      * JS function. That will be called before insert file data in to the input.
-     *
      * @var string
      */
     public $callbackBeforeInsert = '';
 
     /**
      * This data will be inserted in to the input field.
-     *
      * @var string
      */
     public $insertedData = self::INSERTED_DATA_ID;
     
     /**
      * Src to get files by filemanager.
-     *
      * @var string
      */
     public $srcToFiles  = Module::FILE_MANAGER_SRC;
@@ -323,7 +301,6 @@ class FileSetter extends InputWidget
 
     /**
      * Give ability of configure view to the module class.
-     *
      * @return \yii\base\View|\yii\web\View
      */
     public function getView()

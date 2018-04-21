@@ -13,6 +13,8 @@ use yii\base\InvalidConfigException;
  * @property array|null $contentNegotiator Content negotiator filter.
  *
  * @package Itstructure\FilesModule\traits
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 trait BehaviorsTrait
 {
@@ -76,7 +78,6 @@ trait BehaviorsTrait
 
     /**
      * @param $parameter
-     *
      * @throws InvalidConfigException
      */
     private function checkConfigureFormat($parameter)

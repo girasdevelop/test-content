@@ -1,18 +1,17 @@
 <?php
 
-/** @var string $srcToFiles */
+/** @var string $srcToFiles Src to get files by filemanager. */
 /** @var int $btnId */
 /** @var int $inputId */
-/** @var string $mediafileContainer */
-/** @var string $titleContainer */
-/** @var string $descriptionContainer */
-/** @var string $insertedData */
-/** @var string $thumb */
-/** @var string $owner */
-/** @var int $ownerId */
-/** @var string $ownerAttribute */
-/** @var string $neededFileType */
-/** @var string $subDir */
+/** @var string $mediafileContainer In this container will be inserted selected mediafile. */
+/** @var string $titleContainer In this container will be inserted title of selected mediafile. */
+/** @var string $descriptionContainer In this container will be inserted description of selected mediafile. */
+/** @var string $insertedData This data will be inserted in to the input field. */
+/** @var string $owner Owner name (post, article, page e.t.c.). */
+/** @var int $ownerId Owner id. */
+/** @var string $ownerAttribute Owner attribute (thumbnail, image e.t.c.). */
+/** @var string $neededFileType Needed file type for validation (thumbnail, image e.t.c.). */
+/** @var string $subDir Subdirectory to upload files. */
 ?>
 
 <div role="filemanager-modal" class="modal" tabindex="-1"

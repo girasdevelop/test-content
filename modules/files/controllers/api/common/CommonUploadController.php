@@ -23,6 +23,8 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\api\common
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 abstract class CommonUploadController extends RestController
 {
@@ -67,9 +69,7 @@ abstract class CommonUploadController extends RestController
 
     /**
      * Set upload model.
-     *
      * @param UploadModelInterface $model
-     *
      * @return void
      */
     public function setUploadModel(UploadModelInterface $model): void
@@ -79,7 +79,6 @@ abstract class CommonUploadController extends RestController
 
     /**
      * Returns upload model.
-     *
      * @return UploadModelInterface
      */
     public function getUploadModel(): UploadModelInterface
@@ -89,9 +88,7 @@ abstract class CommonUploadController extends RestController
 
     /**
      * Provides upload file.
-     *
      * @throws BadRequestHttpException
-     *
      * @return array
      */
     public function actionSave()
@@ -127,9 +124,7 @@ abstract class CommonUploadController extends RestController
 
     /**
      * Delete the media model entry with files.
-     *
      * @throws BadRequestHttpException
-     *
      * @return array
      */
     public function actionDelete()
@@ -154,7 +149,6 @@ abstract class CommonUploadController extends RestController
 
     /**
      * Response with uploaded file data.
-     *
      * @return array
      */
     private function getUploadResponse(): array
@@ -171,12 +165,9 @@ abstract class CommonUploadController extends RestController
 
     /**
      * Returns an intermediate model for working with the main.
-     *
      * @param int|null $id
-     *
      * @throws UnknownMethodException
      * @throws NotFoundHttpException
-     *
      * @return Mediafile
      */
     private function setMediafileModel(int $id = null): Mediafile

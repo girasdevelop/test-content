@@ -16,6 +16,8 @@ use app\modules\files\models\{ActiveRecord, OwnersMediafiles};
  * FileSetter::INSERTED_DATA_URL
  *
  * @package Itstructure\FilesModule\models\album
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class TextAlbum extends Album
 {
@@ -25,7 +27,6 @@ class TextAlbum extends Album
      * Can have the values according with the selected type of:
      * FileSetter::INSERTED_DATA_ID
      * FileSetter::INSERTED_DATA_URL
-     *
      * @var array text(array of 'mediafile id' or 'mediafile url').
      */
     public $text;
@@ -67,7 +68,6 @@ class TextAlbum extends Album
 
     /**
      * Get album's text files.
-     *
      * @return ActiveRecord[]
      */
     public function getTextFiles()

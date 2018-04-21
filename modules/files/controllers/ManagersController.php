@@ -19,6 +19,8 @@ use app\modules\files\traits\BehaviorsTrait;
  * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\api
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class ManagersController extends Controller
 {
@@ -38,9 +40,7 @@ class ManagersController extends Controller
 
     /**
      * Get filemanager with uploaded files.
-     *
      * @throws BadRequestHttpException
-     *
      * @return string
      */
     public function actionFilemanager()
@@ -93,9 +93,7 @@ class ManagersController extends Controller
 
     /**
      * Get uploadmanager for uploading files.
-     *
      * @throws BadRequestHttpException
-     *
      * @return string
      */
     public function actionUploadmanager()

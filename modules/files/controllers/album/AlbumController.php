@@ -23,6 +23,8 @@ use app\modules\files\traits\MediaFilesTrait;
  * @property Module $module
  *
  * @package Itstructure\FilesModule\controllers\album
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 abstract class AlbumController extends Controller
 {
@@ -30,21 +32,18 @@ abstract class AlbumController extends Controller
 
     /**
      * Model object record.
-     *
      * @var Album
      */
     private $model;
 
     /**
      * Returns the name of the base model.
-     *
      * @return string
      */
     abstract protected function getModelName():string;
 
     /**
      * Returns the type of album.
-     *
      * @return string
      */
     abstract protected function getAlbumType():string;
@@ -63,7 +62,6 @@ abstract class AlbumController extends Controller
 
     /**
      * Set model.
-     *
      * @param $model Album
      */
     public function setModel(Album $model): void
@@ -73,7 +71,6 @@ abstract class AlbumController extends Controller
 
     /**
      * Returns model.
-     *
      * @return Album
      */
     public function getModel(): Album
@@ -109,7 +106,6 @@ abstract class AlbumController extends Controller
 
     /**
      * Give ability of configure view to the module class.
-     *
      * @return \yii\base\View|\yii\web\View
      */
     public function getView()
@@ -123,7 +119,6 @@ abstract class AlbumController extends Controller
 
     /**
      * Lists all Album models.
-     *
      * @return mixed
      */
     public function actionIndex()
@@ -145,11 +140,8 @@ abstract class AlbumController extends Controller
 
     /**
      * Displays a single Album model.
-     *
      * @param integer $id
-     *
      * @throws NotFoundHttpException if the model cannot be found
-     *
      * @return mixed
      */
     public function actionView($id)
@@ -176,7 +168,6 @@ abstract class AlbumController extends Controller
     /**
      * Creates a new Album model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     *
      * @return mixed
      */
     public function actionCreate()
@@ -200,11 +191,8 @@ abstract class AlbumController extends Controller
     /**
      * Updates an existing Album model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     *
      * @param integer $id
-     *
      * @throws NotFoundHttpException if the model cannot be found
-     *
      * @return mixed
      */
     public function actionUpdate($id)
@@ -250,12 +238,9 @@ abstract class AlbumController extends Controller
     /**
      * Deletes an existing Album model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
      * @param integer $id
-     *
      * @throws NotFoundHttpException if the model cannot be found
      * @throws BadRequestHttpException
-     *
      * @return mixed
      */
     public function actionDelete($id)
@@ -273,12 +258,9 @@ abstract class AlbumController extends Controller
 
     /**
      * Finds the Album model based on its primary key value.
-     *
      * @param $key
-     *
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
-     *
      * @return Album
      */
     protected function findModel($key): Album
@@ -308,7 +290,6 @@ abstract class AlbumController extends Controller
 
     /**
      * Returns new object of main Album model.
-     *
      * @return Album
      */
     protected function getNewModel(): Album
@@ -319,9 +300,7 @@ abstract class AlbumController extends Controller
 
     /**
      * Returns an intermediate model for working with the main.
-     *
      * @param int|string|null $key
-     *
      * @return void
      */
     protected function setModelByConditions($key = null): void

@@ -16,6 +16,8 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * @property UploadComponentInterface[]|LocalUploadComponent[] $tmpUploadComponents Upload components to delete files according with their different types.
  *
  * @package Itstructure\FilesModule\traits
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 trait MediaFilesTrait
 {
@@ -28,11 +30,9 @@ trait MediaFilesTrait
 
     /**
      * Delete mediafiles from owner.
-     *
      * @param string $owner
      * @param int $ownerId
      * @param Module $module
-     *
      * @return void
      */
     protected function deleteMediafiles(string $owner, int $ownerId, Module $module): void
@@ -51,12 +51,9 @@ trait MediaFilesTrait
 
     /**
      * Find the media model entry.
-     *
      * @param int $id
-     *
      * @throws UnknownMethodException
      * @throws NotFoundHttpException
-     *
      * @return Mediafile
      */
     protected function findMediafileModel(int $id): Mediafile
@@ -82,12 +79,9 @@ trait MediaFilesTrait
 
     /**
      * Delete mediafile record with files.
-     *
      * @param array|int|string $id
      * @param Module $module
-     *
      * @throws InvalidConfigException
-     *
      * @return bool|int
      */
     protected function deleteMediafileEntry($id, Module $module)
@@ -129,10 +123,8 @@ trait MediaFilesTrait
 
     /**
      * Set tmp upload component if not isset.
-     *
      * @param string $storage
      * @param UploadComponentInterface $component
-     *
      * @return void
      */
     private function setComponentIfNotIsset(string $storage, UploadComponentInterface $component): void

@@ -9,15 +9,15 @@ use yii\helpers\{ArrayHelper, Html as BaseHtml};
  * HTML helper.
  *
  * @package Itstructure\FilesModule\helpers
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class Html extends BaseHtml
 {
     /**
      * Render html 5 audio tag structure.
-     *
      * @param string $src
      * @param array $options
-     *
      * @return string
      */
     public static function audio(string $src, $options = []): string
@@ -60,10 +60,8 @@ class Html extends BaseHtml
 
     /**
      * Render html 5 video tag structure.
-     *
      * @param string $src
      * @param array $options
-     *
      * @return string
      */
     public static function video(string $src, $options = []): string

@@ -23,6 +23,8 @@ use app\modules\files\interfaces\UploadModelInterface;
  * options - html options of addition tag.
  * You can insert configurations values of addition tags through the third parameter
  * of getPreview() function from Mediafile model.
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 return [
     UploadModelInterface::FILE_TYPE_IMAGE => [

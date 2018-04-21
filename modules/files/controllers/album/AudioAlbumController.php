@@ -8,12 +8,13 @@ use app\modules\files\models\album\AudioAlbum;
  * AudioAlbumController extends the base abstract AlbumController.
  *
  * @package Itstructure\FilesModule\controllers\album
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class AudioAlbumController extends AlbumController
 {
     /**
      * Returns the name of the AudioAlbum model.
-     *
      * @return string
      */
     protected function getModelName():string
@@ -23,7 +24,6 @@ class AudioAlbumController extends AlbumController
 
     /**
      * Returns the type of audio album.
-     *
      * @return string
      */
     protected function getAlbumType():string

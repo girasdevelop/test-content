@@ -13,10 +13,11 @@ use app\modules\files\models\album\Album;
  * @property int $ownerId Owner id.
  * @property string $owner Owner name (post, article, page e.t.c.).
  * @property string $ownerAttribute Owner attribute (thumbnail, image e.t.c.).
- *
  * @property Album $album
  *
  * @package Itstructure\FilesModule\models
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class OwnersAlbums extends \yii\db\ActiveRecord
 {
@@ -106,11 +107,9 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get all albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
      * @param string $ownerAttribute
-     *
      * @return ActiveRecord[]
      */
     public static function getAlbums(string $owner, int $ownerId, string $ownerAttribute = null)
@@ -129,10 +128,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get image albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
-     *
      * @return ActiveRecord[]
      */
     public static function getImageAlbums(string $owner, int $ownerId)
@@ -142,10 +139,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get audio albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
-     *
      * @return ActiveRecord[]
      */
     public static function getAudioAlbums(string $owner, int $ownerId)
@@ -155,10 +150,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get video albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
-     *
      * @return ActiveRecord[]
      */
     public static function getVideoAlbums(string $owner, int $ownerId)
@@ -168,10 +161,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get application albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
-     *
      * @return ActiveRecord[]
      */
     public static function getAppAlbums(string $owner, int $ownerId)
@@ -181,10 +172,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get text albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
-     *
      * @return ActiveRecord[]
      */
     public static function getTextAlbums(string $owner, int $ownerId)
@@ -194,10 +183,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get other albums by owner.
-     *
      * @param string $owner
      * @param int    $ownerId
-     *
      * @return ActiveRecord[]
      */
     public static function getOtherAlbums(string $owner, int $ownerId)
@@ -207,11 +194,8 @@ class OwnersAlbums extends \yii\db\ActiveRecord
 
     /**
      * Get Id's by owner.
-     *
      * @param array $args. It can be an array of the next params: owner{string}, ownerId{int}, ownerAttribute{string}.
-     *
      * @throws InvalidArgumentException
-     *
      * @return ActiveQuery
      */
     private static function getAlbumIds(array $args):ActiveQuery

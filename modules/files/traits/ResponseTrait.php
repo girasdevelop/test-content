@@ -6,15 +6,15 @@ namespace app\modules\files\traits;
  * Trait ResponseTrait
  *
  * @package Itstructure\FilesModule\traits
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 trait ResponseTrait
 {
     /**
      * Returns success response.
-     *
      * @param string     $message
      * @param array|null $data
-     *
      * @return array
      */
     protected function getSuccessResponse(string $message, array $data = null): array
@@ -24,10 +24,8 @@ trait ResponseTrait
 
     /**
      * Returns fail response.
-     *
      * @param string     $message
      * @param array|null $data
-     *
      * @return array
      */
     protected function getFailResponse(string $message, array $data = null): array
@@ -37,12 +35,10 @@ trait ResponseTrait
 
     /**
      * Returns status, message and code.
-     *
      * @param string     $message
      * @param string     $status
      * @param int        $statusCode
      * @param array|null $data
-     *
      * @return array
      */
     protected function getStatusResponse(string $message, string $status, array $data = null, int $statusCode = 200): array

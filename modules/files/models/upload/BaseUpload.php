@@ -39,6 +39,8 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property Mediafile $mediafileModel Mediafile model to save files data.
  *
  * @package Itstructure\FilesModule\models
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 abstract class BaseUpload extends Model
 {
@@ -51,84 +53,72 @@ abstract class BaseUpload extends Model
 
     /**
      * Alt text for the file.
-     *
      * @var string
      */
     public $alt;
 
     /**
      * Title for the file.
-     *
      * @var string
      */
     public $title;
 
     /**
      * File description.
-     *
      * @var string
      */
     public $description;
 
     /**
      * Advance value.
-     *
      * @var string
      */
     public $advance;
 
     /**
      * Addition sub-directory for uploaded files.
-     *
      * @var string
      */
     public $subDir;
 
     /**
      * Owner name (post, page, article e.t.c.).
-     *
      * @var string
      */
     public $owner;
 
     /**
      * Owner id.
-     *
      * @var int
      */
     public $ownerId;
 
     /**
      * Owner attribute (image, audio, thumbnail e.t.c.).
-     *
      * @var string
      */
     public $ownerAttribute;
 
     /**
      * Needed file type for validation (thumbnail, image e.t.c.).
-     *
      * @var string
      */
     public $neededFileType;
 
     /**
      * Rename file after upload.
-     *
      * @var bool
      */
     public $renameFiles = true;
 
     /**
      * Directory separator.
-     *
      * @var string
      */
     public $directorySeparator = DIRECTORY_SEPARATOR;
 
     /**
      * File extensions.
-     *
      * @var array
      */
     public $fileExtensions = [
@@ -155,21 +145,18 @@ abstract class BaseUpload extends Model
 
     /**
      * Check extension by MIME type (they are must match).
-     *
      * @var bool
      */
     public $checkExtensionByMimeType = true;
 
     /**
      * Maximum file size.
-     *
      * @var int
      */
     public $fileMaxSize = 1024*1024*64;
 
     /**
      * Thumbs config with their types and sizes.
-     *
      * @var array
      */
     public $thumbsConfig = [];
@@ -177,63 +164,54 @@ abstract class BaseUpload extends Model
     /**
      * Thumbnails name template.
      * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
-     *
      * @var string
      */
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
 
     /**
      * Root directory for uploaded files.
-     *
      * @var string
      */
     public $uploadRoot;
 
     /**
      * Directory for delete with all content.
-     *
      * @var string
      */
     public $directoryForDelete = [];
 
     /**
      * Directory for uploaded files.
-     *
      * @var string
      */
     protected $uploadDir;
 
     /**
      * Full directory path to upload file.
-     *
      * @var string
      */
     protected $uploadPath;
 
     /**
      * Prepared file name to save in database and storage.
-     *
      * @var string
      */
     protected $outFileName;
 
     /**
      * File url path for database.
-     *
      * @var string
      */
     protected $databaseUrl;
 
     /**
      * File object.
-     *
      * @var UploadedFile
      */
     private $file;
 
     /**
      * Mediafile model to save files data.
-     *
      * @var Mediafile
      */
     private $mediafileModel;
@@ -246,51 +224,43 @@ abstract class BaseUpload extends Model
      * $this->outFileName
      * $this->databaseUrl
      * $this->mediafileModel->type
-     *
      * @return void
      */
     abstract protected function setParamsForSave(): void;
 
     /**
      * Set some params for delete.
-     *
      * @return void
      */
     abstract protected function setParamsForDelete(): void;
 
     /**
      * Save file in local directory or send file to remote storage.
-     *
      * @return bool
      */
     abstract protected function sendFile(): bool;
 
     /**
      * Delete files from local directory or from remote storage.
-     *
      * @return mixed
      */
     abstract protected function deleteFiles();
 
     /**
      * Create thumb.
-     *
      * @param ThumbConfigInterface $thumbConfig
-     *
      * @return string
      */
     abstract protected function createThumb(ThumbConfigInterface $thumbConfig): string;
 
     /**
      * Get storage type (local, s3, e.t.c...).
-     *
      * @return string
      */
     abstract protected function getStorage(): string;
 
     /**
      * Scenarios.
-     *
      * @return array
      */
     public function scenarios(): array
@@ -303,7 +273,6 @@ abstract class BaseUpload extends Model
 
     /**
      * Attributes.
-     *
      * @return array
      */
     public function attributes()
@@ -412,7 +381,6 @@ abstract class BaseUpload extends Model
 
     /**
      * Set mediafile model.
-     *
      * @param Mediafile $model
      */
     public function setMediafileModel(Mediafile $model): void
@@ -422,7 +390,6 @@ abstract class BaseUpload extends Model
 
     /**
      * Get mediafile model.
-     *
      * @return Mediafile
      */
     public function getMediafileModel(): Mediafile
@@ -432,9 +399,7 @@ abstract class BaseUpload extends Model
 
     /**
      * Set file.
-     *
      * @param UploadedFile|null $file
-     *
      * @return void
      */
     public function setFile(UploadedFile $file = null): void
@@ -444,7 +409,6 @@ abstract class BaseUpload extends Model
 
     /**
      * Set file.
-     *
      * @return mixed
      */
     public function getFile()
@@ -454,9 +418,7 @@ abstract class BaseUpload extends Model
 
     /**
      * Save file in directory and database by using a "mediafileModel".
-     *
      * @throws \Exception
-     *
      * @return bool
      */
     public function save(): bool
@@ -508,9 +470,7 @@ abstract class BaseUpload extends Model
 
     /**
      * Delete files from local directory or from remote storage.
-     *
      * @throws \Exception
-     *
      * @return int
      */
     public function delete(): int
@@ -530,7 +490,6 @@ abstract class BaseUpload extends Model
 
     /**
      * Returns current model id.
-     *
      * @return int|string
      */
     public function getId()
@@ -540,9 +499,7 @@ abstract class BaseUpload extends Model
 
     /**
      * Create thumbs for this image
-     *
      * @throws InvalidConfigException
-     *
      * @return bool
      */
     public function createThumbs(): bool
@@ -572,13 +529,11 @@ abstract class BaseUpload extends Model
 
     /**
      * Returns thumbnail name.
-     *
      * @param $original
      * @param $extension
      * @param $alias
      * @param $width
      * @param $height
-     *
      * @return string
      */
     public function getThumbFilename($original, $extension, $alias, $width, $height)

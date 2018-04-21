@@ -8,7 +8,6 @@ use app\modules\files\models\Mediafile;
 use app\modules\files\models\album\Album;
 use app\modules\files\widgets\FileSetter;
 use app\modules\files\assets\FileSetterAsset;
-use app\modules\files\interfaces\UploadModelInterface;
 
 /* @var $this yii\web\View */
 /* @var $model Album */

@@ -4,6 +4,8 @@ use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Default thumbnail stub urls according with file type.
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 return [
     UploadModelInterface::FILE_TYPE_APP => 'images'.DIRECTORY_SEPARATOR.'app.png',

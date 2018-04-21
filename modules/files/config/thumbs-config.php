@@ -4,6 +4,8 @@ use app\modules\files\Module;
 
 /**
  * Thumbs config with their types and sizes.
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 return [
     Module::SMALL_THUMB_ALIAS => [

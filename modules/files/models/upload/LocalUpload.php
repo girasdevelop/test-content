@@ -16,6 +16,8 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property array $uploadDirs Directories for local uploaded files.
  *
  * @package Itstructure\FilesModule\models
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class LocalUpload extends BaseUpload implements UploadModelInterface
 {
@@ -24,7 +26,6 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Directories for local uploaded files.
-     *
      * @var array
      */
     public $uploadDirs;
@@ -43,7 +44,6 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Get storage type - local.
-     *
      * @return string
      */
     protected function getStorage(): string
@@ -59,9 +59,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * $this->outFileName
      * $this->databaseUrl
      * $this->mediafileModel->type
-     *
      * @throws InvalidConfigException
-     *
      * @return void
      */
     protected function setParamsForSave(): void
@@ -93,7 +91,6 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * Set some params for upload.
      * It is needed to set the next parameters:
      * $this->directoryForDelete
-     *
      * @return void
      */
     protected function setParamsForDelete(): void
@@ -113,7 +110,6 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Save file in local directory or send file to remote storage.
-     *
      * @return bool
      */
     protected function sendFile(): bool
@@ -125,7 +121,6 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Delete local directory with original file and thumbs.
-     *
      * @return mixed
      */
     protected function deleteFiles()
@@ -137,9 +132,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Create thumb.
-     *
      * @param ThumbConfigInterface|ThumbConfig $thumbConfig
-     *
      * @return string
      */
     protected function createThumb(ThumbConfigInterface $thumbConfig): string
@@ -166,11 +159,8 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Get upload directory configuration by file type.
-     *
      * @param string $type
-     *
      * @throws InvalidConfigException
-     *
      * @return string
      */
     private function getUploadDirConfig(string $type): string

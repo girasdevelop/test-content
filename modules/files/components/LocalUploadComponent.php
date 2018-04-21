@@ -23,19 +23,19 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
  *
  * @package Itstructure\FilesModule\components
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class LocalUploadComponent extends Component implements UploadComponentInterface
 {
     /**
      * Root directory for local uploaded files.
-     *
      * @var string
      */
     public $uploadRoot;
 
     /**
      * Directory for uploaded files.
-     *
      * @var string
      */
     public $uploadDirs = [
@@ -49,14 +49,12 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
 
     /**
      * Rename file after upload.
-     *
      * @var bool
      */
     public $renameFiles = true;
 
     /**
      * File extensions.
-     *
      * @var array
      */
     public $fileExtensions = [
@@ -83,21 +81,18 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
 
     /**
      * Check extension by MIME type (they are must match).
-     *
      * @var bool
      */
     public $checkExtensionByMimeType = true;
 
     /**
      * Maximum file size.
-     *
      * @var int
      */
     public $fileMaxSize = 1024*1024*64;
 
     /**
      * Thumbs config with their types and sizes.
-     *
      * @var array
      */
     public $thumbsConfig = [];
@@ -105,7 +100,6 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
     /**
      * Thumbnails name template.
      * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
-     *
      * @var string
      */
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
@@ -126,9 +120,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
 
     /**
      * Sets a mediafile model for upload file.
-     *
      * @param Mediafile $mediafileModel
-     *
      * @return UploadModelInterface
      */
     public function setModelForSave(Mediafile $mediafileModel): UploadModelInterface
@@ -152,9 +144,7 @@ class LocalUploadComponent extends Component implements UploadComponentInterface
 
     /**
      * Sets a mediafile model for delete file.
-     *
      * @param Mediafile $mediafileModel
-     *
      * @return UploadModelInterface
      */
     public function setModelForDelete(Mediafile $mediafileModel): UploadModelInterface

@@ -28,6 +28,8 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property OwnersMediafiles[] $ownersMediafiles
  *
  * @package Itstructure\FilesModule\models
+ *
+ * @author Andrey Girnik <girnikandrey@gmail.com>
  */
 class Mediafile extends ActiveRecord
 {
@@ -133,9 +135,7 @@ class Mediafile extends ActiveRecord
 
     /**
      * Find model by url.
-     *
      * @param string $url
-     *
      * @return Mediafile
      */
     public static function findByUrl(string $url): Mediafile

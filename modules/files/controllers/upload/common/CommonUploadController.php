@@ -72,6 +72,13 @@ abstract class CommonUploadController extends Controller
                         'roles' => $this->module->accessRoles,
                     ],
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    \Yii::$app->response->format = Response::FORMAT_JSON;
+                    \Yii::$app->response->statusCode = 403;
+                    \Yii::$app->response->data = $this->getFailResponse('Forbidden', [
+                        'errors' => Yii::t('yii', 'You are not allowed to perform this action.')
+                    ]);
+                }
             ],
             'contentNegotiator' => [
                 'class' => ContentNegotiator::class,

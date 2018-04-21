@@ -159,13 +159,6 @@ class Module extends BaseModule
 
         static::registerTranslations();
 
-        /**
-         * Set Rbac validate component
-         */
-        $this->setComponents(
-            ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
-        );
-
         $this->previewOptions = ArrayHelper::merge(
             require __DIR__ . '/config/preview-options.php',
             $this->previewOptions
@@ -179,6 +172,13 @@ class Module extends BaseModule
         $this->thumbsConfig = ArrayHelper::merge(
             require __DIR__ . '/config/thumbs-config.php',
             $this->thumbsConfig
+        );
+
+        /**
+         * Set Rbac validate component
+         */
+        $this->setComponents(
+            ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
         );
     }
 

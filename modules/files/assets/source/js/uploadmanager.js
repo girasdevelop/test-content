@@ -51,6 +51,7 @@ $(document).ready(function() {
             buttonBlockUpload = fileBlock.find('[role="button-block-upload"]'),
             buttonBlockDelete = fileBlock.find('[role="button-block-delete"]'),
             url = window.uploadManagerContainer.attr('data-save-src'),
+            fileAttributeName = window.uploadManagerContainer.attr('data-file-attribute-name'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
             owner = window.fileManagerModalContainer.attr("data-owner"),
             ownerId = window.fileManagerModalContainer.attr("data-owner-id"),
@@ -61,11 +62,11 @@ $(document).ready(function() {
             params = {
                 _csrf: yii.getCsrfToken(),
                 title: fileBlock.find('[role="file-title"]').val(),
-                description: fileBlock.find('[role="file-description"]').val(),
-                files: {
-                    file: file
-                }
-            };
+                description: fileBlock.find('[role="file-description"]').val()
+            },
+            paramsFiles = {};
+        paramsFiles[fileAttributeName] = file;
+        params.files = paramsFiles;
 
         if (fileType.split('/')[0] == 'image'){
             params.alt = fileBlock.find('[role="file-alt"]').val();

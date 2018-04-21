@@ -80,9 +80,10 @@ $(document).ready(function() {
 
         var fileInputField = $('[role="file-new"]');
         if (fileInputField[0].files[0]) {
-            params.files = {
-                file: fileInputField[0].files[0]
-            }
+            var fileAttributeName = fileInputs.attr("data-file-attribute-name"),
+                paramsFiles = {};
+            paramsFiles[fileAttributeName] = fileInputField[0].files[0];
+            params.files = paramsFiles;
         }
 
         AJAX(url, 'POST', params, true, function () {

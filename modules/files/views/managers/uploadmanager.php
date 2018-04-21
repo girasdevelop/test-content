@@ -19,6 +19,7 @@ $this->params['manager'] = $manager;
 <div id="uploadmanager" role="uploadmanager"
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
+     data-file-attribute-name="<?php echo $fileAttributeName ?>"
      data-base-url="<?php echo $this->params['bundle']->baseUrl ?>">
 
     <div id="buttons">

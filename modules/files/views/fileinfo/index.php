@@ -29,6 +29,7 @@ $bundle = FilemanagerAsset::register($this);
      data-file-id="<?php echo $model->id ?>"
      data-file-url="<?php echo $model->url ?>"
      data-file-type="<?php echo $model->type ?>"
+     data-file-attribute-name="<?php echo $fileAttributeName ?>"
      data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
      data-delete-src="<?php echo Module::DELETE_SRC ?>"
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"

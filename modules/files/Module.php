@@ -18,7 +18,7 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  * @property array|null $authenticator Auth filter.
  * @property array|null $rateLimiter Rate limit filter.
  * @property array|null $contentNegotiator Content negotiator filter.
- * @property string $fileAttributeName Name of the file field.
+ * @property string $fileAttributeName Name of the file field to load using Ajax request.
  * @property array $previewOptions Preview options for som types of mediafiles according with their location.
  * @property array $thumbsConfig Thumbs config with their types and sizes.
  * @property string $thumbFilenameTemplate Thumbnails name template.
@@ -87,7 +87,7 @@ class Module extends BaseModule
     public $contentNegotiator = null;
 
     /**
-     * Name of the file field.
+     * Name of the file field to load using Ajax request.
      *
      * @var string
      */
@@ -103,6 +103,7 @@ class Module extends BaseModule
 
     /**
      * Thumbs config with their types and sizes.
+     * See how it's done in "thumbs-config" config file as an example.
      *
      * @var array of thumbnails.
      */
@@ -118,6 +119,7 @@ class Module extends BaseModule
 
     /**
      * Default thumbnail stub urls according with file type.
+     * See how it's done in "thumb-stub-urls" config file as an example.
      *
      * @var array
      */

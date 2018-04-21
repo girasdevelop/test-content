@@ -44,7 +44,7 @@ trait MediaFilesTrait
         ->select('id')
         ->all();
 
-        $mediafileIds = array_map(function ($data) {return $data->id;}, $mediafileIds);echo '<pre>';
+        $mediafileIds = array_map(function ($data) {return $data->id;}, $mediafileIds);
 
         $this->deleteMediafileEntry($mediafileIds, $module);
     }

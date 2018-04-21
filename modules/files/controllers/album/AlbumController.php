@@ -61,24 +61,6 @@ abstract class AlbumController extends Controller
     }
 
     /**
-     * Set model.
-     * @param $model Album
-     */
-    public function setModel(Album $model): void
-    {
-        $this->model = $model;
-    }
-
-    /**
-     * Returns model.
-     * @return Album
-     */
-    public function getModel(): Album
-    {
-        return $this->model;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function behaviors()
@@ -96,12 +78,28 @@ abstract class AlbumController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'delete' => [
-                        'POST',
-                    ],
+                    'delete' => ['POST'],
                 ],
             ],
         ];
+    }
+
+    /**
+     * Set model.
+     * @param $model Album
+     */
+    public function setModel(Album $model): void
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * Returns model.
+     * @return Album
+     */
+    public function getModel(): Album
+    {
+        return $this->model;
     }
 
     /**

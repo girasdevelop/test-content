@@ -5,6 +5,7 @@ namespace app\modules\files\controllers;
 use yii\helpers\BaseUrl;
 use yii\data\{ActiveDataProvider, Pagination};
 use yii\base\InvalidArgumentException;
+use yii\filters\{VerbFilter, AccessControl};
 use yii\web\{Controller, BadRequestHttpException};
 use app\modules\files\Module;
 use app\modules\files\models\{OwnersMediafiles, Mediafile};
@@ -30,9 +31,32 @@ class ManagersController extends Controller
     {
         $this->layout = '@app/modules/files/views/layouts/main';
 
-        $this->enableCsrfValidation = $this->module->enableCsrfValidation;
-
         parent::init();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => $this->module->accessRoles,
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'filemanager' => ['GET'],
+                    'uploadmanager' => ['GET'],
+                ],
+            ],
+        ];
     }
 
     /**

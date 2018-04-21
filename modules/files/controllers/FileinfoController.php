@@ -3,6 +3,7 @@
 namespace app\modules\files\controllers;
 
 use yii\web\Controller;
+use yii\filters\{VerbFilter, AccessControl};
 use app\modules\files\Module;
 use app\modules\files\models\Mediafile;
 
@@ -24,15 +25,31 @@ class FileinfoController extends Controller
     public function init()
     {
         $this->enableCsrfValidation = $this->module->enableCsrfValidation;
+
+        parent::init();
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function verbs()
+    public function behaviors()
     {
         return [
-            'index' => ['POST'],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => $this->module->accessRoles,
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'index' => ['POST'],
+                ],
+            ],
         ];
     }
 

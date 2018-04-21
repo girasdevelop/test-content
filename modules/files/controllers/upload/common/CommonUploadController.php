@@ -3,7 +3,7 @@
 namespace app\modules\files\controllers\upload\common;
 
 use Yii;
-use yii\filters\{ContentNegotiator, VerbFilter};
+use yii\filters\{AccessControl, ContentNegotiator, VerbFilter};
 use yii\base\{InvalidConfigException, UnknownMethodException};
 use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException};
 use app\modules\files\Module;
@@ -64,6 +64,15 @@ abstract class CommonUploadController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => $this->module->accessRoles,
+                    ],
+                ],
+            ],
             'contentNegotiator' => [
                 'class' => ContentNegotiator::class,
                 'formats' => [

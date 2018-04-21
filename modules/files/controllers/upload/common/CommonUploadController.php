@@ -1,17 +1,17 @@
 <?php
 
-namespace app\modules\files\controllers\api\common;
+namespace app\modules\files\controllers\upload\common;
 
 use Yii;
-use yii\rest\Controller as RestController;
+use yii\filters\{ContentNegotiator, VerbFilter};
 use yii\base\{InvalidConfigException, UnknownMethodException};
-use yii\web\{UploadedFile, BadRequestHttpException, NotFoundHttpException};
+use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException};
 use app\modules\files\Module;
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\assets\UploadmanagerAsset;
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\BaseUpload;
-use app\modules\files\traits\{BehaviorsTrait, ResponseTrait, MediaFilesTrait};
+use app\modules\files\traits\{ResponseTrait, MediaFilesTrait};
 use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface};
 
 /**
@@ -22,13 +22,18 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * @property UploadModelInterface|BaseUpload $uploadModel
  * @property Module $module
  *
- * @package Itstructure\FilesModule\controllers\api\common
+ * @package Itstructure\FilesModule\controllers\upload\common
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-abstract class CommonUploadController extends RestController
+abstract class CommonUploadController extends Controller
 {
-    use BehaviorsTrait, ResponseTrait, MediaFilesTrait;
+    use ResponseTrait, MediaFilesTrait;
+
+    /**
+     * @var string|array the configuration for creating the serializer that formats the response data.
+     */
+    public $serializer = 'yii\rest\Serializer';
 
     /**
      * @var null|UploadComponentInterface|LocalUploadComponent
@@ -51,9 +56,34 @@ abstract class CommonUploadController extends RestController
     public function init()
     {
         $this->enableCsrfValidation = $this->module->enableCsrfValidation;
-        $this->authenticator        = $this->module->authenticator;
-        $this->rateLimiter          = $this->module->rateLimiter;
-        $this->contentNegotiator    = $this->module->contentNegotiator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'contentNegotiator' => [
+                'class' => ContentNegotiator::class,
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON,
+                ],
+            ],
+            'verbFilter' => [
+                'class' => VerbFilter::class,
+                'actions' => $this->verbs(),
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterAction($action, $result)
+    {
+        $result = parent::afterAction($action, $result);
+        return $this->serializeData($result);
     }
 
     /**
@@ -62,7 +92,7 @@ abstract class CommonUploadController extends RestController
     public function verbs()
     {
         return [
-            'upload' => ['POST'],
+            'save' => ['POST'],
             'delete' => ['POST'],
         ];
     }
@@ -145,6 +175,18 @@ abstract class CommonUploadController extends RestController
         } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * Serializes the specified data.
+     * The default implementation will create a serializer based on the configuration given by [[serializer]].
+     * It then uses the serializer to serialize the given data.
+     * @param mixed $data the data to be serialized
+     * @return mixed the serialized data.
+     */
+    protected function serializeData($data)
+    {
+        return Yii::createObject($this->serializer)->serialize($data);
     }
 
     /**

@@ -19,6 +19,14 @@ use app\modules\files\models\Mediafile;
 class FileinfoController extends Controller
 {
     /**
+     * Initialize.
+     */
+    public function init()
+    {
+        $this->enableCsrfValidation = $this->module->enableCsrfValidation;
+    }
+
+    /**
      * @return array
      */
     public function verbs()

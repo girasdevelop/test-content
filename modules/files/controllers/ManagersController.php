@@ -8,7 +8,6 @@ use yii\base\InvalidArgumentException;
 use yii\web\{Controller, BadRequestHttpException};
 use app\modules\files\Module;
 use app\modules\files\models\{OwnersMediafiles, Mediafile};
-use app\modules\files\traits\BehaviorsTrait;
 
 /**
  * Class ManagersController
@@ -24,16 +23,14 @@ use app\modules\files\traits\BehaviorsTrait;
  */
 class ManagersController extends Controller
 {
-    use BehaviorsTrait;
-
     /**
      * Initialize.
      */
     public function init()
     {
-        $this->layout               = '@app/modules/files/views/layouts/main';
-        $this->authenticator        = $this->module->authenticator;
-        $this->rateLimiter          = $this->module->rateLimiter;
+        $this->layout = '@app/modules/files/views/layouts/main';
+
+        $this->enableCsrfValidation = $this->module->enableCsrfValidation;
 
         parent::init();
     }

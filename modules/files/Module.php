@@ -15,9 +15,6 @@ use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
  *
  * @property null|string|array $loginUrl Login url.
  * @property array $accessRoles Array of roles to module access.
- * @property array|null $authenticator Auth filter.
- * @property array|null $rateLimiter Rate limit filter.
- * @property array|null $contentNegotiator Content negotiator filter.
  * @property string $fileAttributeName Name of the file field to load using Ajax request.
  * @property array $previewOptions Preview options for som types of mediafiles according with their location.
  * @property array $thumbsConfig Thumbs config with their types and sizes.
@@ -42,8 +39,8 @@ class Module extends BaseModule
     const FILE_MANAGER_SRC   = '/files/managers/filemanager';
     const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
     const FILE_INFO_SRC      = '/files/fileinfo/index';
-    const LOCAL_SAVE_SRC     = '/files/api/local-upload/save';
-    const DELETE_SRC         = '/files/api/local-upload/delete';
+    const LOCAL_SAVE_SRC     = '/files/upload/local-upload/save';
+    const DELETE_SRC         = '/files/upload/local-upload/delete';
 
     const BACK_URL_PARAM = '__backUrl';
 
@@ -64,24 +61,6 @@ class Module extends BaseModule
      * @var array
      */
     public $accessRoles = ['@'];
-
-    /**
-     * Auth filter.
-     * @var array|null
-     */
-    public $authenticator = null;
-
-    /**
-     * Rate limit filter.
-     * @var array|null
-     */
-    public $rateLimiter = null;
-
-    /**
-     * Content negotiator filter.
-     * @var array|null
-     */
-    public $contentNegotiator = null;
 
     /**
      * Name of the file field to load using Ajax request.
@@ -121,7 +100,7 @@ class Module extends BaseModule
      * Csrf validation.
      * @var bool
      */
-    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = true;
 
     /**
      * View component to render content.

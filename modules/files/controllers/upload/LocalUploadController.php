@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\files\controllers\api;
+namespace app\modules\files\controllers\upload;
 
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\interfaces\UploadComponentInterface;
-use app\modules\files\controllers\api\common\CommonUploadController;
+use app\modules\files\controllers\upload\common\CommonUploadController;
 
 /**
  * Class LocalUploadController
@@ -12,7 +12,7 @@ use app\modules\files\controllers\api\common\CommonUploadController;
  *
  * @property LocalUploadComponent $localUploadComponent
  *
- * @package Itstructure\FilesModule\controllers
+ * @package Itstructure\FilesModule\controllers\upload
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */

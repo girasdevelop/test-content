@@ -5,7 +5,7 @@ namespace app\modules\files\controllers\upload\common;
 use Yii;
 use yii\filters\{AccessControl, ContentNegotiator, VerbFilter};
 use yii\base\{InvalidConfigException, UnknownMethodException};
-use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException};
+use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException, ForbiddenHttpException};
 use app\modules\files\Module;
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\assets\UploadmanagerAsset;
@@ -72,12 +72,9 @@ abstract class CommonUploadController extends Controller
                         'roles' => $this->module->accessRoles,
                     ],
                 ],
-                'denyCallback' => function ($rule, $action) {
+                'denyCallback' => function () {
                     \Yii::$app->response->format = Response::FORMAT_JSON;
-                    \Yii::$app->response->statusCode = 403;
-                    \Yii::$app->response->data = $this->getFailResponse('Forbidden', [
-                        'errors' => Yii::t('yii', 'You are not allowed to perform this action.')
-                    ]);
+                    throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
                 }
             ],
             'contentNegotiator' => [

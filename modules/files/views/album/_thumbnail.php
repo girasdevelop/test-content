@@ -14,9 +14,7 @@ use app\modules\files\interfaces\UploadModelInterface;
 ?>
 
 <div id="thumbnail-container">
-    <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
-        <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
-    <?php endif; ?>
+    <?php echo $model->getDefaultThumbImage(); ?>
 </div>
 <?php echo FileSetter::widget(ArrayHelper::merge([
     'model' => $model,

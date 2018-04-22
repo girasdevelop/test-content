@@ -43,8 +43,6 @@ class Catalog extends ActiveRecord
     {
         $this->albums = $this->getAlbums();
 
-        $this->thumbnail =
-
         parent::init();
     }
 

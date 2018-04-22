@@ -10,7 +10,6 @@ use app\modules\files\models\album\Album;
 /* @var $pages Pagination */
 /* @var $albumType string */
 /* @var $fileType string */
-/* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
 
 $this->title = Module::t('album', 'Update '.$fileType.' album') . ': ' . $model->title;
@@ -36,7 +35,6 @@ $this->params['breadcrumbs'][] = Module::t('main', 'Update');
         'pages' => $pages,
         'albumType' => $albumType,
         'fileType' => $fileType,
-        'thumbnailModel' => $thumbnailModel,
         'ownerParams' => $ownerParams,
     ]) ?>
 

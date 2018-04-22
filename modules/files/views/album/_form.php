@@ -14,7 +14,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 /* @var $albumType string */
 /* @var $fileType string */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $thumbnailModel Mediafile|null */
 /* @var $ownerParams array */
 ?>
 
@@ -61,7 +60,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
             <h5><?php echo Module::t('main', 'Thumbnail'); ?></h5>
             <?php echo $this->render('_thumbnail', [
                 'model' => $model,
-                'thumbnailModel' => isset($thumbnailModel) && $thumbnailModel instanceof Mediafile ? $thumbnailModel : null,
                 'albumType' => $albumType,
                 'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
             ]) ?>

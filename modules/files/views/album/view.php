@@ -83,11 +83,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?php if (isset($thumbnailModel) && $thumbnailModel instanceof Mediafile): ?>
+    <?php if (($defaultThumbImage = $model->getDefaultThumbImage()) !== null): ?>
         <div class="row">
             <div class="col-md-4">
                 <h5><?php echo Module::t('main', 'Thumbnail'); ?></h5>
-                <img src="<?php echo $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS) ?>">
+                <?php echo $defaultThumbImage ?>
             </div>
         </div>
     <?php endif; ?>

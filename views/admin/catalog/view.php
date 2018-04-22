@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use Itstructure\FieldWidgets\TableMultilanguage;
 use Itstructure\AdminModule\models\Language;
+use app\modules\files\Module as FilesModule;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Catalog */
@@ -56,5 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+
+    <?php if (($defaultThumbImage = $model->getDefaultThumbImage()) !== null): ?>
+        <div class="row">
+            <div class="col-md-4">
+                <h5><?php echo FilesModule::t('main', 'Thumbnail'); ?></h5>
+                <?php echo $defaultThumbImage ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
 </div>

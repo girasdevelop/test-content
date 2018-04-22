@@ -34,16 +34,28 @@ class CatalogController extends CommonAdminController
             $this->additionFields['albums'] = Album::find()->select([
                 'id', 'title'
             ])->all();
-
-            if ($this->action->id == 'update'){
-                $this->additionFields['ownerParams'] = [
-                    'owner' => Catalog::tableName(),
-                    //'ownerId' => $this->model->getId(),
-                ];
-            }
         }
 
         return parent::beforeAction($action);
+    }
+
+    /**
+     * Run action to set ownerParams.
+     * @param string $id
+     * @param array $params
+     * @return mixed
+     */
+    public function runAction($id, $params = [])
+    {
+        if ($id == 'update'){
+            $this->setModelByConditions($params['id']);
+            $this->additionFields['ownerParams'] = [
+                'owner' => Catalog::tableName(),
+                'ownerId' => $this->model->getId(),
+            ];
+        }
+
+        return parent::runAction($id, $params);
     }
 
     /**

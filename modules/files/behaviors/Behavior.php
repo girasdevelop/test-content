@@ -85,7 +85,7 @@ abstract class Behavior extends BaseBehavior
     public function updateOwners(): void
     {
         foreach ($this->attributes as $attributeName) {
-            //$this->removeOwner($this->owner->primaryKey, $this->name, $attributeName);
+            $this->removeOwner($this->owner->primaryKey, $this->name, $attributeName);
             $this->linkModelWithOwner($attributeName, $this->owner->{$attributeName});
         }
     }

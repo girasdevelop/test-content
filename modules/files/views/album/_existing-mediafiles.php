@@ -62,7 +62,8 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                     'buttonName' => Module::t('main', 'Set '.$fileType),
                     'resetButtonName' => Module::t('main', 'Clear'),
                     'options' => [
-                        'id' => Html::getInputId($model, $fileType) . '-' . $i
+                        'id' => Html::getInputId($model, $fileType) . '-' . $i,
+                        'value' => $mediafile->{FileSetter::INSERTED_DATA_ID},
                     ],
                     'deleteBoxDisplay' => true,
                     'deleteBoxName' => Module::t('main', 'Delete'),

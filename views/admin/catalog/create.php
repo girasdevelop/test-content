@@ -2,6 +2,7 @@
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $model Itstructure\AdminModule\models\MultilanguageValidateModel */
+/* @var $albums app\modules\files\models\album\Album[] */
 
 $this->title = 'Create Catalog';
 $this->params['breadcrumbs'][] = ['label' => 'Catalogs', 'url' => ['index']];
@@ -11,6 +12,7 @@ $this->params['breadcrumbs'][] = 'Create';
 
     <?php echo $this->render('_form', [
         'model' => $model,
+        'albums' => $albums,
     ]) ?>
 
 </div>

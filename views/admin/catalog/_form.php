@@ -1,13 +1,15 @@
 <?php
 
-use yii\helpers\Html;
+use yii\helpers\{Html, ArrayHelper};
 use yii\widgets\ActiveForm;
 use Itstructure\FieldWidgets\{Fields, FieldType};
 use Itstructure\AdminModule\models\Language;
+use app\modules\files\Module;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $model app\models\Catalog|Itstructure\AdminModule\models\MultilanguageValidateModel */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $albums app\modules\files\models\album\Album[] */
 ?>
 
 <div class="catalog-form">
@@ -36,6 +38,12 @@ use Itstructure\AdminModule\models\Language;
                             'filebrowserWindowHeight' => '700',
                         ]
                     ],
+                    [
+                        'name' => 'albums',
+                        'type' => FieldType::FIELD_TYPE_CHECKBOX,
+                        'data' => ArrayHelper::map($albums, 'id', 'title'),
+                        'label' => Module::t('album', 'Albums')
+                    ]
                 ],
                 'model'         => $model,
                 'form'          => $form,

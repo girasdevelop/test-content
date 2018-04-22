@@ -3,6 +3,7 @@
 namespace app\controllers\admin;
 
 use app\models\{Catalog, CatalogSearch};
+use app\modules\files\models\album\Album;
 use Itstructure\AdminModule\controllers\CommonAdminController;
 
 /**
@@ -18,6 +19,24 @@ class CatalogController extends CommonAdminController
         $this->isMultilanguage = true;
 
         parent::init();
+    }
+
+    /**
+     * Set other additionFields for actions.
+     *
+     * @param $action
+     *
+     * @return mixed
+     */
+    public function beforeAction($action)
+    {
+        if ($this->action->id == 'create' || $this->action->id == 'update'){
+            $this->additionFields['albums'] = Album::find()->select([
+                'id', 'title'
+            ])->all();
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**

@@ -110,27 +110,35 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * @param string $owner
      * @param int    $ownerId
      * @param string $ownerAttribute
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getAlbums(string $owner, int $ownerId, string $ownerAttribute = null)
     {
+        return static::getAlbumsQuery([
+            'owner' => $owner,
+            'ownerId' => $ownerId,
+            'ownerAttribute' => $ownerAttribute,
+        ])->all();
+    }
+
+    /**
+     * Get all albums Query by owner.
+     * @param array $args. It can be an array of the next params: owner{string}, ownerId{int}, ownerAttribute{string}.
+     * @return ActiveQuery
+     */
+    public static function getAlbumsQuery(array $args = []): ActiveQuery
+    {
         return Album::find()
-            ->where(
-                [
-                    'id' =>  static::getAlbumIds([
-                        'owner' => $owner,
-                        'ownerId' => $ownerId,
-                        'ownerAttribute' => $ownerAttribute,
-                    ])->asArray()
-                ]
-            )->all();
+            ->where([
+                'id' => static::getAlbumIdsQuery($args)->asArray()
+            ]);
     }
 
     /**
      * Get image albums by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getImageAlbums(string $owner, int $ownerId)
     {
@@ -141,7 +149,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * Get audio albums by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getAudioAlbums(string $owner, int $ownerId)
     {
@@ -152,7 +160,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * Get video albums by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getVideoAlbums(string $owner, int $ownerId)
     {
@@ -163,7 +171,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * Get application albums by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getAppAlbums(string $owner, int $ownerId)
     {
@@ -174,7 +182,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * Get text albums by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getTextAlbums(string $owner, int $ownerId)
     {
@@ -185,7 +193,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * Get other albums by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Album[]
      */
     public static function getOtherAlbums(string $owner, int $ownerId)
     {
@@ -198,7 +206,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
      * @throws InvalidArgumentException
      * @return ActiveQuery
      */
-    private static function getAlbumIds(array $args):ActiveQuery
+    private static function getAlbumIdsQuery(array $args): ActiveQuery
     {
         $conditions = [];
 
@@ -217,7 +225,7 @@ class OwnersAlbums extends \yii\db\ActiveRecord
         }
 
         if (isset($args['ownerAttribute'])){
-            if (!is_string($args['owner']) || empty($args['ownerAttribute'])){
+            if (!is_string($args['ownerAttribute']) || empty($args['ownerAttribute'])){
                 throw new InvalidArgumentException('Parameter ownerAttribute must be a string.');
             }
             $conditions['ownerAttribute'] = $args['ownerAttribute'];

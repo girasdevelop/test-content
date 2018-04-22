@@ -38,17 +38,18 @@ use app\modules\files\Module;
                             'filebrowserWindowHeight' => '700',
                         ]
                     ],
-                    [
-                        'name' => 'albums',
-                        'type' => FieldType::FIELD_TYPE_CHECKBOX,
-                        'data' => ArrayHelper::map($albums, 'id', 'title'),
-                        'label' => Module::t('album', 'Albums')
-                    ]
                 ],
                 'model'         => $model,
                 'form'          => $form,
                 'languageModel' => new Language()
             ]) ?>
+
+            <?php echo $form->field($model, 'albums')->checkboxList(
+                ArrayHelper::map($albums, 'id', 'title'),
+                [
+                    'separator' => '<br />'
+                ]
+            )->label(Module::t('album', 'Albums')); ?>
 
         </div>
     </div>

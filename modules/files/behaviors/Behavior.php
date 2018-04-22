@@ -85,6 +85,7 @@ abstract class Behavior extends BaseBehavior
     public function updateOwners(): void
     {
         foreach ($this->attributes as $attributeName) {
+            $this->removeOwner($this->owner->primaryKey, $this->name, $attributeName);
             $this->linkModelWithOwner($attributeName, $this->owner->{$attributeName});
         }
     }
@@ -117,8 +118,8 @@ abstract class Behavior extends BaseBehavior
             }
 
         } else {
-            if (!empty($attributeValue) && $mediafile = $this->loadModel([$this->findModelKey => $attributeValue])) {
-                $mediafile->addOwner($this->owner->primaryKey, $this->name, $attributeName);
+            if (!empty($attributeValue) && $model = $this->loadModel([$this->findModelKey => $attributeValue])) {
+                $model->addOwner($this->owner->primaryKey, $this->name, $attributeName);
             }
         }
     }

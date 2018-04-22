@@ -13,7 +13,6 @@ use app\modules\files\interfaces\UploadModelInterface;
  * @property int $ownerId Owner id.
  * @property string $owner Owner name (post, article, page e.t.c.).
  * @property string $ownerAttribute Owner attribute (thumbnail, image e.t.c.).
- *
  * @property Mediafile $mediafile
  *
  * @package Itstructure\FilesModule\models
@@ -111,7 +110,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * @param string $owner
      * @param int    $ownerId
      * @param null|string $ownerAttribute
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getMediaFiles(string $owner, int $ownerId, string $ownerAttribute = null)
     {
@@ -127,7 +126,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * @param array $args. It can be an array of the next params: owner{string}, ownerId{int}, ownerAttribute{string}.
      * @return ActiveQuery
      */
-    public static function getMediaFilesQuery(array $args = [])
+    public static function getMediaFilesQuery(array $args = []): ActiveQuery
     {
         return Mediafile::find()
             ->where([
@@ -163,7 +162,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * Get image files by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getImageFiles(string $owner, int $ownerId)
     {
@@ -174,7 +173,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * Get audio files by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getAudioFiles(string $owner, int $ownerId)
     {
@@ -185,7 +184,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * Get video files by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getVideoFiles(string $owner, int $ownerId)
     {
@@ -196,7 +195,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * Get app files by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getAppFiles(string $owner, int $ownerId)
     {
@@ -207,7 +206,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * Get text files by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getTextFiles(string $owner, int $ownerId)
     {
@@ -218,7 +217,7 @@ class OwnersMediafiles extends \yii\db\ActiveRecord
      * Get other files by owner.
      * @param string $owner
      * @param int    $ownerId
-     * @return ActiveRecord[]
+     * @return Mediafile[]
      */
     public static function getOtherFiles(string $owner, int $ownerId)
     {

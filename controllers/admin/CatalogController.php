@@ -34,6 +34,13 @@ class CatalogController extends CommonAdminController
             $this->additionFields['albums'] = Album::find()->select([
                 'id', 'title'
             ])->all();
+
+            if ($this->action->id == 'update'){
+                $this->additionFields['ownerParams'] = [
+                    'owner' => Catalog::tableName(),
+                    //'ownerId' => $this->model->getId(),
+                ];
+            }
         }
 
         return parent::beforeAction($action);

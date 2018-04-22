@@ -17,12 +17,14 @@ use app\modules\files\interfaces\UploadModelInterface;
     <?php echo $model->getDefaultThumbImage(); ?>
 </div>
 <?php echo FileSetter::widget(ArrayHelper::merge([
-    'model' => $model,
-    'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
-    'neededFileType' => UploadModelInterface::FILE_TYPE_THUMB,
-    'buttonName' => Module::t('main', 'Set thumbnail'),
-    'resetButtonName' => Module::t('main', 'Clear'),
-    'mediafileContainer' => '#thumbnail-container',
-    'subDir' => strtolower($albumType)
-], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB], $ownerParams) : [])
+        'model' => $model,
+        'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
+        'neededFileType' => UploadModelInterface::FILE_TYPE_THUMB,
+        'buttonName' => Module::t('main', 'Set thumbnail'),
+        'resetButtonName' => Module::t('main', 'Clear'),
+        'mediafileContainer' => '#thumbnail-container',
+        'subDir' => strtolower($albumType)
+    ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge([
+        'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB
+    ], $ownerParams) : [])
 ); ?>

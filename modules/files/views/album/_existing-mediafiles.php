@@ -56,24 +56,26 @@ $baseUrl = FileSetterAsset::register($this)->baseUrl;
                 </div>
             </div>
             <?php echo FileSetter::widget(ArrayHelper::merge([
-                'model' => $model,
-                'attribute' => $fileType.'[]',
-                'neededFileType' => $fileType,
-                'buttonName' => Module::t('main', 'Set '.$fileType),
-                'resetButtonName' => Module::t('main', 'Clear'),
-                'options' => [
-                    'id' => Html::getInputId($model, $fileType) . '-' . $i
-                ],
-                'deleteBoxDisplay' => true,
-                'deleteBoxName' => Module::t('main', 'Delete'),
-                'deleteBoxOptions' => [
-                    'value' => $mediafile->id
-                ],
-                'mediafileContainer' => '#mediafile-container-' . $i,
-                'titleContainer' => '#title-container-' . $i,
-                'descriptionContainer' => '#description-container-' . $i,
-                'subDir' => strtolower($albumType)
-            ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge(['ownerAttribute' => $fileType], $ownerParams) : [])
+                    'model' => $model,
+                    'attribute' => $fileType.'[]',
+                    'neededFileType' => $fileType,
+                    'buttonName' => Module::t('main', 'Set '.$fileType),
+                    'resetButtonName' => Module::t('main', 'Clear'),
+                    'options' => [
+                        'id' => Html::getInputId($model, $fileType) . '-' . $i
+                    ],
+                    'deleteBoxDisplay' => true,
+                    'deleteBoxName' => Module::t('main', 'Delete'),
+                    'deleteBoxOptions' => [
+                        'value' => $mediafile->id
+                    ],
+                    'mediafileContainer' => '#mediafile-container-' . $i,
+                    'titleContainer' => '#title-container-' . $i,
+                    'descriptionContainer' => '#description-container-' . $i,
+                    'subDir' => strtolower($albumType)
+                ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge([
+                    'ownerAttribute' => $fileType
+                ], $ownerParams) : [])
             ); ?>
         </div>
     <?php endforeach; ?>

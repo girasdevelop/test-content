@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\modules\files\behaviors\BehaviorMediafile;
 use yii\helpers\{ArrayHelper, Html};
 use Itstructure\AdminModule\models\MultilanguageTrait;
 use app\modules\files\Module;
@@ -91,13 +92,19 @@ class Catalog extends ActiveRecord
     {
         return ArrayHelper::merge(parent::behaviors(), [
             'mediafile' => [
-                'class' => BehaviorAlbum::class,
+                'class' => BehaviorMediafile::class,
                 'name' => static::tableName(),
                 'attributes' => [
                     UploadModelInterface::FILE_TYPE_THUMB,
+                ],
+            ],
+            'albums' => [
+                'class' => BehaviorAlbum::class,
+                'name' => static::tableName(),
+                'attributes' => [
                     'albums',
                 ],
-            ]
+            ],
         ]);
     }
 

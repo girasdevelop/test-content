@@ -23,10 +23,20 @@ class Catalog extends ActiveRecord
     use MultilanguageTrait;
 
     /**
-     * Existing album ids.
      * @var array
      */
-    public $albums;
+    public $albums = [];
+
+    /**
+     * Initialize.
+     * Set albums, that catalog has.
+     */
+    public function init()
+    {
+        $this->albums = $this->getAlbums();
+
+        parent::init();
+    }
 
     /**
      * @inheritdoc
@@ -48,15 +58,6 @@ class Catalog extends ActiveRecord
                     'updated_at',
                 ],
                 'safe',
-            ],
-            [
-                'albums',
-                function($attribute){
-                    if (!is_array($this->{$attribute})){
-                        $this->addError($attribute, 'Albums field content must be an array.');
-                    }
-                },
-                'skipOnError' => false,
             ],
             [
                 'albums',
@@ -83,17 +84,13 @@ class Catalog extends ActiveRecord
     }
 
     /**
-     * Attributes.
      * @return array
      */
-    public function attributes(): array
+    public function attributes()
     {
-        return ArrayHelper::merge(
-            parent::attributes(),
-            [
-                'albums'
-            ]
-        );
+        return ArrayHelper::merge(parent::attributes(), [
+            'albums'
+        ]);
     }
 
     /**
@@ -109,23 +106,22 @@ class Catalog extends ActiveRecord
     }
 
     /**
-     * @param array $albums
-     */
-    /*public function setAlbums(array $albums): void
-    {
-        Album::removeOwner($this->id, $this->tableName(), 'albums');
-
-        foreach ($albums as $albumId) {
-            $currentAlbum = Album::findOne(['id' => $albumId]);
-            $currentAlbum->addOwner($this->id, $this->tableName(), 'albums');
-        }
-    }*/
-
-    /**
+     * Get albums, that catalog has.
      * @return Album[]
      */
     public function getAlbums()
     {
-        return OwnersAlbums::getAlbums($this->tableName(), $this->id);
+        $albums = OwnersAlbums::getAlbumsQuery([
+            'owner' => $this->tableName(),
+            'ownerId' => $this->id,
+            'ownerAttribute' => 'albums',
+        ])->select([
+            'id',
+            'title'
+        ])->all();
+
+        return array_map(function(Album $item) {
+            return $item->id;
+        }, $albums);
     }
 }

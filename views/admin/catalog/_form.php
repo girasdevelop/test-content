@@ -47,7 +47,7 @@ use app\modules\files\Module;
             <?php echo $form->field($model, 'albums')->checkboxList(
                 ArrayHelper::map($albums, 'id', 'title'),
                 [
-                    'separator' => '<br />'
+                    'separator' => '<br />',
                 ]
             )->label(Module::t('album', 'Albums')); ?>
 

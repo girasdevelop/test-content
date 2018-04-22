@@ -2,15 +2,18 @@
 
 namespace app\models;
 
-use yii\helpers\ArrayHelper;
+use yii\helpers\{ArrayHelper, Html};
 use Itstructure\AdminModule\models\MultilanguageTrait;
+use app\modules\files\Module;
 use app\modules\files\behaviors\BehaviorAlbum;
-use app\modules\files\models\OwnersAlbums;
+use app\modules\files\models\{Mediafile, OwnersAlbums, OwnersMediafiles};
 use app\modules\files\models\album\Album;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * This is the model class for table "catalog".
  *
+ * @property int|string $thumbnail thumbnail(mediafile id or url).
  * @property array $albums Existing album ids.
  * @property int $id
  * @property string $title
@@ -21,6 +24,11 @@ use app\modules\files\models\album\Album;
 class Catalog extends ActiveRecord
 {
     use MultilanguageTrait;
+
+    /**
+     * @var int|string thumbnail(mediafile id or url).
+     */
+    public $thumbnail;
 
     /**
      * @var array
@@ -34,6 +42,8 @@ class Catalog extends ActiveRecord
     public function init()
     {
         $this->albums = $this->getAlbums();
+
+        $this->thumbnail =
 
         parent::init();
     }
@@ -60,6 +70,15 @@ class Catalog extends ActiveRecord
                 'safe',
             ],
             [
+                UploadModelInterface::FILE_TYPE_THUMB,
+                function($attribute){
+                    if (!is_numeric($this->{$attribute}) && !is_string($this->{$attribute})){
+                        $this->addError($attribute, 'Tumbnail content must be a numeric or string.');
+                    }
+                },
+                'skipOnError' => false,
+            ],
+            [
                 'albums',
                 'each',
                 'rule' => ['integer'],
@@ -77,7 +96,8 @@ class Catalog extends ActiveRecord
                 'class' => BehaviorAlbum::class,
                 'name' => static::tableName(),
                 'attributes' => [
-                    'albums'
+                    UploadModelInterface::FILE_TYPE_THUMB,
+                    'albums',
                 ],
             ]
         ]);
@@ -89,7 +109,8 @@ class Catalog extends ActiveRecord
     public function attributes()
     {
         return ArrayHelper::merge(parent::attributes(), [
-            'albums'
+            UploadModelInterface::FILE_TYPE_THUMB,
+            'albums',
         ]);
     }
 
@@ -123,5 +144,40 @@ class Catalog extends ActiveRecord
         return array_map(function(Album $item) {
             return $item->id;
         }, $albums);
+    }
+
+    /**
+     * Get album thumb image.
+     * @param array  $options
+     * @return string
+     */
+    public function getDefaultThumbImage(array $options = []): string
+    {
+        $thumbnailModel = $this->getThumbnailModel();
+
+        if (null === $thumbnailModel){
+            return '';
+        }
+
+        $url = $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+
+        if (empty($url)) {
+            return '';
+        }
+
+        if (empty($options['alt'])) {
+            $options['alt'] = $thumbnailModel->alt;
+        }
+
+        return Html::img($url, $options);
+    }
+
+    /**
+     * Get catalog's thumbnail.
+     * @return array|null|\yii\db\ActiveRecord|Mediafile
+     */
+    public function getThumbnailModel()
+    {
+        return OwnersMediafiles::getOwnerThumbnail($this->tableName(), $this->id);
     }
 }

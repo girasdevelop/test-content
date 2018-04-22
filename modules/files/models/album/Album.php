@@ -82,7 +82,7 @@ class Album extends ActiveRecord
                 'max' => 255,
             ],
             [
-                'thumbnail',
+                UploadModelInterface::FILE_TYPE_THUMB,
                 function($attribute){
                     if (!is_numeric($this->{$attribute}) && !is_string($this->{$attribute})){
                         $this->addError($attribute, 'Tumbnail content must be a numeric or string.');

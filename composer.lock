@@ -8,19 +8,22 @@
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
-            "version": "v2.4.0",
+            "version": "v2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/almasaeed2010/AdminLTE.git",
-                "reference": "6157c7bc77bfca7e9aa75f529f3f612122d9a2f1"
+                "reference": "b3acb63ac56b13eb45b36e628b384a9a2507b50e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/6157c7bc77bfca7e9aa75f529f3f612122d9a2f1",
-                "reference": "6157c7bc77bfca7e9aa75f529f3f612122d9a2f1",
+                "url": "https://api.github.com/repos/almasaeed2010/AdminLTE/zipball/b3acb63ac56b13eb45b36e628b384a9a2507b50e",
+                "reference": "b3acb63ac56b13eb45b36e628b384a9a2507b50e",
                 "shasum": ""
             },
-            "type": "library",
+            "require": {
+                "composer/installers": "1.*"
+            },
+            "type": "template",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -44,14 +47,14 @@
                 "theme",
                 "web"
             ],
-            "time": "2017-07-08T17:45:57+00:00"
+            "time": "2018-02-04T12:54:57+00:00"
         },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
+                "url": "git@github.com:twbs/bootstrap.git",
                 "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86"
             },
             "dist": {
@@ -249,6 +252,126 @@
             "time": "2017-09-13T13:09:47+00:00"
         },
         {
+            "name": "composer/installers",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "049797d727261bf27f2690430d935067710049c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/049797d727261bf27f2690430d935067710049c2",
+                "reference": "049797d727261bf27f2690430d935067710049c2",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "phpunit/phpunit": "^4.8.36"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "Lan Management System",
+                "MODX Evo",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Thelia",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "eZ Platform",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "majima",
+                "mako",
+                "mediawiki",
+                "modulework",
+                "modx",
+                "moodle",
+                "osclass",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "puppet",
+                "pxcms",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "symfony",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "time": "2017-12-29T09:13:20+00:00"
+        },
+        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.10.0",
             "source": {
@@ -355,22 +478,22 @@
         },
         {
             "name": "itstructure/yii2-admin-module",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itstructure/yii2-admin-module.git",
-                "reference": "c50037a99c8dd2d19a8c8dfc91ca952491d0d917"
+                "reference": "3510a6c2f50e6f5aa3fa575939edc78dcd841699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/c50037a99c8dd2d19a8c8dfc91ca952491d0d917",
-                "reference": "c50037a99c8dd2d19a8c8dfc91ca952491d0d917",
+                "url": "https://api.github.com/repos/itstructure/yii2-admin-module/zipball/3510a6c2f50e6f5aa3fa575939edc78dcd841699",
+                "reference": "3510a6c2f50e6f5aa3fa575939edc78dcd841699",
                 "shasum": ""
             },
             "require": {
-                "almasaeed2010/adminlte": "2.4.0",
+                "almasaeed2010/adminlte": "~2.4.3",
                 "itstructure/yii2-field-widgets": "^1.0.0",
-                "yiisoft/yii2": "~2.0.5",
+                "yiisoft/yii2": "~2.0.15",
                 "yiisoft/yii2-bootstrap": "~2.0.0"
             },
             "type": "package",
@@ -397,7 +520,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2018-03-17T10:55:15+00:00"
+            "time": "2018-04-23T11:20:25+00:00"
         },
         {
             "name": "itstructure/yii2-ckeditor",
@@ -633,12 +756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "a302394d6d9d2060ede2a4d32aa6d1505dfd30be"
+                "reference": "0f918e0619133672bb1c5fdc4d445fffc6a5bec4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/a302394d6d9d2060ede2a4d32aa6d1505dfd30be",
-                "reference": "a302394d6d9d2060ede2a4d32aa6d1505dfd30be",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/0f918e0619133672bb1c5fdc4d445fffc6a5bec4",
+                "reference": "0f918e0619133672bb1c5fdc4d445fffc6a5bec4",
                 "shasum": ""
             },
             "require": {
@@ -725,7 +848,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2018-04-18T21:01:00+00:00"
+            "time": "2018-04-22T21:38:17+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1110,16 +1233,16 @@
         },
         {
             "name": "codeception/phpunit-wrapper",
-            "version": "7.1.0",
+            "version": "7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/phpunit-wrapper.git",
-                "reference": "cde840638d021804ce93e8f98bcb7edbf6935423"
+                "reference": "33e8ccf2f7abf5c031eeae9802b821d30ec0f7fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/cde840638d021804ce93e8f98bcb7edbf6935423",
-                "reference": "cde840638d021804ce93e8f98bcb7edbf6935423",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/33e8ccf2f7abf5c031eeae9802b821d30ec0f7fc",
+                "reference": "33e8ccf2f7abf5c031eeae9802b821d30ec0f7fc",
                 "shasum": ""
             },
             "require": {
@@ -1149,7 +1272,7 @@
                 }
             ],
             "description": "PHPUnit classes used by Codeception",
-            "time": "2018-04-10T09:05:14+00:00"
+            "time": "2018-04-20T10:17:13+00:00"
         },
         {
             "name": "codeception/specify",
@@ -1371,12 +1494,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "6858c3f0e94b96c114c28f9185f295bf30a53e58"
+                "reference": "da9aa31add41b20bf77011b0314b95fac3a06f86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/6858c3f0e94b96c114c28f9185f295bf30a53e58",
-                "reference": "6858c3f0e94b96c114c28f9185f295bf30a53e58",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/da9aa31add41b20bf77011b0314b95fac3a06f86",
+                "reference": "da9aa31add41b20bf77011b0314b95fac3a06f86",
                 "shasum": ""
             },
             "require": {
@@ -1428,7 +1551,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-04-11T19:14:35+00:00"
+            "time": "2018-04-22T16:11:15+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1772,12 +1895,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712"
+                "reference": "5d4764d0b9beb04d5b36801c868cfc79a12c70a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
-                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/5d4764d0b9beb04d5b36801c868cfc79a12c70a3",
+                "reference": "5d4764d0b9beb04d5b36801c868cfc79a12c70a3",
                 "shasum": ""
             },
             "require": {
@@ -1827,7 +1950,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-04-18T13:57:24+00:00"
+            "time": "2018-04-19T14:17:18+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2833,12 +2956,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "f2a918bb1d522c31b762b2f5b34774b11517de1e"
+                "reference": "16355a5d0f1499c77efee5ff68d8ea61624d4da1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/f2a918bb1d522c31b762b2f5b34774b11517de1e",
-                "reference": "f2a918bb1d522c31b762b2f5b34774b11517de1e",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/16355a5d0f1499c77efee5ff68d8ea61624d4da1",
+                "reference": "16355a5d0f1499c77efee5ff68d8ea61624d4da1",
                 "shasum": ""
             },
             "require": {
@@ -2882,7 +3005,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-20T08:40:29+00:00"
+            "time": "2018-04-06T10:52:03+00:00"
         },
         {
             "name": "symfony/console",
@@ -2890,12 +3013,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "1d0045219173d36244cf55906b5bcbfda5830faf"
+                "reference": "58b4f88ec973bf52bdb85b8ef399ff33ab2d1b62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/1d0045219173d36244cf55906b5bcbfda5830faf",
-                "reference": "1d0045219173d36244cf55906b5bcbfda5830faf",
+                "url": "https://api.github.com/repos/symfony/console/zipball/58b4f88ec973bf52bdb85b8ef399ff33ab2d1b62",
+                "reference": "58b4f88ec973bf52bdb85b8ef399ff33ab2d1b62",
                 "shasum": ""
             },
             "require": {
@@ -2950,7 +3073,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-04-14T16:36:26+00:00"
+            "time": "2018-04-20T11:04:56+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -3336,12 +3459,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "20565957b3c4e389de9ef0d6a337a32321f8e47c"
+                "reference": "23bf61bc8a7cc229d7ce8689b1bf818a9e192cac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/20565957b3c4e389de9ef0d6a337a32321f8e47c",
-                "reference": "20565957b3c4e389de9ef0d6a337a32321f8e47c",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/23bf61bc8a7cc229d7ce8689b1bf818a9e192cac",
+                "reference": "23bf61bc8a7cc229d7ce8689b1bf818a9e192cac",
                 "shasum": ""
             },
             "require": {
@@ -3378,7 +3501,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2018-04-18T14:24:51+00:00"
+            "time": "2018-04-19T15:46:26+00:00"
         },
         {
             "name": "yiisoft/yii2-debug",

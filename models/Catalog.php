@@ -137,18 +137,11 @@ class Catalog extends ActiveRecord
      */
     public function getAlbums()
     {
-        $albums = OwnersAlbums::getAlbumsQuery([
+        return OwnersAlbums::getAlbumsQuery([
             'owner' => $this->tableName(),
             'ownerId' => $this->id,
             'ownerAttribute' => 'albums',
-        ])->select([
-            'id',
-            'title'
         ])->all();
-
-        return array_map(function(Album $item) {
-            return $item->id;
-        }, $albums);
     }
 
     /**

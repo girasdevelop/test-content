@@ -9,12 +9,11 @@ use app\modules\files\models\album\Album;
 /* @var $mediafiles Mediafile[] */
 /* @var $pages Pagination */
 /* @var $albumType string */
-/* @var $fileType string */
 /* @var $ownerParams array */
 
-$this->title = Module::t('album', 'Update '.$fileType.' album') . ': ' . $model->title;
+$this->title = Module::t('album', 'Update '.$model->getFileType($albumType).' album') . ': ' . $model->title;
 $this->params['breadcrumbs'][] = [
-    'label' => Module::t('album', ucfirst($fileType).' albums'),
+    'label' => Module::t('album', ucfirst($model->getFileType($albumType)).' albums'),
     'url' => [
         'index'
     ]
@@ -34,7 +33,6 @@ $this->params['breadcrumbs'][] = Module::t('main', 'Update');
         'mediafiles' => $mediafiles,
         'pages' => $pages,
         'albumType' => $albumType,
-        'fileType' => $fileType,
         'ownerParams' => $ownerParams,
     ]) ?>
 

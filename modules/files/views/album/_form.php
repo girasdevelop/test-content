@@ -12,7 +12,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 /* @var $mediafiles Mediafile[] */
 /* @var $pages Pagination */
 /* @var $albumType string */
-/* @var $fileType string */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $ownerParams array */
 ?>
@@ -75,7 +74,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                 <?php echo $this->render('_new-mediafiles', [
                     'model' => $model,
                     'albumType' => $albumType,
-                    'fileType' => $fileType,
+                    'fileType' => $model->getFileType($albumType),
                     'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
                     'number' => $i,
                 ]) ?>
@@ -94,7 +93,7 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
                     'mediafiles' => $mediafiles,
                     'pages' => $pages,
                     'albumType' => $albumType,
-                    'fileType' => $fileType,
+                    'fileType' => $model->getFileType($albumType),
                     'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
                 ]) ?>
             </div>

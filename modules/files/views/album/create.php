@@ -5,11 +5,10 @@ use app\modules\files\models\album\Album;
 /* @var $this yii\web\View */
 /* @var $model Album */
 /* @var $albumType string */
-/* @var $fileType string */
 
-$this->title = Module::t('album', 'Create '.$fileType.' album');
+$this->title = Module::t('album', 'Create '.$model->getFileType($albumType).' album');
 $this->params['breadcrumbs'][] = [
-    'label' => Module::t('album', ucfirst($fileType).' albums'),
+    'label' => Module::t('album', ucfirst($model->getFileType($albumType)).' albums'),
     'url' => [
         'index'
     ]
@@ -21,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo $this->render('_form', [
         'model' => $model,
         'albumType' => $albumType,
-        'fileType' => $fileType,
     ]) ?>
 
 </div>

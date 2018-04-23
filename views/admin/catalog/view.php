@@ -1,13 +1,17 @@
 <?php
 
-use yii\helpers\Html;
+use yii\helpers\{Url, Html};
+use yii\grid\GridView;
 use yii\widgets\DetailView;
+use yii\data\ArrayDataProvider;
 use Itstructure\FieldWidgets\TableMultilanguage;
 use Itstructure\AdminModule\models\Language;
+use app\modules\files\models\album\Album;
 use app\modules\files\Module as FilesModule;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Catalog */
+/* @var $albumsDataProvider yii\data\ArrayDataProvider */
 
 $this->title = $model->getDefaultTranslate('title');
 $this->params['breadcrumbs'][] = ['label' => 'Catalogs', 'url' => ['index']];
@@ -74,5 +78,27 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     <?php endif; ?>
+
+    <?php echo GridView::widget([
+        'dataProvider' => new ArrayDataProvider([
+            'allModels' => $model->getAlbums()
+        ]),
+        'columns' => [
+
+            'name' => [
+                'label' => FilesModule::t('album', 'Albums'),
+                'value' => function($item) {
+                    /** @var Album $item */
+                    return Html::a(
+                        Html::encode($item->title),
+                        Url::to([
+                            '/files/'.$item->getFileType($item->type).'-album/view', 'id' => $item->id
+                        ])
+                    );
+                },
+                'format' => 'raw',
+            ],
+        ],
+    ]); ?>
 
 </div>

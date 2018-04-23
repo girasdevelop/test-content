@@ -35,13 +35,6 @@ class CatalogController extends CommonAdminController
             ])->all();
         }
 
-        if ($this->action->id == 'update'){
-            $additionFields['ownerParams'] = [
-                'owner' => Catalog::tableName(),
-                'ownerId' => $this->model->getId(),
-            ];
-        }
-
         return $additionFields;
     }
 

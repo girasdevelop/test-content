@@ -132,7 +132,6 @@ abstract class AlbumController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'fileType' => $searchModel->getFileType($this->getAlbumType()),
         ]);
     }
 
@@ -158,7 +157,6 @@ abstract class AlbumController extends Controller
                 ->limit($pages->limit)
                 ->all(),
             'pages' => $pages,
-            'fileType' => $model->getFileType($this->getAlbumType()),
         ]);
     }
 
@@ -181,7 +179,6 @@ abstract class AlbumController extends Controller
         return $this->render('create', [
             'model' => $this->model,
             'albumType' => $this->getAlbumType(),
-            'fileType' => $this->model->getFileType($this->getAlbumType()),
         ]);
     }
 
@@ -197,9 +194,7 @@ abstract class AlbumController extends Controller
         $this->setModelByConditions($id);
 
         $post = Yii::$app->request->post();
-
         if ($this->model->load($post) && $this->model->save()) {
-
             if (isset($post['delete']) && is_array($post)){
                 $this->deleteMediafileEntry($post['delete'], $this->module);
             }
@@ -223,7 +218,6 @@ abstract class AlbumController extends Controller
                 ->all(),
             'pages' => $pages,
             'albumType' => $this->model->type,
-            'fileType' => $this->model->getFileType($this->model->type),
             'ownerParams' => [
                 'owner' => $this->model->type,
                 'ownerId' => $this->model->primaryKey,

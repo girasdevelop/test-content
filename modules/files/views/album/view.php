@@ -13,11 +13,10 @@ use app\modules\files\models\album\Album;
 /* @var $thumbnailModel Mediafile|null */
 /* @var $mediafiles Mediafile[] */
 /* @var $pages Pagination */
-/* @var $fileType string */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = [
-    'label' => Module::t('album', ucfirst($fileType).' albums'),
+    'label' => Module::t('album', ucfirst($model->getFileType($model->type)).' albums'),
     'url' => [
         'index'
     ]
@@ -95,8 +94,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if(count($mediafiles) > 0): ?>
         <div class="row">
             <div class="col-md-12">
+
                 <h5><?php echo Module::t('main', 'Existing files'); ?></h5>
                 <div class="row">
+
                     <?php $i=0; ?>
                     <?php foreach ($mediafiles as $mediafile): ?>
                         <div class="col-md-6 file-item">
@@ -124,9 +125,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                         </div>
                     <?php endforeach; ?>
-                </div>
 
+                </div>
                 <?php echo LinkPager::widget(['pagination' => $pages]) ?>
+
             </div>
         </div>
     <?php endif; ?>

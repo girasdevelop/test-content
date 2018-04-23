@@ -13,6 +13,14 @@ $this->title = $model->getDefaultTranslate('title');
 $this->params['breadcrumbs'][] = ['label' => 'Catalogs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<style>
+    h5 {
+        font-weight: bold;
+        padding: 5px;
+    }
+</style>
+
 <div class="catalog-view">
 
     <p>

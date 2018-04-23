@@ -154,20 +154,20 @@ class Catalog extends ActiveRecord
     /**
      * Get album thumb image.
      * @param array  $options
-     * @return string
+     * @return mixed
      */
-    public function getDefaultThumbImage(array $options = []): string
+    public function getDefaultThumbImage(array $options = [])
     {
         $thumbnailModel = $this->getThumbnailModel();
 
         if (null === $thumbnailModel){
-            return '';
+            return null;
         }
 
         $url = $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
 
         if (empty($url)) {
-            return '';
+            return null;
         }
 
         if (empty($options['alt'])) {

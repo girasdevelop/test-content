@@ -2,6 +2,8 @@
 
 use yii\helpers\{Url, Html};
 use yii\grid\GridView;
+use app\modules\files\Module as FilesModule;
+use app\modules\files\models\album\Album;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $searchModel app\models\CatalogSearch|Itstructure\AdminModule\models\MultilanguageTrait */
@@ -24,9 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'table table-bordered table-hover dataTable'
         ],*/
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            [
+                'label' => FilesModule::t('main', 'Thumbnail'),
+                'value' => function($data) {
+                    /* @var $data Album */
+                    $defaultThumbImage = $data->getDefaultThumbImage();
+                    return !empty($defaultThumbImage) ? Html::a($defaultThumbImage, Url::to([
+                        'view',
+                        'id' => $data->id
+                    ])) : '';
+                },
+                'format' => 'raw',
+            ],
             'title' => [
                 'label' => 'Name',
                 'value' => function($searchModel) {

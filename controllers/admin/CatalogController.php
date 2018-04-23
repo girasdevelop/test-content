@@ -22,45 +22,31 @@ class CatalogController extends CommonAdminController
     }
 
     /**
-     * Set other additionFields for actions.
-     *
-     * @param $action
-     *
-     * @return mixed
+     * Returns addition fields.
+     * @return array
      */
-    public function beforeAction($action)
+    protected function getAdditionFields(): array
     {
+        $additionFields = [];
+
         if ($this->action->id == 'create' || $this->action->id == 'update'){
-            $this->additionFields['albums'] = Album::find()->select([
+            $additionFields['albums'] = Album::find()->select([
                 'id', 'title'
             ])->all();
         }
 
-        return parent::beforeAction($action);
-    }
-
-    /**
-     * Run action to set ownerParams.
-     * @param string $id
-     * @param array $params
-     * @return mixed
-     */
-    public function runAction($id, $params = [])
-    {
-        if ($id == 'update'){
-            $this->setModelByConditions($params['id']);
-            $this->additionFields['ownerParams'] = [
+        if ($this->action->id == 'update'){
+            $additionFields['ownerParams'] = [
                 'owner' => Catalog::tableName(),
                 'ownerId' => $this->model->getId(),
             ];
         }
 
-        return parent::runAction($id, $params);
+        return $additionFields;
     }
 
     /**
      * Returns Catalog model name.
-     *
      * @return string
      */
     protected function getModelName():string
@@ -70,7 +56,6 @@ class CatalogController extends CommonAdminController
 
     /**
      * Returns CatalogSearch model name.
-     *
      * @return string
      */
     protected function getSearchModelName():string

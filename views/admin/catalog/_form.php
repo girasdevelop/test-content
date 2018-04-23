@@ -6,8 +6,6 @@ use Itstructure\FieldWidgets\{Fields, FieldType};
 use Itstructure\AdminModule\models\Language;
 use app\modules\files\Module;
 use app\modules\files\models\album\Album;
-use app\modules\files\widgets\FileSetter;
-use app\modules\files\interfaces\UploadModelInterface;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $model app\models\Catalog|Itstructure\AdminModule\models\MultilanguageValidateModel */
@@ -48,24 +46,12 @@ use app\modules\files\interfaces\UploadModelInterface;
                 'languageModel' => new Language()
             ]) ?>
 
-            <div id="thumbnail-container">
-                <?php echo $model->mainModel->getDefaultThumbImage(); ?>
-            </div>
-            <?php echo FileSetter::widget(ArrayHelper::merge([
-                    'model' => $model,
-                    'attribute' => UploadModelInterface::FILE_TYPE_THUMB,
-                    'neededFileType' => UploadModelInterface::FILE_TYPE_THUMB,
-                    'buttonName' => Module::t('main', 'Set thumbnail'),
-                    'resetButtonName' => Module::t('main', 'Clear'),
-                    'options' => [
-                        'value' => ($thumbnailModel = $model->mainModel->getThumbnailModel()) !== null ? $thumbnailModel->{FileSetter::INSERTED_DATA_ID} : null,
-                    ],
-                    'mediafileContainer' => '#thumbnail-container',
-                    'subDir' => $model->mainModel->tableName()
-                ], isset($ownerParams) && is_array($ownerParams) ? ArrayHelper::merge([
-                    'ownerAttribute' => UploadModelInterface::FILE_TYPE_THUMB
-                ], $ownerParams) : [])
-            ); ?>
+            <!-- Thumbnail begin -->
+            <?php echo $this->render('_thumbnail', [
+                'model' => $model,
+                'ownerParams' => isset($ownerParams) && is_array($ownerParams) ? $ownerParams : null,
+            ]) ?>
+            <!-- Thumbnail end -->
 
             <?php echo $form->field($model, 'albums')->checkboxList(
                 ArrayHelper::map($albums, 'id', 'title'),

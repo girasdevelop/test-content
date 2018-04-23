@@ -101,7 +101,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
         $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
 
-        if (count(BaseFileHelper::findDirectory($dirnameParent)) == 1){
+        if (count(BaseFileHelper::findDirectories($dirnameParent)) == 1){
             $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirnameParent;
         } else {
             $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirname;

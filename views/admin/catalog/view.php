@@ -84,7 +84,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'allModels' => $model->getAlbums()
         ]),
         'columns' => [
-
+            'thumbnail' => [
+                'label' => FilesModule::t('main', 'Thumbnail'),
+                'value' => function($item) {
+                    /** @var Album $item */
+                    return Html::a(
+                        $item->getDefaultThumbImage(),
+                        Url::to([
+                            '/files/'.$item->getFileType($item->type).'-album/view', 'id' => $item->id
+                        ])
+                    );
+                },
+                'format' => 'raw',
+            ],
             'name' => [
                 'label' => FilesModule::t('album', 'Albums'),
                 'value' => function($item) {

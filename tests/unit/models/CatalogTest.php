@@ -3,6 +3,7 @@
 namespace models;
 
 use app\fixtures\Catalog as CatalogFixture;
+use app\models\Catalog2;
 
 class CatalogTest extends \Codeception\Test\Unit
 {
@@ -21,13 +22,14 @@ class CatalogTest extends \Codeception\Test\Unit
         ]);
     }
 
-    protected function _after()
+    /**
+     * Тест для добавление машины
+     */
+    public function testCreate()
     {
-    }
-
-    // tests
-    public function testSomeFeature()
-    {
-
+        $catalog = new Catalog2();
+        $catalog->title = 'Название';
+        $catalog->description = 'bmw';
+        expect_that($catalog->save());
     }
 }

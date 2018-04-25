@@ -229,27 +229,27 @@ class Mediafile extends ActiveRecord
         $module = $this->getModule();
 
         if ($this->isImage()){
-            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_IMAGE, $location), $options);
+            $options = $this->getOptions($options, $location, $module, UploadModelInterface::FILE_TYPE_IMAGE);
             $preview = $this->getImagePreview(isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isAudio()){
-            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_AUDIO, $location), $options);
+            $options = $this->getOptions($options, $location, $module, UploadModelInterface::FILE_TYPE_AUDIO);
             $preview = $this->getAudioPreview(isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isVideo()){
-            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_VIDEO, $location), $options);
+            $options = $this->getOptions($options, $location, $module, UploadModelInterface::FILE_TYPE_VIDEO);
             $preview = $this->getVideoPreview(isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isApp()){
-            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_APP, $location), $options);
+            $options = $this->getOptions($options, $location, $module, UploadModelInterface::FILE_TYPE_APP);
             $preview = $this->getAppPreview($baseUrl, isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } elseif ($this->isText()){
-            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_TEXT, $location), $options);
+            $options = $this->getOptions($options, $location, $module, UploadModelInterface::FILE_TYPE_TEXT);
             $preview = $this->getTextPreview($baseUrl, isset($options['mainTag']) ? $options['mainTag'] : []);
 
         } else {
-            $options = null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions(UploadModelInterface::FILE_TYPE_OTHER, $location), $options);
+            $options = $this->getOptions($options, $location, $module, UploadModelInterface::FILE_TYPE_OTHER);
             $preview = $this->getOtherPreview($baseUrl, isset($options['mainTag']) ? $options['mainTag'] : []);
         }
 
@@ -558,6 +558,19 @@ class Mediafile extends ActiveRecord
     public function isWord(): bool
     {
         return strpos($this->type, UploadModelInterface::FILE_TYPE_APP_WORD) !== false;
+    }
+
+    /**
+     * Get preview option by location and file type.
+     * @param array $options
+     * @param string|null $location
+     * @param Module $module
+     * @param string $fileType
+     * @return array
+     */
+    private function getOptions(array $options, string $location = null, Module $module, string $fileType)
+    {
+        return null === $location ? $options : ArrayHelper::merge($module->getPreviewOptions($fileType, $location), $options);
     }
 
     /**

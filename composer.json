@@ -21,7 +21,8 @@
         "itstructure/yii2-admin-module": "^1.1.0",
         "itstructure/yii2-rbac-module": "^1.2.0",
         "itstructure/yii2-users-module": "^1.3.0",
-        "yiisoft/yii2-imagine": "*"
+        "yiisoft/yii2-imagine": "*",
+        "aws/aws-sdk-php": "^3.0@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

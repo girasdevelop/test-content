@@ -6,6 +6,7 @@ use Yii;
 use yii\imagine\Image;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
+use Aws\S3\S3Client;
 use app\modules\files\Module;
 use app\modules\files\components\ThumbConfig;
 use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
@@ -19,7 +20,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class LocalUpload extends BaseUpload implements UploadModelInterface
+class S3Upload extends BaseUpload implements UploadModelInterface
 {
     const DIR_LENGTH_FIRST = 2;
     const DIR_LENGTH_SECOND = 4;
@@ -29,6 +30,11 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * @var array
      */
     public $uploadDirs;
+
+    /**
+     * @var S3Client
+     */
+    public $s3Client;
 
     /**
      * Initialize.
@@ -43,12 +49,12 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
     }
 
     /**
-     * Get storage type - local.
+     * Get storage type - aws.
      * @return string
      */
     protected function getStorage(): string
     {
-        return Module::STORAGE_TYPE_LOCAL;
+        return Module::STORAGE_TYPE_S3;
     }
 
     /**
@@ -114,6 +120,17 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      */
     protected function sendFile(): bool
     {
+        try {
+            $this->s3Client->putObject([
+                'Bucket' => 'my-bucket',
+                'Key'    => 'my-object',
+                'Body'   => fopen('/path/to/file', 'r'),
+                'ACL'    => 'public-read',
+            ]);
+        } catch (\Aws\S3\Exception\S3Exception $e) {
+            echo "There was an error uploading the file.\n";
+        }
+
         BaseFileHelper::createDirectory($this->uploadPath, 0777);
 
         return $this->file->saveAs($this->uploadPath . DIRECTORY_SEPARATOR . $this->outFileName);

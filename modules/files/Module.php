@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\base\{Module as BaseModule, InvalidConfigException};
 use Imagine\Image\ImageInterface;
 use app\modules\files\interfaces\ThumbConfigInterface;
-use app\modules\files\components\{LocalUploadComponent, ThumbConfig};
+use app\modules\files\components\{LocalUploadComponent, S3UploadComponent, ThumbConfig};
 
 /**
  * Files module class.
@@ -49,6 +49,7 @@ class Module extends BaseModule
     const SCANTY_PREVIEW_SIZE = 50;
 
     const STORAGE_TYPE_LOCAL = 'local';
+    const STORAGE_TYPE_S3 = 's3';
 
     /**
      * Login url.
@@ -145,10 +146,17 @@ class Module extends BaseModule
         );
 
         /**
-         * Set Rbac validate component
+         * Set local upload component.
          */
         $this->setComponents(
             ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
+        );
+
+        /**
+         * Set aws s3 upload component.
+         */
+        $this->setComponents(
+            ArrayHelper::merge($this->getS3UploadComponentConfig(), $this->components)
         );
     }
 
@@ -289,7 +297,7 @@ class Module extends BaseModule
     }
 
     /**
-     * File upload component config.
+     * File local upload component config.
      * @return array
      */
     private function getLocalUploadComponentConfig(): array
@@ -297,6 +305,21 @@ class Module extends BaseModule
         return [
             'local-upload-component' => [
                 'class' => LocalUploadComponent::class,
+                'thumbsConfig' => $this->thumbsConfig,
+                'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
+            ]
+        ];
+    }
+
+    /**
+     * File aws s3 upload component config.
+     * @return array
+     */
+    private function getS3UploadComponentConfig(): array
+    {
+        return [
+            's3-upload-component' => [
+                'class' => S3UploadComponent::class,
                 'thumbsConfig' => $this->thumbsConfig,
                 'thumbFilenameTemplate' => $this->thumbFilenameTemplate,
             ]

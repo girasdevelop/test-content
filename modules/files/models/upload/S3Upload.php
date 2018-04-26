@@ -91,7 +91,6 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
      * $this->uploadPath
      * $this->outFileName
      * $this->databaseUrl
-     * $this->mediafileModel->type
      * @throws InvalidConfigException
      * @return void
      */
@@ -109,15 +108,13 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
             self::BUCKET_DIR_SEPARATOR . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
             self::BUCKET_DIR_SEPARATOR . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
 
-        $this->uploadPath = $this->uploadRoot . DIRECTORY_SEPARATOR . $this->uploadDir;
+        $this->uploadPath = self::BUCKET_ROOT . $this->s3bucket . self::BUCKET_DIR_SEPARATOR . $this->uploadDir;
 
         $this->outFileName = $this->renameFiles ?
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
 
-        $this->databaseUrl = DIRECTORY_SEPARATOR . $this->uploadDir . DIRECTORY_SEPARATOR . $this->outFileName;
-
-        $this->mediafileModel->type = $this->file->type;
+        $this->databaseUrl = $this->uploadPath . self::BUCKET_DIR_SEPARATOR . $this->outFileName;
     }
 
     /**

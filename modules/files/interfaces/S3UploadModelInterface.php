@@ -21,7 +21,7 @@ interface S3UploadModelInterface extends UploadModelInterface
 
     /**
      * Get s3 client.
-     * @return S3ClientInterface
+     * @return S3ClientInterface|null
      */
-    public function getS3Client(): S3ClientInterface;
+    public function getS3Client();
 }

@@ -68,8 +68,8 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
      */
     public function init()
     {
-        if (null === $this->s3bucket){
-            throw new InvalidConfigException('S3 bucket is not defined.');
+        if (null === $this->s3bucket || !is_string($this->s3bucket)){
+            throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
 
         $this->s3Client = new S3Client([

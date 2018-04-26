@@ -22,17 +22,16 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property string $ownerAttribute Owner attribute (image, audio, thumbnail e.t.c.).
  * @property string $neededFileType Needed file type for validation (thumbnail, image e.t.c.).
  * @property bool $renameFiles Rename file after upload.
- * @property string $directorySeparator Directory separator.
  * @property array $fileExtensions File extensions.
  * @property bool $checkExtensionByMimeType Check extension by MIME type (they are must match).
  * @property int $fileMaxSize Maximum file size.
  * @property array $thumbsConfig Thumbs config with their types and sizes.
  * @property string $thumbFilenameTemplate Thumbnails name template.
  * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
- * @property string $uploadRoot Root directory for uploaded files.
- * @property string $directoryForDelete Directory for delete with all content.
+ * @property array $uploadDirs Directories for uploaded files depending on the file type.
  * @property string $uploadDir Directory for uploaded files.
  * @property string $uploadPath Full directory path to upload file.
+ * @property string $directoryForDelete Directory for delete with all content.
  * @property string $outFileName Prepared file name to save in database and storage.
  * @property string $databaseUrl File url path for database.
  * @property UploadedFile $file File object.
@@ -112,12 +111,6 @@ abstract class BaseUpload extends Model
     public $renameFiles = true;
 
     /**
-     * Directory separator.
-     * @var string
-     */
-    public $directorySeparator = DIRECTORY_SEPARATOR;
-
-    /**
      * File extensions.
      * @var array
      */
@@ -169,16 +162,10 @@ abstract class BaseUpload extends Model
     public $thumbFilenameTemplate = '{original}-{width}-{height}-{alias}.{extension}';
 
     /**
-     * Root directory for uploaded files.
-     * @var string
+     * Directories for uploaded files depending on the file type.
+     * @var array
      */
-    public $uploadRoot;
-
-    /**
-     * Directory for delete with all content.
-     * @var string
-     */
-    public $directoryForDelete = [];
+    public $uploadDirs;
 
     /**
      * Directory for uploaded files.
@@ -191,6 +178,12 @@ abstract class BaseUpload extends Model
      * @var string
      */
     protected $uploadPath;
+
+    /**
+     * Directory for delete with all content.
+     * @var string
+     */
+    protected $directoryForDelete = [];
 
     /**
      * Prepared file name to save in database and storage.
@@ -218,12 +211,6 @@ abstract class BaseUpload extends Model
 
     /**
      * Set some params for upload.
-     * It is needed to set the next parameters:
-     * $this->uploadDir
-     * $this->uploadPath
-     * $this->outFileName
-     * $this->databaseUrl
-     * $this->mediafileModel->type
      * @return void
      */
     abstract protected function setParamsForSave(): void;
@@ -449,6 +436,7 @@ abstract class BaseUpload extends Model
             $this->mediafileModel->url = $this->databaseUrl;
             $this->mediafileModel->filename = $this->outFileName;
             $this->mediafileModel->size = $this->file->size;
+            $this->mediafileModel->type = $this->file->type;
             $this->mediafileModel->storage = $this->getStorageType();
         }
 
@@ -545,5 +533,37 @@ abstract class BaseUpload extends Model
             '{original}'  => $original,
             '{extension}' => $extension,
         ]);
+    }
+
+    /**
+     * Get upload directory configuration by file type.
+     * @param string $fileType
+     * @throws InvalidConfigException
+     * @return string
+     */
+    protected function getUploadDirConfig(string $fileType): string
+    {
+        if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
+            throw new InvalidConfigException('The localUploadDirs is not defined.');
+        }
+
+        if (strpos($fileType, UploadModelInterface::FILE_TYPE_IMAGE) !== false) {
+            return $this->uploadDirs[UploadModelInterface::FILE_TYPE_IMAGE];
+
+        } elseif (strpos($fileType, UploadModelInterface::FILE_TYPE_AUDIO) !== false) {
+            return $this->uploadDirs[UploadModelInterface::FILE_TYPE_AUDIO];
+
+        } elseif (strpos($fileType, UploadModelInterface::FILE_TYPE_VIDEO) !== false) {
+            return $this->uploadDirs[UploadModelInterface::FILE_TYPE_VIDEO];
+
+        } elseif (strpos($fileType, UploadModelInterface::FILE_TYPE_APP) !== false) {
+            return $this->uploadDirs[UploadModelInterface::FILE_TYPE_APP];
+
+        } elseif (strpos($fileType, UploadModelInterface::FILE_TYPE_TEXT) !== false) {
+            return $this->uploadDirs[UploadModelInterface::FILE_TYPE_TEXT];
+
+        } else {
+            return $this->uploadDirs[UploadModelInterface::FILE_TYPE_OTHER];
+        }
     }
 }

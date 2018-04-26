@@ -14,7 +14,8 @@ use app\modules\files\interfaces\{ThumbConfigInterface, S3UploadModelInterface};
 /**
  * Class S3Upload
  *
- * @property array $uploadDirs Directories for local uploaded files.
+ * @property string $s3bucket Amazon web services S3 bucket.
+ * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  *
  * @package Itstructure\FilesModule\models
  *
@@ -26,19 +27,16 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
     const DIR_LENGTH_SECOND = 4;
 
     const BUCKET_ROOT = 's3://';
+    const BUCKET_DIR_SEPARATOR = '/';
 
     /**
-     * Directories for local uploaded files.
-     * @var array
-     */
-    public $uploadDirs;
-
-    /**
+     * Amazon web services S3 bucket.
      * @var string
      */
     public $s3bucket;
 
     /**
+     * Amazon web services SDK S3 client.
      * @var S3ClientInterface|S3Client
      */
     private $s3Client;
@@ -48,21 +46,15 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
      */
     public function init()
     {
-        if (null === $this->uploadRoot){
-            throw new InvalidConfigException('The uploadRoot is not defined.');
-        }
-
         if (null === $this->s3Client){
-            throw new InvalidConfigException('S3 client is not defined.');
+            throw new InvalidConfigException('S3 client is not defined correctly.');
         }
 
-        if (null === $this->s3bucket){
-            throw new InvalidConfigException('S3 bucket is not defined.');
+        if (null === $this->s3bucket || !is_string($this->s3bucket)){
+            throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
 
         $this->s3Client->registerStreamWrapper();
-
-        $this->uploadRoot = trim($this->uploadRoot, DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -76,9 +68,9 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
 
     /**
      * Get s3 client.
-     * @return S3ClientInterface
+     * @return S3ClientInterface|null
      */
-    public function getS3Client(): S3ClientInterface
+    public function getS3Client()
     {
         return $this->s3Client;
     }
@@ -105,17 +97,17 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
      */
     protected function setParamsForSave(): void
     {
-        $uploadDir = trim($this->getUploadDirConfig($this->file->type), DIRECTORY_SEPARATOR);
+        $uploadDir = trim(trim($this->getUploadDirConfig($this->file->type), '/'), DIRECTORY_SEPARATOR);
 
         if (!empty($this->subDir)){
             $uploadDir = $uploadDir .
-                         DIRECTORY_SEPARATOR .
-                         trim($this->subDir, DIRECTORY_SEPARATOR);
+                self::BUCKET_DIR_SEPARATOR .
+                trim(trim($this->subDir, '/'), DIRECTORY_SEPARATOR);
         }
 
         $this->uploadDir = $uploadDir .
-                           DIRECTORY_SEPARATOR . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
-                           DIRECTORY_SEPARATOR . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
+            self::BUCKET_DIR_SEPARATOR . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
+            self::BUCKET_DIR_SEPARATOR . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
 
         $this->uploadPath = $this->uploadRoot . DIRECTORY_SEPARATOR . $this->uploadDir;
 
@@ -196,37 +188,5 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
         )->save($this->uploadRoot.DIRECTORY_SEPARATOR.$thumbUrl);
 
         return $thumbUrl;
-    }
-
-    /**
-     * Get upload directory configuration by file type.
-     * @param string $type
-     * @throws InvalidConfigException
-     * @return string
-     */
-    private function getUploadDirConfig(string $type): string
-    {
-        if (!is_array($this->uploadDirs) || empty($this->uploadDirs)){
-            throw new InvalidConfigException('The localUploadDirs is not defined.');
-        }
-
-        if (strpos($type, self::FILE_TYPE_IMAGE) !== false) {
-            return $this->uploadDirs[self::FILE_TYPE_IMAGE];
-
-        } elseif (strpos($type, self::FILE_TYPE_AUDIO) !== false) {
-            return $this->uploadDirs[self::FILE_TYPE_AUDIO];
-
-        } elseif (strpos($type, self::FILE_TYPE_VIDEO) !== false) {
-            return $this->uploadDirs[self::FILE_TYPE_VIDEO];
-
-        } elseif (strpos($type, self::FILE_TYPE_APP) !== false) {
-            return $this->uploadDirs[self::FILE_TYPE_APP];
-
-        } elseif (strpos($type, self::FILE_TYPE_TEXT) !== false) {
-            return $this->uploadDirs[self::FILE_TYPE_TEXT];
-
-        } else {
-            return $this->uploadDirs[self::FILE_TYPE_OTHER];
-        }
     }
 }

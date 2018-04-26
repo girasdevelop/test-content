@@ -50,8 +50,8 @@ class LocalUploadComponent extends BaseUploadComponent implements UploadComponen
             $this->uploadRoot = Yii::getAlias('@webroot');
         }
 
-        if (null === $this->uploadRoot){
-            throw new InvalidConfigException('The uploadRoot is not defined.');
+        if (null === $this->uploadRoot || !is_string($this->uploadRoot)){
+            throw new InvalidConfigException('The uploadRoot is not defined correctly.');
         }
     }
 

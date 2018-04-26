@@ -5,13 +5,13 @@ namespace app\modules\files\controllers\album;
 use app\modules\files\models\album\AppAlbum;
 
 /**
- * AppAlbumController extends the base abstract AlbumController.
+ * ApplicationAlbumController extends the base abstract AlbumController.
  *
  * @package Itstructure\FilesModule\controllers\album
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class AppAlbumController extends AlbumController
+class ApplicationAlbumController extends AlbumController
 {
     /**
      * Returns the name of the AppAlbum model.

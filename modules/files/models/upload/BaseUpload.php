@@ -257,7 +257,7 @@ abstract class BaseUpload extends Model
      * Get storage type (local, s3, e.t.c...).
      * @return string
      */
-    abstract protected function getStorage(): string;
+    abstract protected function getStorageType(): string;
 
     /**
      * Scenarios.
@@ -449,7 +449,7 @@ abstract class BaseUpload extends Model
             $this->mediafileModel->url = $this->databaseUrl;
             $this->mediafileModel->filename = $this->outFileName;
             $this->mediafileModel->size = $this->file->size;
-            $this->mediafileModel->storage = $this->getStorage();
+            $this->mediafileModel->storage = $this->getStorageType();
         }
 
         $this->mediafileModel->alt = $this->alt;

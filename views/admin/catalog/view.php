@@ -79,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php endif; ?>
 
+    <h3>Albums</h3>
     <?php echo GridView::widget([
         'dataProvider' => new ArrayDataProvider([
             'allModels' => $model->getAlbums()

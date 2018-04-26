@@ -46,7 +46,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * Get storage type - local.
      * @return string
      */
-    protected function getStorage(): string
+    protected function getStorageType(): string
     {
         return Module::STORAGE_TYPE_LOCAL;
     }

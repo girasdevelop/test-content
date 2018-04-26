@@ -57,7 +57,7 @@ return [
                 'appAlbums' => [
                     'title' => 'Application albums',
                     'icon' => 'fa fa-microchip',
-                    'url' => '/files/app-album',
+                    'url' => '/files/application-album',
                 ],
                 'textAlbums' => [
                     'title' => 'Text albums',

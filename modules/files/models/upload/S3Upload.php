@@ -6,13 +6,13 @@ use Yii;
 use yii\imagine\Image;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
-use Aws\S3\S3Client;
+use Aws\S3\{S3ClientInterface, S3Client};
 use app\modules\files\Module;
 use app\modules\files\components\ThumbConfig;
-use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
+use app\modules\files\interfaces\{ThumbConfigInterface, S3UploadModelInterface};
 
 /**
- * Class LocalUpload
+ * Class S3Upload
  *
  * @property array $uploadDirs Directories for local uploaded files.
  *
@@ -20,10 +20,12 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class S3Upload extends BaseUpload implements UploadModelInterface
+class S3Upload extends BaseUpload implements S3UploadModelInterface
 {
     const DIR_LENGTH_FIRST = 2;
     const DIR_LENGTH_SECOND = 4;
+
+    const BUCKET_ROOT = 's3://';
 
     /**
      * Directories for local uploaded files.
@@ -32,9 +34,14 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     public $uploadDirs;
 
     /**
-     * @var S3Client
+     * @var string
      */
-    public $s3Client;
+    public $s3bucket;
+
+    /**
+     * @var S3ClientInterface|S3Client
+     */
+    private $s3Client;
 
     /**
      * Initialize.
@@ -45,14 +52,42 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             throw new InvalidConfigException('The uploadRoot is not defined.');
         }
 
+        if (null === $this->s3Client){
+            throw new InvalidConfigException('S3 client is not defined.');
+        }
+
+        if (null === $this->s3bucket){
+            throw new InvalidConfigException('S3 bucket is not defined.');
+        }
+
+        $this->s3Client->registerStreamWrapper();
+
         $this->uploadRoot = trim($this->uploadRoot, DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * Set s3 client.
+     * @param S3ClientInterface $s3Client
+     */
+    public function setS3Client(S3ClientInterface $s3Client): void
+    {
+        $this->s3Client = $s3Client;
+    }
+
+    /**
+     * Get s3 client.
+     * @return S3ClientInterface
+     */
+    public function getS3Client(): S3ClientInterface
+    {
+        return $this->s3Client;
     }
 
     /**
      * Get storage type - aws.
      * @return string
      */
-    protected function getStorage(): string
+    protected function getStorageType(): string
     {
         return Module::STORAGE_TYPE_S3;
     }
@@ -120,17 +155,6 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function sendFile(): bool
     {
-        try {
-            $this->s3Client->putObject([
-                'Bucket' => 'my-bucket',
-                'Key'    => 'my-object',
-                'Body'   => fopen('/path/to/file', 'r'),
-                'ACL'    => 'public-read',
-            ]);
-        } catch (\Aws\S3\Exception\S3Exception $e) {
-            echo "There was an error uploading the file.\n";
-        }
-
         BaseFileHelper::createDirectory($this->uploadPath, 0777);
 
         return $this->file->saveAs($this->uploadPath . DIRECTORY_SEPARATOR . $this->outFileName);

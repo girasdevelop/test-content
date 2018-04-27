@@ -121,6 +121,17 @@ abstract class AlbumController extends Controller
      */
     public function actionIndex()
     {
+        $originalFile = pathinfo(str_replace('http://amazon.com', '', 'http://amazon.com/uploads/images/imagealbum/9c/027f/72f79759e468958ed248d3f143f9dff6.jpg'));
+
+        $dirname = ltrim($originalFile['dirname'], '/');
+
+        $dirnameParent = substr($dirname, 0, -(4+1));
+
+        echo '<pre>';
+        var_dump($dirname);
+        var_dump($dirnameParent);
+        var_dump($originalFile);die();
+
         $searchModel = new AlbumSearch();
         $searchParams = ArrayHelper::merge(Yii::$app->request->queryParams, [
             $searchModel->formName() => [

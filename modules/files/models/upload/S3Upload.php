@@ -14,7 +14,8 @@ use app\modules\files\interfaces\{ThumbConfigInterface, S3UploadModelInterface};
 /**
  * Class S3Upload
  *
- * @property string $s3bucket Amazon web services S3 bucket.
+ * @property string $s3Domain Amazon web services S3 domain.
+ * @property string $s3Bucket Amazon web services S3 bucket.
  * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  *
  * @package Itstructure\FilesModule\models
@@ -30,10 +31,16 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
     const BUCKET_DIR_SEPARATOR = '/';
 
     /**
+     * Amazon web services S3 domain.
+     * @var string
+     */
+    public $s3Domain;
+
+    /**
      * Amazon web services S3 bucket.
      * @var string
      */
-    public $s3bucket;
+    public $s3Bucket;
 
     /**
      * Amazon web services SDK S3 client.
@@ -50,9 +57,15 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
             throw new InvalidConfigException('S3 client is not defined correctly.');
         }
 
-        if (null === $this->s3bucket || !is_string($this->s3bucket)){
+        if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
             throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
+
+        if (null === $this->s3Domain || !is_string($this->s3Domain)){
+            throw new InvalidConfigException('S3 domain is not defined correctly.');
+        }
+
+        $this->s3Domain = str_replace(self::BUCKET_DIR_SEPARATOR, '', $this->s3Domain);
 
         $this->s3Client->registerStreamWrapper();
     }
@@ -108,13 +121,16 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
             self::BUCKET_DIR_SEPARATOR . substr(md5(time()), 0, self::DIR_LENGTH_FIRST) .
             self::BUCKET_DIR_SEPARATOR . substr(md5(time()+1), 0, self::DIR_LENGTH_SECOND);
 
-        $this->uploadPath = self::BUCKET_ROOT . $this->s3bucket . self::BUCKET_DIR_SEPARATOR . $this->uploadDir;
+        $this->uploadPath = self::BUCKET_ROOT . $this->s3Bucket . self::BUCKET_DIR_SEPARATOR . $this->uploadDir;
 
         $this->outFileName = $this->renameFiles ?
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
 
-        $this->databaseUrl = $this->uploadPath . self::BUCKET_DIR_SEPARATOR . $this->outFileName;
+        $this->databaseUrl = $this->s3Domain .
+            self::BUCKET_DIR_SEPARATOR . $this->s3Bucket .
+            self::BUCKET_DIR_SEPARATOR . $this->uploadDir .
+            self::BUCKET_DIR_SEPARATOR . $this->outFileName;
     }
 
     /**
@@ -125,9 +141,9 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
      */
     protected function setParamsForDelete(): void
     {
-        $originalFile = pathinfo($this->mediafileModel->url);
+        $originalFile = pathinfo(str_replace($this->s3Domain, '', $this->mediafileModel->url));
 
-        $dirname = ltrim($originalFile['dirname'], DIRECTORY_SEPARATOR);
+        $dirname = ltrim($originalFile['dirname'], self::BUCKET_DIR_SEPARATOR);
 
         $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
 
@@ -148,7 +164,9 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
             mkdir($this->uploadPath, 0777, true);
         }
 
-        $result = file_put_contents($this->uploadPath . self::BUCKET_DIR_SEPARATOR . $this->outFileName, '');
+        $result = file_put_contents($this->uploadPath .
+            self::BUCKET_DIR_SEPARATOR .
+            $this->outFileName, file_get_contents($this->file->tempName));
 
         return $result ? true : false;
     }

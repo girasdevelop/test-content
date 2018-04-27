@@ -17,7 +17,8 @@ use app\modules\files\interfaces\{S3UploadModelInterface, S3UploadComponentInter
  * @property array $uploadDirs Directory for uploaded files.
  * @property string $AWSAccessKeyId Amazon web services access key.
  * @property string $AWSSecretKey Amazon web services secret key.
- * @property string $s3bucket Amazon web services S3 bucket.
+ * @property string $s3Domain Amazon web services S3 domain.
+ * @property string $s3Bucket Amazon web services S3 bucket.
  * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  *
  * @package Itstructure\FilesModule\components
@@ -52,10 +53,16 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
     public $AWSSecretKey = 'safddsafdsgf';
 
     /**
+     * Amazon web services S3 domain.
+     * @var string
+     */
+    public $s3Domain;
+
+    /**
      * Amazon web services S3 bucket.
      * @var string
      */
-    public $s3bucket;
+    public $s3Bucket;
 
     /**
      * Amazon web services SDK S3 client.
@@ -68,7 +75,7 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
      */
     public function init()
     {
-        if (null === $this->s3bucket || !is_string($this->s3bucket)){
+        if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
             throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
 
@@ -94,8 +101,9 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
                 'class' => S3Upload::class,
                 'mediafileModel' => $mediafileModel,
                 'uploadDirs' => $this->uploadDirs,
+                's3Domain' => $this->s3Domain,
                 's3Client' => $this->s3Client,
-                's3bucket' => $this->s3bucket,
+                's3Bucket' => $this->s3Bucket,
             ], $this->getBaseConfigForSave())
         );
 
@@ -113,8 +121,9 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
         $object = Yii::createObject([
             'class' => S3Upload::class,
             'mediafileModel' => $mediafileModel,
+            's3Domain' => $this->s3Domain,
             's3Client' => $this->s3Client,
-            's3bucket' => $this->s3bucket,
+            's3Bucket' => $this->s3Bucket,
         ]);
 
         return $object;

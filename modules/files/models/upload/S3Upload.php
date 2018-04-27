@@ -144,9 +144,13 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
      */
     protected function sendFile(): bool
     {
-        BaseFileHelper::createDirectory($this->uploadPath, 0777);
+        if (!is_dir($this->uploadPath)){
+            mkdir($this->uploadPath, 0777, true);
+        }
 
-        return $this->file->saveAs($this->uploadPath . DIRECTORY_SEPARATOR . $this->outFileName);
+        $result = file_put_contents($this->uploadPath . self::BUCKET_DIR_SEPARATOR . $this->outFileName, '');
+
+        return $result ? true : false;
     }
 
     /**

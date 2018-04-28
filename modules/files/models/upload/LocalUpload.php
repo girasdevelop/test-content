@@ -106,7 +106,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
     }
 
     /**
-     * Save file in local directory or send file to remote storage.
+     * Save file in local directory.
      * @return bool
      */
     protected function sendFile(): bool

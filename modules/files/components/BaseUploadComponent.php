@@ -3,7 +3,7 @@
 namespace app\modules\files\components;
 
 use yii\base\Component;
-use app\modules\files\interfaces\S3UploadModelInterface;
+use app\modules\files\interfaces\UploadModelInterface;
 
 /**
  * Class BaseUploadComponent
@@ -33,25 +33,25 @@ class BaseUploadComponent extends Component
      * @var array
      */
     public $fileExtensions = [
-        S3UploadModelInterface::FILE_TYPE_THUMB => [
+        UploadModelInterface::FILE_TYPE_THUMB => [
             'png', 'jpg', 'jpeg', 'gif',
         ],
-        S3UploadModelInterface::FILE_TYPE_IMAGE => [
+        UploadModelInterface::FILE_TYPE_IMAGE => [
             'png', 'jpg', 'jpeg', 'gif',
         ],
-        S3UploadModelInterface::FILE_TYPE_AUDIO => [
+        UploadModelInterface::FILE_TYPE_AUDIO => [
             'mp3',
         ],
-        S3UploadModelInterface::FILE_TYPE_VIDEO => [
+        UploadModelInterface::FILE_TYPE_VIDEO => [
             'mp4', 'ogg', 'ogv', 'oga', 'ogx', 'webm',
         ],
-        S3UploadModelInterface::FILE_TYPE_APP => [
+        UploadModelInterface::FILE_TYPE_APP => [
             'doc', 'docx', 'rtf', 'pdf', 'rar', 'zip', 'jar', 'mcd', 'xls',
         ],
-        S3UploadModelInterface::FILE_TYPE_TEXT => [
+        UploadModelInterface::FILE_TYPE_TEXT => [
             'txt',
         ],
-        S3UploadModelInterface::FILE_TYPE_OTHER => null,
+        UploadModelInterface::FILE_TYPE_OTHER => null,
     ];
 
     /**

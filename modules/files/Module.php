@@ -22,6 +22,7 @@ use app\modules\files\components\{LocalUploadComponent, S3UploadComponent, Thumb
  * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
  * @property array $thumbStubUrls Default thumbnail stub urls according with file type.
  * @property bool $enableCsrfValidation Csrf validation.
+ * @property string $defaultStorageType Default storage type. Can be 'local' or 's3'.
  * @property View $_view View component to render content.
  *
  * @package Itstructure\FilesModule
@@ -40,7 +41,9 @@ class Module extends BaseModule
     const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
     const FILE_INFO_SRC      = '/files/fileinfo/index';
     const LOCAL_SAVE_SRC     = '/files/upload/local-upload/save';
-    const DELETE_SRC         = '/files/upload/local-upload/delete';
+    const LOCAL_DELETE_SRC   = '/files/upload/local-upload/delete';
+    const S3_SAVE_SRC        = '/files/upload/s3-upload/save';
+    const S3_DELETE_SRC      = '/files/upload/s3-upload/delete';
 
     const BACK_URL_PARAM = '__backUrl';
 
@@ -104,6 +107,12 @@ class Module extends BaseModule
     public $enableCsrfValidation = true;
 
     /**
+     * Default storage type. Can be 'local' or 's3'.
+     * @var string
+     */
+    public $defaultStorageType = self::STORAGE_TYPE_LOCAL;
+
+    /**
      * View component to render content.
      * @var View
      */
@@ -145,19 +154,22 @@ class Module extends BaseModule
             $this->thumbsConfig
         );
 
-        /**
-         * Set local upload component.
-         */
-        $this->setComponents(
-            ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
-        );
+        if ($this->defaultStorageType == self::STORAGE_TYPE_S3){
+            /**
+             * Set aws s3 upload component.
+             */
+            $this->setComponents(
+                ArrayHelper::merge($this->getS3UploadComponentConfig(), $this->components)
+            );
 
-        /**
-         * Set aws s3 upload component.
-         */
-        $this->setComponents(
-            ArrayHelper::merge($this->getS3UploadComponentConfig(), $this->components)
-        );
+        } else {
+            /**
+             * Set local upload component.
+             */
+            $this->setComponents(
+                ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
+            );
+        }
     }
 
     /**

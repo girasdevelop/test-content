@@ -25,3 +25,5 @@ web/ckfinder/userfiles/files/*
 web/ckfinder/userfiles/images/*
 
 web/uploads/*
+
+config/aws-credentials.php

@@ -9,7 +9,7 @@ use yii\helpers\{BaseFileHelper, Inflector};
 use Aws\S3\{S3ClientInterface, S3Client};
 use app\modules\files\Module;
 use app\modules\files\components\ThumbConfig;
-use app\modules\files\interfaces\{ThumbConfigInterface, S3UploadModelInterface};
+use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 
 /**
  * Class S3Upload
@@ -22,7 +22,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, S3UploadModelInterface};
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class S3Upload extends BaseUpload implements S3UploadModelInterface
+class S3Upload extends BaseUpload implements UploadModelInterface
 {
     const DIR_LENGTH_FIRST = 2;
     const DIR_LENGTH_SECOND = 4;
@@ -65,7 +65,7 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
             throw new InvalidConfigException('S3 domain is not defined correctly.');
         }
 
-        $this->s3Domain = str_replace(self::BUCKET_DIR_SEPARATOR, '', $this->s3Domain);
+        $this->s3Domain = rtrim($this->s3Domain, '/');
 
         $this->s3Client->registerStreamWrapper();
     }
@@ -155,7 +155,7 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
     }
 
     /**
-     * Save file in local directory or send file to remote storage.
+     * Send file to remote storage.
      * @return bool
      */
     protected function sendFile(): bool
@@ -168,11 +168,15 @@ class S3Upload extends BaseUpload implements S3UploadModelInterface
             self::BUCKET_DIR_SEPARATOR .
             $this->outFileName, file_get_contents($this->file->tempName));
 
+        /*$result = file_put_contents(self::BUCKET_ROOT . $this->s3Bucket .
+            self::BUCKET_DIR_SEPARATOR .
+            $this->outFileName, file_get_contents($this->file->tempName));*/
+
         return $result ? true : false;
     }
 
     /**
-     * Delete local directory with original file and thumbs.
+     * Delete storage directory with original file and thumbs.
      * @return mixed
      */
     protected function deleteFiles()

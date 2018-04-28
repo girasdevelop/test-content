@@ -15,14 +15,14 @@ interface UploadComponentInterface
 {
     /**
      * Sets a mediafile model for upload file.
-     * @param $model $mediafileModel
+     * @param Mediafile $mediafileModel
      * @return UploadModelInterface
      */
     public function setModelForSave(Mediafile $mediafileModel): UploadModelInterface;
 
     /**
      * Sets a mediafile model for delete file.
-     * @param $model $mediafileModel
+     * @param Mediafile $mediafileModel
      * @return UploadModelInterface
      */
     public function setModelForDelete(Mediafile $mediafileModel): UploadModelInterface;

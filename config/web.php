@@ -87,8 +87,9 @@ $config = [
             'class' => app\modules\files\Module::class,
             'layout' => '@admin/views/layouts/main-admin.php',
             'controllerMap' => [
-                'api/local-upload' => app\modules\files\controllers\upload\LocalUploadController::class,
-                'api/managers' => app\modules\files\controllers\ManagersController::class,
+                'upload/local-upload' => app\modules\files\controllers\upload\LocalUploadController::class,
+                'upload/s3-upload' => app\modules\files\controllers\upload\S3UploadController::class,
+                'managers' => app\modules\files\controllers\ManagersController::class,
                 'image-album' => app\modules\files\controllers\album\ImageAlbumController::class,
                 'audio-album' => app\modules\files\controllers\album\AudioAlbumController::class,
                 'video-album' => app\modules\files\controllers\album\VideoAlbumController::class,
@@ -96,17 +97,29 @@ $config = [
                 'text-album' => app\modules\files\controllers\album\TextAlbumController::class,
                 'other-album' => app\modules\files\controllers\album\OtherAlbumController::class,
             ],
+            'accessRoles' => ['?'],
+            'enableCsrfValidation' => false,
+            'defaultStorageType' => app\modules\files\Module::STORAGE_TYPE_S3,
             'components' => [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
                     'checkExtensionByMimeType' => false
                     //'fileExtensions' => ['ext']
                 ],
+                's3-upload-component' => [
+                    'class' => app\modules\files\components\S3UploadComponent::class,
+                    'checkExtensionByMimeType' => false,
+                    'credentials' => require __DIR__ . '/aws-credentials.php',
+                    //'region' => 'ap-south-1',
+                    'region' => 'ap-northeast-2',
+                    //'s3Bucket' => 'filesmodule',
+                    's3Bucket' => 'andreyfiles2',
+                    //'s3Domain' => 'https://s3-us-west-2.amazonaws.com',
+                    's3Domain' => 'https://s3.ap-south-1.amazonaws.com',
+                    //'fileExtensions' => ['ext']
+                ],
                 'view' => require __DIR__ . '/admin/view-component.php',
             ],
-            /*'authenticator' => [
-                'class' => yii\filters\auth\QueryParamAuth::class,
-            ],*/
         ]
     ],
 ];

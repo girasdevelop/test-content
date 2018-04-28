@@ -105,6 +105,11 @@ trait MediaFilesTrait
                     break;
                 }
 
+                case Module::STORAGE_TYPE_S3: {
+                    $this->setComponentIfNotIsset($mediafileModel->storage, $module->get('s3-upload-component'));
+                    break;
+                }
+
                 default: {
                     throw new InvalidConfigException('Unknown type of the file storage');
                 }

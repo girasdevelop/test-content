@@ -8,15 +8,17 @@ use yii\base\InvalidConfigException;
 use Aws\S3\{S3Client, S3ClientInterface};
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\S3Upload;
-use app\modules\files\interfaces\{S3UploadModelInterface, S3UploadComponentInterface};
+use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface};
 
 /**
  * Class S3UploadComponent
  * Component class to upload files in Amazon S3 bucket.
  *
  * @property array $uploadDirs Directory for uploaded files.
- * @property string $AWSAccessKeyId Amazon web services access key.
- * @property string $AWSSecretKey Amazon web services secret key.
+ * @property array|callable $credentials AWS access key ID and secret access key.
+ * @see https://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html
+ * @property string $region Region to connect to.
+ * @property string $clientVersion S3 client version.
  * @property string $s3Domain Amazon web services S3 domain.
  * @property string $s3Bucket Amazon web services S3 bucket.
  * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
@@ -25,32 +27,39 @@ use app\modules\files\interfaces\{S3UploadModelInterface, S3UploadComponentInter
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class S3UploadComponent extends BaseUploadComponent implements S3UploadComponentInterface
+class S3UploadComponent extends BaseUploadComponent implements UploadComponentInterface
 {
     /**
      * Directory for uploaded files.
      * @var string
      */
     public $uploadDirs = [
-        S3UploadModelInterface::FILE_TYPE_IMAGE => 'images',
-        S3UploadModelInterface::FILE_TYPE_AUDIO => 'audio',
-        S3UploadModelInterface::FILE_TYPE_VIDEO => 'video',
-        S3UploadModelInterface::FILE_TYPE_APP => 'application',
-        S3UploadModelInterface::FILE_TYPE_TEXT => 'text',
-        S3UploadModelInterface::FILE_TYPE_OTHER => 'other',
+        UploadModelInterface::FILE_TYPE_IMAGE => 'images',
+        UploadModelInterface::FILE_TYPE_AUDIO => 'audio',
+        UploadModelInterface::FILE_TYPE_VIDEO => 'video',
+        UploadModelInterface::FILE_TYPE_APP => 'application',
+        UploadModelInterface::FILE_TYPE_TEXT => 'text',
+        UploadModelInterface::FILE_TYPE_OTHER => 'other',
     ];
 
     /**
-     * Amazon web services access key.
-     * @var string
+     * AWS access key ID and secret access key.
+     * @see https://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html
+     * @var array|callable
      */
-    public $AWSAccessKeyId = 'asfdsgfdsgfd';
+    public $credentials;
 
     /**
-     * Amazon web services secret key.
+     * Region to connect to.
      * @var string
      */
-    public $AWSSecretKey = 'safddsafdsgf';
+    public $region = 'us-west-2';
+
+    /**
+     * S3 client version.
+     * @var string
+     */
+    public $clientVersion = 'latest';
 
     /**
      * Amazon web services S3 domain.
@@ -75,28 +84,33 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
      */
     public function init()
     {
+        if (null === $this->s3Domain || !is_string($this->s3Domain)){
+            throw new InvalidConfigException('S3 domain is not defined correctly.');
+        }
+
         if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
             throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
 
+        if (null === $this->credentials && !is_callable($this->credentials)) {
+            throw new InvalidConfigException('Credentials are not defined correctly.');
+        }
+
         $this->s3Client = new S3Client([
-            'version' => 'latest',
-            'region'  => 'us-east-1',
-            'credentials' => [
-                'key'    => $this->AWSAccessKeyId,
-                'secret' => $this->AWSSecretKey,
-            ],
+            'version' => $this->clientVersion,
+            'region'  => $this->region,
+            'credentials' => $this->credentials,
         ]);
     }
 
     /**
      * Sets a mediafile model for upload file.
      * @param Mediafile $mediafileModel
-     * @return S3UploadModelInterface
+     * @return UploadModelInterface
      */
-    public function setModelForSave(Mediafile $mediafileModel): S3UploadModelInterface
+    public function setModelForSave(Mediafile $mediafileModel): UploadModelInterface
     {
-        /* @var S3UploadModelInterface $object */
+        /* @var UploadModelInterface $object */
         $object = Yii::createObject(ArrayHelper::merge([
                 'class' => S3Upload::class,
                 'mediafileModel' => $mediafileModel,
@@ -113,11 +127,11 @@ class S3UploadComponent extends BaseUploadComponent implements S3UploadComponent
     /**
      * Sets a mediafile model for delete file.
      * @param Mediafile $mediafileModel
-     * @return S3UploadModelInterface
+     * @return UploadModelInterface
      */
-    public function setModelForDelete(Mediafile $mediafileModel): S3UploadModelInterface
+    public function setModelForDelete(Mediafile $mediafileModel): UploadModelInterface
     {
-        /* @var S3UploadModelInterface $object */
+        /* @var UploadModelInterface $object */
         $object = Yii::createObject([
             'class' => S3Upload::class,
             'mediafileModel' => $mediafileModel,

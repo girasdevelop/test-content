@@ -2,30 +2,30 @@
 
 namespace app\modules\files\controllers\upload;
 
-use app\modules\files\components\LocalUploadComponent;
+use app\modules\files\components\S3UploadComponent;
 use app\modules\files\interfaces\UploadComponentInterface;
 use app\modules\files\controllers\upload\common\CommonUploadController;
 
 /**
- * Class LocalUploadController
- * Upload controller class to upload files in local directory.
+ * Class S3UploadController
+ * Upload controller class to upload files in amazon s3 buckets.
  *
- * @property LocalUploadComponent $uploadComponent
+ * @property S3UploadComponent $uploadComponent
  *
  * @package Itstructure\FilesModule\controllers\upload
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class LocalUploadController extends CommonUploadController
+class S3UploadController extends CommonUploadController
 {
     /**
-     * Get local upload component.
-     * @return UploadComponentInterface|LocalUploadComponent
+     * Get s3 upload component.
+     * @return UploadComponentInterface|S3UploadComponent
      */
     protected function getUploadComponent(): UploadComponentInterface
     {
         if (null === $this->uploadComponent){
-            $this->uploadComponent = $this->module->get('local-upload-component');
+            $this->uploadComponent = $this->module->get('s3-upload-component');
         }
 
         return $this->uploadComponent;

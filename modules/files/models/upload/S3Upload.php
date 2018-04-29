@@ -168,10 +168,6 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             self::BUCKET_DIR_SEPARATOR .
             $this->outFileName, file_get_contents($this->file->tempName));
 
-        /*$result = file_put_contents(self::BUCKET_ROOT . $this->s3Bucket .
-            self::BUCKET_DIR_SEPARATOR .
-            $this->outFileName, file_get_contents($this->file->tempName));*/
-
         return $result ? true : false;
     }
 

@@ -2,7 +2,7 @@
 
 namespace app\modules\files\controllers\album;
 
-use Aws\Credentials\CredentialProvider;
+use Aws\S3\S3Client;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -123,16 +123,17 @@ abstract class AlbumController extends Controller
      */
     public function actionIndex()
     {
-        /*$originalFile = pathinfo(str_replace('http://amazon.com', '', 'http://amazon.com/uploads/images/imagealbum/9c/027f/72f79759e468958ed248d3f143f9dff6.jpg'));
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region'  => 'us-west-2',
+            'credentials' => require __DIR__ . '/../../../../config/aws-credentials.php',
+        ]);
+        $s3Client->registerStreamWrapper();
+        rmdir('s3://filesmodule/direct');
 
-        $dirname = ltrim($originalFile['dirname'], '/');
-
-        $dirnameParent = substr($dirname, 0, -(4+1));
-
-        echo '<pre>';
+        /*echo '<pre>';
         var_dump($dirname);
-        var_dump($dirnameParent);
-        var_dump($originalFile);die();*/
+        die();*/
 
         $searchModel = new AlbumSearch();
         $searchParams = ArrayHelper::merge(Yii::$app->request->queryParams, [

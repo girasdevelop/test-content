@@ -97,7 +97,7 @@ $config = [
                 'text-album' => app\modules\files\controllers\album\TextAlbumController::class,
                 'other-album' => app\modules\files\controllers\album\OtherAlbumController::class,
             ],
-            'accessRoles' => ['?'],
+            'accessRoles' => ['@', '?'],
             'enableCsrfValidation' => false,
             'defaultStorageType' => app\modules\files\Module::STORAGE_TYPE_S3,
             'components' => [

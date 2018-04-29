@@ -2,8 +2,6 @@
 
 namespace app\modules\files\controllers\album;
 
-use Aws\S3\S3Client;
-
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\data\Pagination;
@@ -123,18 +121,6 @@ abstract class AlbumController extends Controller
      */
     public function actionIndex()
     {
-        $s3Client = new S3Client([
-            'version' => 'latest',
-            'region'  => 'us-west-2',
-            'credentials' => require __DIR__ . '/../../../../config/aws-credentials.php',
-        ]);
-        $s3Client->registerStreamWrapper();
-        rmdir('s3://filesmodule/direct');
-
-        /*echo '<pre>';
-        var_dump($dirname);
-        die();*/
-
         $searchModel = new AlbumSearch();
         $searchParams = ArrayHelper::merge(Yii::$app->request->queryParams, [
             $searchModel->formName() => [

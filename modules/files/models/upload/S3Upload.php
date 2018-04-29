@@ -7,6 +7,7 @@ use yii\imagine\Image;
 use yii\base\InvalidConfigException;
 use yii\helpers\{BaseFileHelper, Inflector};
 use Aws\S3\{S3ClientInterface, S3Client};
+use app\modules\files\helpers\S3Files;
 use app\modules\files\Module;
 use app\modules\files\components\ThumbConfig;
 use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
@@ -147,7 +148,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
 
         $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
 
-        if (count(BaseFileHelper::findDirectories($dirnameParent)) == 1){
+        if (count(S3Files::findDirectories($dirnameParent)) == 1){
             $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirnameParent;
         } else {
             $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirname;
@@ -177,7 +178,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function deleteFiles()
     {
-        BaseFileHelper::removeDirectory($this->directoryForDelete);
+        S3Files::removeDirectory($this->directoryForDelete);
 
         return true;
     }

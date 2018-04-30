@@ -2,10 +2,9 @@
 
 namespace app\modules\files\models\upload;
 
-use Yii;
 use yii\imagine\Image;
-use yii\base\InvalidConfigException;
-use yii\helpers\{BaseFileHelper, Inflector};
+use yii\base\{InvalidConfigException, InvalidValueException};
+use yii\helpers\Inflector;
 use Aws\S3\{S3ClientInterface, S3Client};
 use app\modules\files\helpers\S3Files;
 use app\modules\files\Module;
@@ -18,6 +17,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property string $s3Domain Amazon web services S3 domain.
  * @property string $s3Bucket Amazon web services S3 bucket.
  * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
+ * @property string $originalContent Binary contente of the original file.
  *
  * @package Itstructure\FilesModule\models
  *
@@ -48,6 +48,12 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * @var S3ClientInterface|S3Client
      */
     private $s3Client;
+
+    /**
+     * Binary contente of the original file.
+     * @var string
+     */
+    private $originalContent;
 
     /**
      * Initialize.
@@ -201,15 +207,35 @@ class S3Upload extends BaseUpload implements UploadModelInterface
                         $thumbConfig->height
                     );
 
-        $thumbContent = Image::thumbnail($this->mediafileModel->url,
+        $thumbContent = Image::thumbnail($this->getOriginalContent(),
             $thumbConfig->width,
             $thumbConfig->height,
             $thumbConfig->mode
-        )->save($thumbUrl);
+        )->get($originalFile['extension'], [
+            //'animated' => false
+        ]);
 
         $operatePath = self::BUCKET_ROOT . ltrim(str_replace($this->s3Domain, '', $thumbUrl), self::BUCKET_DIR_SEPARATOR);
         $result = file_put_contents($operatePath, $thumbContent);
 
         return $result ? $thumbUrl : null;
+    }
+
+    /**
+     * Get binary contente of the original file.
+     * @throws InvalidValueException
+     * @return string
+     */
+    private function getOriginalContent()
+    {
+        if (null === $this->originalContent){
+            $this->originalContent = file_get_contents($this->mediafileModel->url);
+        }
+
+        if (!$this->originalContent){
+            throw new InvalidValueException('Content from '.$this->mediafileModel->url.' can not be read.');
+        }
+
+        return $this->originalContent;
     }
 }

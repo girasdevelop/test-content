@@ -39,7 +39,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
             throw new InvalidConfigException('The uploadRoot is not defined correctly.');
         }
 
-        $this->uploadRoot = trim(trim($this->uploadRoot, '/'), DIRECTORY_SEPARATOR);
+        $this->uploadRoot = trim(trim($this->uploadRoot, '/'), '\\');
     }
 
     /**
@@ -63,12 +63,12 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      */
     protected function setParamsForSave(): void
     {
-        $uploadDir = trim(trim($this->getUploadDirConfig($this->file->type), '/'), DIRECTORY_SEPARATOR);
+        $uploadDir = trim(trim($this->getUploadDirConfig($this->file->type), '/'), '\\');
 
         if (!empty($this->subDir)){
             $uploadDir = $uploadDir .
                          DIRECTORY_SEPARATOR .
-                         trim(trim($this->subDir, '/'), DIRECTORY_SEPARATOR);
+                         trim(trim($this->subDir, '/'), '\\');
         }
 
         $this->uploadDir = $uploadDir .
@@ -132,7 +132,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * @param ThumbConfigInterface|ThumbConfig $thumbConfig
      * @return string
      */
-    protected function createThumb(ThumbConfigInterface $thumbConfig): string
+    protected function createThumb(ThumbConfigInterface $thumbConfig)
     {
         $originalFile = pathinfo($this->mediafileModel->url);
 
@@ -149,7 +149,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
             $thumbConfig->width,
             $thumbConfig->height,
             $thumbConfig->mode
-        )->save($this->uploadRoot.DIRECTORY_SEPARATOR.$thumbUrl);
+        )->save($this->uploadRoot . DIRECTORY_SEPARATOR . trim(trim($thumbUrl, '\\'), '/'));
 
         return $thumbUrl;
     }

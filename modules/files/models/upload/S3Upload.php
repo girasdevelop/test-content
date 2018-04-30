@@ -110,12 +110,13 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function setParamsForSave(): void
     {
-        $uploadDir = trim(trim($this->getUploadDirConfig($this->file->type), '/'), DIRECTORY_SEPARATOR);
+        $uploadDir = $this->getUploadDirConfig($this->file->type);
+        $uploadDir = trim(str_replace('\\', self::BUCKET_DIR_SEPARATOR, $uploadDir), self::BUCKET_DIR_SEPARATOR);
 
         if (!empty($this->subDir)){
             $uploadDir = $uploadDir .
                 self::BUCKET_DIR_SEPARATOR .
-                trim(trim($this->subDir, '/'), DIRECTORY_SEPARATOR);
+                trim(str_replace('\\', self::BUCKET_DIR_SEPARATOR, $this->subDir), self::BUCKET_DIR_SEPARATOR);
         }
 
         $this->uploadDir = $uploadDir .
@@ -142,16 +143,15 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function setParamsForDelete(): void
     {
-        $originalFile = pathinfo(str_replace($this->s3Domain, '', $this->mediafileModel->url));
-
-        $dirname = ltrim($originalFile['dirname'], self::BUCKET_DIR_SEPARATOR);
-
+        $operatePath = self::BUCKET_ROOT . ltrim(str_replace($this->s3Domain, '', $this->mediafileModel->url), self::BUCKET_DIR_SEPARATOR);
+        $originalFile = pathinfo($operatePath);
+        $dirname = $originalFile['dirname'];
         $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
 
         if (count(S3Files::findDirectories($dirnameParent)) == 1){
-            $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirnameParent;
+            $this->directoryForDelete = $dirnameParent;
         } else {
-            $this->directoryForDelete = $this->uploadRoot . DIRECTORY_SEPARATOR . $dirname;
+            $this->directoryForDelete = $dirname;
         }
     }
 
@@ -186,14 +186,14 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     /**
      * Create thumb.
      * @param ThumbConfigInterface|ThumbConfig $thumbConfig
-     * @return string
+     * @return string|null
      */
-    protected function createThumb(ThumbConfigInterface $thumbConfig): string
+    protected function createThumb(ThumbConfigInterface $thumbConfig)
     {
         $originalFile = pathinfo($this->mediafileModel->url);
 
         $thumbUrl = $originalFile['dirname'] .
-                    DIRECTORY_SEPARATOR .
+                    self::BUCKET_DIR_SEPARATOR .
                     $this->getThumbFilename($originalFile['filename'],
                         $originalFile['extension'],
                         $thumbConfig->alias,
@@ -201,12 +201,15 @@ class S3Upload extends BaseUpload implements UploadModelInterface
                         $thumbConfig->height
                     );
 
-        Image::thumbnail($this->uploadRoot . DIRECTORY_SEPARATOR . $this->mediafileModel->url,
+        $thumbContent = Image::thumbnail($this->mediafileModel->url,
             $thumbConfig->width,
             $thumbConfig->height,
             $thumbConfig->mode
-        )->save($this->uploadRoot.DIRECTORY_SEPARATOR.$thumbUrl);
+        )->save($thumbUrl);
 
-        return $thumbUrl;
+        $operatePath = self::BUCKET_ROOT . ltrim(str_replace($this->s3Domain, '', $thumbUrl), self::BUCKET_DIR_SEPARATOR);
+        $result = file_put_contents($operatePath, $thumbContent);
+
+        return $result ? $thumbUrl : null;
     }
 }

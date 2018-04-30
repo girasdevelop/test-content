@@ -27,7 +27,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property int $fileMaxSize Maximum file size.
  * @property array $thumbsConfig Thumbs config with their types and sizes.
  * @property string $thumbFilenameTemplate Thumbnails name template.
- * Values can be the next: {original}, {width}, {height}, {alias}, {extension}
+ * Default template: {original}-{width}-{height}-{alias}.{extension}
  * @property array $uploadDirs Directories for uploaded files depending on the file type.
  * @property string $uploadDir Directory for uploaded files.
  * @property string $uploadPath Full directory path to upload file.
@@ -236,9 +236,9 @@ abstract class BaseUpload extends Model
     /**
      * Create thumb.
      * @param ThumbConfigInterface $thumbConfig
-     * @return string
+     * @return string|null
      */
-    abstract protected function createThumb(ThumbConfigInterface $thumbConfig): string;
+    abstract protected function createThumb(ThumbConfigInterface $thumbConfig);
 
     /**
      * Get storage type (local, s3, e.t.c...).
@@ -497,17 +497,24 @@ abstract class BaseUpload extends Model
         Image::$driver = [Image::DRIVER_GD2, Image::DRIVER_GMAGICK, Image::DRIVER_IMAGICK];
 
         foreach ($this->thumbsConfig as $alias => $preset) {
-            $thumbs[$alias] = $this->createThumb(Module::configureThumb($alias, $preset));
+            $thumbUrl = $this->createThumb(Module::configureThumb($alias, $preset));
+            if (null === $thumbUrl){
+                continue;
+            }
+            $thumbs[$alias] = $thumbUrl;
         }
 
         // Create default thumb.
         if (!array_key_exists(Module::DEFAULT_THUMB_ALIAS, $this->thumbsConfig)){
-            $thumbs[Module::DEFAULT_THUMB_ALIAS] = $this->createThumb(
+            $thumbUrlDefault = $this->createThumb(
                 Module::configureThumb(
                     Module::DEFAULT_THUMB_ALIAS,
                     Module::getDefaultThumbConfig()
                 )
             );
+            if (null !== $thumbUrlDefault){
+                $thumbs[Module::DEFAULT_THUMB_ALIAS] = $thumbUrlDefault;
+            }
         }
 
         $this->mediafileModel->thumbs = serialize($thumbs);
@@ -527,11 +534,11 @@ abstract class BaseUpload extends Model
     public function getThumbFilename($original, $extension, $alias, $width, $height)
     {
         return strtr($this->thumbFilenameTemplate, [
-            '{width}'     => $width,
-            '{height}'    => $height,
-            '{alias}'     => $alias,
             '{original}'  => $original,
             '{extension}' => $extension,
+            '{alias}'     => $alias,
+            '{width}'     => $width,
+            '{height}'    => $height,
         ]);
     }
 

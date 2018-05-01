@@ -8,7 +8,7 @@ nbproject
 
 Thumbs.db
 
-/vendor
+vendor/*
 
 composer.phar
 

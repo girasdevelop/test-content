@@ -268,6 +268,10 @@ class Album extends ActiveRecord
      */
     public function getThumbnailModel()
     {
+        if (null === $this->type || null === $this->id) {
+            return null;
+        }
+
         return OwnersMediafiles::getOwnerThumbnail($this->type, $this->id);
     }
 }

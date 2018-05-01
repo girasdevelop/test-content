@@ -247,6 +247,12 @@ abstract class BaseUpload extends Model
     abstract protected function getStorageType(): string;
 
     /**
+     * Actions after main save.
+     * @return mixed
+     */
+    abstract protected function afterSave();
+
+    /**
      * Scenarios.
      * @return array
      */
@@ -449,9 +455,7 @@ abstract class BaseUpload extends Model
             throw new \Exception('Error save file data in database.', 500);
         }
 
-        if (null !== $this->owner && null !== $this->ownerId && null != $this->ownerAttribute){
-            $this->mediafileModel->addOwner($this->ownerId, $this->owner, $this->ownerAttribute);
-        }
+        $this->afterSave();
 
         return true;
     }
@@ -571,6 +575,17 @@ abstract class BaseUpload extends Model
 
         } else {
             return $this->uploadDirs[UploadModelInterface::FILE_TYPE_OTHER];
+        }
+    }
+
+    /**
+     * Add owner for mediafile.
+     * @return void
+     */
+    protected function addOwner(): void
+    {
+        if (null !== $this->owner && null !== $this->ownerId && null != $this->ownerAttribute){
+            $this->mediafileModel->addOwner($this->ownerId, $this->owner, $this->ownerAttribute);
         }
     }
 }

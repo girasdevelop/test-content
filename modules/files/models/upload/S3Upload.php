@@ -6,6 +6,7 @@ use yii\imagine\Image;
 use yii\base\{InvalidConfigException, InvalidValueException};
 use yii\helpers\Inflector;
 use Aws\S3\{S3ClientInterface, S3MultiRegionClient};
+use app\modules\files\models\S3FilesOptions;
 use app\modules\files\helpers\S3Files;
 use app\modules\files\Module;
 use app\modules\files\components\ThumbConfig;
@@ -136,7 +137,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     }
 
     /**
-     * Set some params for upload.
+     * Set some params for delete.
      * It is needed to set the next parameters:
      * $this->directoryForDelete
      * @return void
@@ -164,9 +165,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
         $result = $this->s3Client->putObject([
             'ACL' => 'public-read',
             'SourceFile' => $this->file->tempName,
-            'Key' => $this->uploadDir .
-                self::BUCKET_DIR_SEPARATOR .
-                $this->outFileName,
+            'Key' => $this->uploadDir . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
             'Bucket' => $this->s3Bucket
         ]);
 
@@ -206,8 +205,9 @@ class S3Upload extends BaseUpload implements UploadModelInterface
                         $thumbConfig->width,
                         $thumbConfig->height
                     );
-        //var_dump($this->getOriginalContent());die();
-        $thumbContent = Image::thumbnail($this->getOriginalContent(),
+        //var_dump($originalFile['dirname']);die();
+        var_dump($this->mediafileModel->url);die();
+        $thumbContent = Image::thumbnail(Image::getImagine()->load($this->getOriginalContent()),
             $thumbConfig->width,
             $thumbConfig->height,
             $thumbConfig->mode
@@ -230,6 +230,20 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     }
 
     /**
+     * Actions after main save.
+     * @return mixed
+     */
+    protected function afterSave()
+    {
+        $this->addOwner();
+
+        $this->setS3FileOptions($this->s3Bucket,
+            $this->uploadDir . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
+            'us-west-2'
+        );
+    }
+
+    /**
      * Get binary contente of the original file.
      * @throws InvalidValueException
      * @return string
@@ -245,5 +259,24 @@ class S3Upload extends BaseUpload implements UploadModelInterface
         }
 
         return $this->originalContent;
+    }
+
+    /**
+     * Set S3 options for uploaded file in amazon S3 storage.
+     * @param string $bucket
+     * @param string $key
+     * @param string $region
+     * @return void
+     */
+    private function setS3FileOptions(string $bucket, string $key, string $region): void
+    {
+        if (null !== $this->file){
+            $optionsModel = new S3FilesOptions();
+            $optionsModel->mediafileId = $this->mediafileModel->id;
+            $optionsModel->bucket = $bucket;
+            $optionsModel->key = $key;
+            $optionsModel->region = $region;
+            $optionsModel->save();
+        }
     }
 }

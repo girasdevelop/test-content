@@ -85,7 +85,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
     }
 
     /**
-     * Set some params for upload.
+     * Set some params for delete.
      * It is needed to set the next parameters:
      * $this->directoryForDelete
      * @return void
@@ -152,5 +152,14 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
         )->save($this->uploadRoot . DIRECTORY_SEPARATOR . trim(trim($thumbUrl, '\\'), '/'));
 
         return $thumbUrl;
+    }
+
+    /**
+     * Actions after main save.
+     * @return mixed
+     */
+    protected function afterSave()
+    {
+        $this->addOwner();
     }
 }

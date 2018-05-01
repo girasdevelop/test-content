@@ -14,6 +14,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * Class LocalUpload
  *
  * @property string $uploadRoot Root directory for uploaded files.
+ * @property string $directoryForDelete Directory for delete with all content.
  *
  * @package Itstructure\FilesModule\models
  *
@@ -29,6 +30,12 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * @var string
      */
     public $uploadRoot;
+
+    /**
+     * Directory for delete with all content.
+     * @var string
+     */
+    private $directoryForDelete = [];
 
     /**
      * Initialize.

@@ -31,7 +31,6 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property array $uploadDirs Directories for uploaded files depending on the file type.
  * @property string $uploadDir Directory for uploaded files.
  * @property string $uploadPath Full directory path to upload file.
- * @property string $directoryForDelete Directory for delete with all content.
  * @property string $outFileName Prepared file name to save in database and storage.
  * @property string $databaseUrl File url path for database.
  * @property UploadedFile $file File object.
@@ -178,12 +177,6 @@ abstract class BaseUpload extends Model
      * @var string
      */
     protected $uploadPath;
-
-    /**
-     * Directory for delete with all content.
-     * @var string
-     */
-    protected $directoryForDelete = [];
 
     /**
      * Prepared file name to save in database and storage.

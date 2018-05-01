@@ -4,7 +4,7 @@ namespace app\modules\files\models\upload;
 
 use yii\imagine\Image;
 use yii\base\{InvalidConfigException, InvalidValueException};
-use yii\helpers\Inflector;
+use yii\helpers\{ArrayHelper, Inflector};
 use Aws\S3\{S3ClientInterface, S3MultiRegionClient};
 use app\modules\files\models\S3FilesOptions;
 use app\modules\files\helpers\S3Files;
@@ -19,6 +19,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property string $s3Bucket Amazon web services S3 bucket.
  * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  * @property string $originalContent Binary contente of the original file.
+ * @property array $objectsForDelete Objects for delete (files in the S3 directory).
  *
  * @package Itstructure\FilesModule\models
  *
@@ -55,6 +56,12 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * @var string
      */
     private $originalContent;
+
+    /**
+     * Objects for delete (files in the S3 directory).
+     * @var array
+     */
+    private $objectsForDelete;
 
     /**
      * Initialize.
@@ -139,21 +146,22 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     /**
      * Set some params for delete.
      * It is needed to set the next parameters:
-     * $this->directoryForDelete
+     * $this->objectsForDelete
      * @return void
      */
     protected function setParamsForDelete(): void
     {
-        $operatePath = self::BUCKET_ROOT . ltrim(str_replace($this->s3Domain, '', $this->mediafileModel->url), self::BUCKET_DIR_SEPARATOR);
-        $originalFile = pathinfo($operatePath);
-        $dirname = $originalFile['dirname'];
-        $dirnameParent = substr($dirname, 0, -(self::DIR_LENGTH_SECOND+1));
+        /** @var S3FilesOptions $s3fileOptions */
+        $s3fileOptions = S3FilesOptions::find()->where([
+            'mediafileId' => $this->mediafileModel->id
+        ])->one();
 
-        if (count(S3Files::findDirectories($dirnameParent)) == 1){
-            $this->directoryForDelete = $dirnameParent;
-        } else {
-            $this->directoryForDelete = $dirname;
-        }
+        $objects = $this->s3Client->listObjects([
+            'Bucket' => $s3fileOptions->bucket,
+            'Prefix' => $s3fileOptions->prefix
+        ]);
+
+        $this->objectsForDelete = ArrayHelper::getColumn($objects['Contents'], 'Key');
     }
 
     /**
@@ -162,13 +170,25 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function sendFile(): bool
     {
+        $result = $this->s3Client->listObjects([
+            'Bucket' => $this->s3Bucket,
+            'Prefix' => 'application/e9/2044'
+        ]);
+        $keys = ArrayHelper::getColumn($result['Contents'], 'Key');
+        echo '<pre>';
+        var_dump($keys);die();
+
         $result = $this->s3Client->putObject([
             'ACL' => 'public-read',
             'SourceFile' => $this->file->tempName,
             'Key' => $this->uploadDir . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
+            //'Key' => 'application/e9/2045' . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
             'Bucket' => $this->s3Bucket
         ]);
-
+        /*$this->s3Client->deleteObject([
+            'Key' => 'application/e9/2045/b479a7c9fe269aa5a3b6a6b023686a53.docx',
+            'Bucket' => $this->s3Bucket
+        ]);*/
         if ($result['ObjectURL']){
             $this->databaseUrl = $result['ObjectURL'];
             return true;
@@ -237,10 +257,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     {
         $this->addOwner();
 
-        $this->setS3FileOptions($this->s3Bucket,
-            $this->uploadDir . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
-            'us-west-2'
-        );
+        $this->setS3FileOptions($this->s3Bucket, $this->uploadDir);
     }
 
     /**
@@ -264,18 +281,16 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     /**
      * Set S3 options for uploaded file in amazon S3 storage.
      * @param string $bucket
-     * @param string $key
-     * @param string $region
+     * @param string $prefix
      * @return void
      */
-    private function setS3FileOptions(string $bucket, string $key, string $region): void
+    private function setS3FileOptions(string $bucket, string $prefix): void
     {
         if (null !== $this->file){
             $optionsModel = new S3FilesOptions();
             $optionsModel->mediafileId = $this->mediafileModel->id;
             $optionsModel->bucket = $bucket;
-            $optionsModel->key = $key;
-            $optionsModel->region = $region;
+            $optionsModel->prefix = $prefix;
             $optionsModel->save();
         }
     }

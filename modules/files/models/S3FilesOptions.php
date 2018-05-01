@@ -7,8 +7,7 @@ namespace app\modules\files\models;
  *
  * @property int $mediafileId Mediafile id.
  * @property string $bucket Bucket.
- * @property string $key Key.
- * @property string $region Region.
+ * @property string $prefix Prefix path.
  * @property Mediafile $mediafile
  *
  * @package Itstructure\FilesModule\models
@@ -35,8 +34,7 @@ class S3FilesOptions extends \yii\db\ActiveRecord
                 [
                     'mediafileId',
                     'bucket',
-                    'key',
-                    'region',
+                    'prefix',
                 ],
                 'required',
             ],
@@ -49,8 +47,7 @@ class S3FilesOptions extends \yii\db\ActiveRecord
             [
                 [
                     'bucket',
-                    'key',
-                    'region',
+                    'prefix',
                 ],
                 'string',
                 'max' => 255,
@@ -83,7 +80,6 @@ class S3FilesOptions extends \yii\db\ActiveRecord
             'mediafileId' => 'Mediafile ID',
             'bucket' => 'Bucket',
             'key' => 'Key',
-            'region' => 'Region',
         ];
     }
 

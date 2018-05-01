@@ -6,6 +6,8 @@ use Yii;
 use yii\filters\{AccessControl, ContentNegotiator, VerbFilter};
 use yii\base\{InvalidConfigException, UnknownMethodException};
 use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException, ForbiddenHttpException};
+use Aws\Exception\AwsException;
+use Aws\S3\Exception\S3Exception;
 use app\modules\files\Module;
 use app\modules\files\components\LocalUploadComponent;
 use app\modules\files\assets\UploadmanagerAsset;
@@ -160,7 +162,7 @@ abstract class CommonUploadController extends Controller
 
             return $this->getSuccessResponse(Module::t('actions', 'File saved.'), $response);
 
-        } catch (\Exception|InvalidConfigException|UnknownMethodException|NotFoundHttpException $e) {
+        } catch (InvalidConfigException|UnknownMethodException|NotFoundHttpException|AwsException|S3Exception|\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
         }
     }

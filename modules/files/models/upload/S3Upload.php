@@ -5,7 +5,7 @@ namespace app\modules\files\models\upload;
 use yii\imagine\Image;
 use yii\base\{InvalidConfigException, InvalidValueException};
 use yii\helpers\Inflector;
-use Aws\S3\{S3ClientInterface, S3Client};
+use Aws\S3\{S3ClientInterface, S3MultiRegionClient};
 use app\modules\files\helpers\S3Files;
 use app\modules\files\Module;
 use app\modules\files\components\ThumbConfig;
@@ -16,7 +16,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  *
  * @property string $s3Domain Amazon web services S3 domain.
  * @property string $s3Bucket Amazon web services S3 bucket.
- * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
+ * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  * @property string $originalContent Binary contente of the original file.
  *
  * @package Itstructure\FilesModule\models
@@ -45,7 +45,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
 
     /**
      * Amazon web services SDK S3 client.
-     * @var S3ClientInterface|S3Client
+     * @var S3ClientInterface|S3MultiRegionClient
      */
     private $s3Client;
 
@@ -110,7 +110,6 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * $this->uploadDir
      * $this->uploadPath
      * $this->outFileName
-     * $this->databaseUrl
      * @throws InvalidConfigException
      * @return void
      */
@@ -134,11 +133,6 @@ class S3Upload extends BaseUpload implements UploadModelInterface
         $this->outFileName = $this->renameFiles ?
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
-
-        $this->databaseUrl = $this->s3Domain .
-            self::BUCKET_DIR_SEPARATOR . $this->s3Bucket .
-            self::BUCKET_DIR_SEPARATOR . $this->uploadDir .
-            self::BUCKET_DIR_SEPARATOR . $this->outFileName;
     }
 
     /**
@@ -167,15 +161,21 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function sendFile(): bool
     {
-        if (!is_dir($this->uploadPath)){
-            mkdir($this->uploadPath, 0777, true);
+        $result = $this->s3Client->putObject([
+            'ACL' => 'public-read',
+            'SourceFile' => $this->file->tempName,
+            'Key' => $this->uploadDir .
+                self::BUCKET_DIR_SEPARATOR .
+                $this->outFileName,
+            'Bucket' => $this->s3Bucket
+        ]);
+
+        if ($result['ObjectURL']){
+            $this->databaseUrl = $result['ObjectURL'];
+            return true;
         }
 
-        $result = file_put_contents($this->uploadPath .
-            self::BUCKET_DIR_SEPARATOR .
-            $this->outFileName, file_get_contents($this->file->tempName));
-
-        return $result ? true : false;
+        return false;
     }
 
     /**
@@ -198,7 +198,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     {
         $originalFile = pathinfo($this->mediafileModel->url);
 
-        $thumbUrl = $originalFile['dirname'] .
+        $uploadThumbUrl = ltrim(str_replace($this->s3Domain, '', $originalFile['dirname']), self::BUCKET_DIR_SEPARATOR) .
                     self::BUCKET_DIR_SEPARATOR .
                     $this->getThumbFilename($originalFile['filename'],
                         $originalFile['extension'],
@@ -206,7 +206,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
                         $thumbConfig->width,
                         $thumbConfig->height
                     );
-
+        //var_dump($this->getOriginalContent());die();
         $thumbContent = Image::thumbnail($this->getOriginalContent(),
             $thumbConfig->width,
             $thumbConfig->height,
@@ -215,10 +215,18 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             //'animated' => false
         ]);
 
-        $operatePath = self::BUCKET_ROOT . ltrim(str_replace($this->s3Domain, '', $thumbUrl), self::BUCKET_DIR_SEPARATOR);
-        $result = file_put_contents($operatePath, $thumbContent);
+        $result = $this->s3Client->putObject([
+            'ACL' => 'public-read',
+            'Body' => $thumbContent,
+            'Key' => $uploadThumbUrl,
+            'Bucket' => $this->s3Bucket
+        ]);
 
-        return $result ? $thumbUrl : null;
+        if ($result['ObjectURL']){
+            return $result['ObjectURL'];
+        }
+
+        return null;
     }
 
     /**

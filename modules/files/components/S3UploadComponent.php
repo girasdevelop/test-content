@@ -5,7 +5,7 @@ namespace app\modules\files\components;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
-use Aws\S3\{S3Client, S3ClientInterface};
+use Aws\S3\{S3MultiRegionClient, S3ClientInterface};
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\S3Upload;
 use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface};
@@ -21,7 +21,7 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @property string $clientVersion S3 client version.
  * @property string $s3Domain Amazon web services S3 domain.
  * @property string $s3Bucket Amazon web services S3 bucket.
- * @property S3Client|S3ClientInterface $s3Client Amazon web services SDK S3 client.
+ * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  *
  * @package Itstructure\FilesModule\components
  *
@@ -75,7 +75,7 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
 
     /**
      * Amazon web services SDK S3 client.
-     * @var S3Client|S3ClientInterface
+     * @var S3MultiRegionClient|S3ClientInterface
      */
     private $s3Client;
 
@@ -96,7 +96,7 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
             throw new InvalidConfigException('Credentials are not defined correctly.');
         }
 
-        $this->s3Client = new S3Client([
+        $this->s3Client = new S3MultiRegionClient([
             'version' => $this->clientVersion,
             'region'  => $this->region,
             'credentials' => $this->credentials,

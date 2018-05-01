@@ -135,6 +135,10 @@ abstract class AlbumController extends Controller
         var_dump($filename);
         die();*/
 
+        //$content = file_get_contents('https://s3-us-west-2.amazonaws.com/filesmodule2/images/62/d663/a68e96479f822d48dfc97c4b75de5363.jpg');
+        //$content = file_get_contents('https://s3-us-west-2.amazonaws.com/filesmodule2/images/4c/0e5f/a4ab687a2cced2fb41aaf48f1aecb9eb.jpg');
+        //var_dump($content);
+
         $searchModel = new AlbumSearch();
         $searchParams = ArrayHelper::merge(Yii::$app->request->queryParams, [
             $searchModel->formName() => [

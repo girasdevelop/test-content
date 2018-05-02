@@ -172,22 +172,19 @@ class Module extends BaseModule
             $this->thumbsConfig
         );
 
-        if ($this->defaultStorageType == self::STORAGE_TYPE_S3){
-            /**
-             * Set aws s3 upload component.
-             */
-            $this->setComponents(
-                ArrayHelper::merge($this->getS3UploadComponentConfig(), $this->components)
-            );
+        /**
+         * Set aws s3 upload component.
+         */
+        $this->setComponents(
+            ArrayHelper::merge($this->getS3UploadComponentConfig(), $this->components)
+        );
 
-        } else {
-            /**
-             * Set local upload component.
-             */
-            $this->setComponents(
-                ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
-            );
-        }
+        /**
+         * Set local upload component.
+         */
+        $this->setComponents(
+            ArrayHelper::merge($this->getLocalUploadComponentConfig(), $this->components)
+        );
     }
 
     /**

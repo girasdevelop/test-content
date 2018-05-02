@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\files\controllers\upload\common;
+namespace app\modules\files\controllers\upload;
 
 use Yii;
 use yii\filters\{AccessControl, ContentNegotiator, VerbFilter};
@@ -18,13 +18,13 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
 
 /**
  * Class CommonUploadController
- * Common upload controller class to upload files in local directory.
+ * Common upload controller class to upload files.
  *
  * @property UploadComponentInterface|LocalUploadComponent $uploadComponent
  * @property UploadModelInterface|BaseUpload $uploadModel
  * @property Module $module
  *
- * @package Itstructure\FilesModule\controllers\upload\common
+ * @package Itstructure\FilesModule\controllers\upload
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */

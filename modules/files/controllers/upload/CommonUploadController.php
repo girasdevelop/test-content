@@ -9,7 +9,7 @@ use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFou
 use Aws\Exception\AwsException;
 use Aws\S3\Exception\S3Exception;
 use app\modules\files\Module;
-use app\modules\files\components\LocalUploadComponent;
+use app\modules\files\components\{LocalUploadComponent, S3UploadComponent};
 use app\modules\files\assets\UploadmanagerAsset;
 use app\modules\files\models\Mediafile;
 use app\modules\files\models\upload\BaseUpload;
@@ -20,7 +20,7 @@ use app\modules\files\interfaces\{UploadComponentInterface, UploadModelInterface
  * Class CommonUploadController
  * Common upload controller class to upload files.
  *
- * @property UploadComponentInterface|LocalUploadComponent $uploadComponent
+ * @property UploadComponentInterface|LocalUploadComponent|S3UploadComponent $uploadComponent
  * @property UploadModelInterface|BaseUpload $uploadModel
  * @property Module $module
  *
@@ -38,7 +38,7 @@ abstract class CommonUploadController extends Controller
     public $serializer = 'yii\rest\Serializer';
 
     /**
-     * @var null|UploadComponentInterface|LocalUploadComponent
+     * @var null|UploadComponentInterface|LocalUploadComponent|S3UploadComponent
      */
     protected $uploadComponent = null;
 
@@ -48,7 +48,7 @@ abstract class CommonUploadController extends Controller
     private $uploadModel;
 
     /**
-     * @return UploadComponentInterface|LocalUploadComponent
+     * @return UploadComponentInterface|LocalUploadComponent|S3UploadComponent
      */
     abstract protected function getUploadComponent(): UploadComponentInterface;
 

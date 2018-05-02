@@ -168,20 +168,6 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function sendFile(): bool
     {
-        /*$result = $this->s3Client->listObjects([
-            'Bucket' => $this->s3Bucket,
-            'Prefix' => 'application/e9/2089'
-        ]);
-        //var_dump($result['Contents']);die();
-        $keys = ArrayHelper::getColumn([], 'Key');
-        $keys = array_map(function ($item) {
-            return [
-                'Key' => $item
-            ];
-        }, $keys);
-        echo '<pre>';
-        var_dump($keys);die();*/
-
         if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
             throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
@@ -190,13 +176,9 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             'ACL' => 'public-read',
             'SourceFile' => $this->file->tempName,
             'Key' => $this->uploadDir . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
-            //'Key' => 'application/e9/2045' . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
             'Bucket' => $this->s3Bucket
         ]);
-        /*$this->s3Client->deleteObject([
-            'Key' => 'application/e9/2045/b479a7c9fe269aa5a3b6a6b023686a53.docx',
-            'Bucket' => $this->s3Bucket
-        ]);*/
+
         if ($result['ObjectURL']){
             $this->databaseUrl = $result['ObjectURL'];
             return true;
@@ -239,8 +221,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
                         $thumbConfig->width,
                         $thumbConfig->height
                     );
-        //var_dump($originalFile['dirname']);die();
-        //var_dump($this->mediafileModel->url);die();
+
         $thumbContent = Image::thumbnail(Image::getImagine()->load($this->getOriginalContent()),
             $thumbConfig->width,
             $thumbConfig->height,

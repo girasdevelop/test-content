@@ -121,24 +121,6 @@ abstract class AlbumController extends Controller
      */
     public function actionIndex()
     {
-        /*$url = 'https://s3-us-west-2.amazonaws.com/filesmodule/images/1284555719_12.jpg';
-        $url = '\filesmodule\images\1284555719_12.jpg';
-
-        $operatePath = 's3://' . ltrim(str_replace('https://s3-us-west-2.amazonaws.com', '', $url), '/');
-
-        $originalFile = pathinfo($url);
-
-        $dirname = $originalFile['dirname'];
-        $filename = $originalFile['filename'];
-
-        var_dump($dirname);
-        var_dump($filename);
-        die();*/
-
-        //$content = file_get_contents('https://s3-us-west-2.amazonaws.com/filesmodule2/images/62/d663/a68e96479f822d48dfc97c4b75de5363.jpg');
-        //$content = file_get_contents('https://s3-us-west-2.amazonaws.com/filesmodule2/images/4c/0e5f/a4ab687a2cced2fb41aaf48f1aecb9eb.jpg');
-        //var_dump($content);
-
         $searchModel = new AlbumSearch();
         $searchParams = ArrayHelper::merge(Yii::$app->request->queryParams, [
             $searchModel->formName() => [

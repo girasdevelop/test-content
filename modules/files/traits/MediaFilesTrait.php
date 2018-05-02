@@ -101,12 +101,12 @@ trait MediaFilesTrait
 
             switch ($mediafileModel->storage) {
                 case Module::STORAGE_TYPE_LOCAL: {
-                    $this->setComponentIfNotIsset($mediafileModel->storage, $module->get('local-upload-component'));
+                    $this->setComponentIfNotIsset($mediafileModel->storage, 'local-upload-component', $module);
                     break;
                 }
 
                 case Module::STORAGE_TYPE_S3: {
-                    $this->setComponentIfNotIsset($mediafileModel->storage, $module->get('s3-upload-component'));
+                    $this->setComponentIfNotIsset($mediafileModel->storage, 's3-upload-component', $module);
                     break;
                 }
 
@@ -129,13 +129,14 @@ trait MediaFilesTrait
     /**
      * Set tmp upload component if not isset.
      * @param string $storage
-     * @param UploadComponentInterface $component
+     * @param string $componentName
+     * @param Module $module
      * @return void
      */
-    private function setComponentIfNotIsset(string $storage, UploadComponentInterface $component): void
+    private function setComponentIfNotIsset(string $storage, string $componentName, Module $module): void
     {
         if (!isset($this->tmpUploadComponents[$storage])){
-            $this->tmpUploadComponents[$storage] = $component;
+            $this->tmpUploadComponents[$storage] = $module->get($componentName);
         }
     }
 }

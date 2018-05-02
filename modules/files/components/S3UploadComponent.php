@@ -124,7 +124,6 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
             'class' => S3Upload::class,
             'mediafileModel' => $mediafileModel,
             's3Client' => $this->s3Client,
-            's3Bucket' => $this->s3Bucket,
         ]);
 
         return $object;

@@ -14,7 +14,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 /**
  * Class S3Upload
  *
- * @property string $s3Bucket Amazon web services S3 bucket.
+ * @property string $s3Bucket Amazon web services S3 bucket for upload files (not for delete).
  * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  * @property string $originalContent Binary contente of the original file.
  * @property array $objectsForDelete Objects for delete (files in the S3 directory).
@@ -33,7 +33,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     const BUCKET_DIR_SEPARATOR = '/';
 
     /**
-     * Amazon web services S3 bucket.
+     * Amazon web services S3 bucket for upload files (not for delete).
      * @var string
      */
     public $s3Bucket;
@@ -75,10 +75,6 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     {
         if (null === $this->s3Client){
             throw new InvalidConfigException('S3 client is not defined correctly.');
-        }
-
-        if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
-            throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
     }
 
@@ -167,6 +163,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
 
     /**
      * Send file to remote storage.
+     * @throws InvalidConfigException
      * @return bool
      */
     protected function sendFile(): bool
@@ -184,6 +181,10 @@ class S3Upload extends BaseUpload implements UploadModelInterface
         }, $keys);
         echo '<pre>';
         var_dump($keys);die();*/
+
+        if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
+            throw new InvalidConfigException('S3 bucket is not defined correctly.');
+        }
 
         $result = $this->s3Client->putObject([
             'ACL' => 'public-read',
@@ -315,6 +316,9 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     private function setS3FileOptions(string $bucket, string $prefix): void
     {
         if (null !== $this->file){
+            S3FileOptions::deleteAll([
+                'mediafileId' => $this->mediafileModel->id
+            ]);
             $optionsModel = new S3FileOptions();
             $optionsModel->mediafileId = $this->mediafileModel->id;
             $optionsModel->bucket = $bucket;

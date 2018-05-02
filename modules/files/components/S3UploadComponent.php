@@ -19,7 +19,8 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @see https://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html
  * @property string $region Region to connect to.
  * @property string $clientVersion S3 client version.
- * @property string $s3Bucket Amazon web services S3 bucket.
+ * @property string $s3DefaultBucket Amazon web services S3 default bucket.
+ * @property array $s3Buckets Buckets for upload depending on the owner.
  * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  *
  * @package Itstructure\FilesModule\components
@@ -61,10 +62,16 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
     public $clientVersion = 'latest';
 
     /**
-     * Amazon web services S3 bucket.
+     * Amazon web services S3 default bucket.
      * @var string
      */
-    public $s3Bucket;
+    public $s3DefaultBucket;
+
+    /**
+     * Buckets for upload depending on the owner.
+     * @var array
+     */
+    public $s3Buckets = [];
 
     /**
      * Amazon web services SDK S3 client.
@@ -77,8 +84,8 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
      */
     public function init()
     {
-        if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
-            throw new InvalidConfigException('S3 bucket is not defined correctly.');
+        if (null === $this->s3DefaultBucket || !is_string($this->s3DefaultBucket)){
+            throw new InvalidConfigException('S3 default bucket is not defined correctly.');
         }
 
         if (null === $this->credentials && !is_callable($this->credentials)) {
@@ -105,7 +112,8 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
                 'mediafileModel' => $mediafileModel,
                 'uploadDirs' => $this->uploadDirs,
                 's3Client' => $this->s3Client,
-                's3Bucket' => $this->s3Bucket,
+                's3DefaultBucket' => $this->s3DefaultBucket,
+                's3Buckets' => $this->s3Buckets,
             ], $this->getBaseConfigForSave())
         );
 

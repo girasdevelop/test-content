@@ -14,11 +14,13 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
 /**
  * Class S3Upload
  *
- * @property string $s3Bucket Amazon web services S3 bucket for upload files (not for delete).
+ * @property string $s3DefaultBucket Amazon web services S3 default bucket for upload files (not for delete).
+ * @property array $s3Buckets Buckets for upload depending on the owner.
  * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  * @property string $originalContent Binary contente of the original file.
  * @property array $objectsForDelete Objects for delete (files in the S3 directory).
- * @property string $bucketForUpdate Bucket, in which the located files will be deleted or uploaded once again.
+ * @property string $bucketForDelete Bucket, in which the located files will be deleted.
+ * @property string $bucketForUpload Bucket for upload new files.
  * @property S3FileOptions $s3FileOptions S3 file options (bucket, prefix).
  *
  * @package Itstructure\FilesModule\models
@@ -33,10 +35,16 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     const BUCKET_DIR_SEPARATOR = '/';
 
     /**
-     * Amazon web services S3 bucket for upload files (not for delete).
+     * Amazon web services S3 default bucket for upload files (not for delete).
      * @var string
      */
-    public $s3Bucket;
+    public $s3DefaultBucket;
+
+    /**
+     * Buckets for upload depending on the owner.
+     * @var array
+     */
+    public $s3Buckets = [];
 
     /**
      * Amazon web services SDK S3 client.
@@ -57,10 +65,16 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     private $objectsForDelete = [];
 
     /**
-     * Bucket, in which the located files will be deleted or uploaded once again.
+     * Bucket, in which the located files will be deleted.
      * @var string
      */
-    private $bucketForUpdate;
+    private $bucketForDelete;
+
+    /**
+     * Bucket for upload new files.
+     * @var string
+     */
+    private $bucketForUpload;
 
     /**
      * S3 file options (bucket, prefix).
@@ -110,6 +124,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * It is needed to set the next parameters:
      * $this->uploadDir
      * $this->outFileName
+     * $this->bucketForUpload
      * @throws InvalidConfigException
      * @return void
      */
@@ -131,22 +146,22 @@ class S3Upload extends BaseUpload implements UploadModelInterface
         $this->outFileName = $this->renameFiles ?
             md5(time()+2).'.'.$this->file->extension :
             Inflector::slug($this->file->baseName).'.'. $this->file->extension;
+
+        $this->bucketForUpload = null !== $this->owner && isset($this->s3Buckets[$this->owner]) ?
+            $this->s3Buckets[$this->owner] : $this->s3DefaultBucket;
     }
 
     /**
      * Set some params for delete.
      * It is needed to set the next parameters:
      * $this->objectsForDelete
-     * $this->bucketForUpdate
+     * $this->bucketForDelete
      * @return void
      */
     protected function setParamsForDelete(): void
     {
-        /** @var S3FileOptions $s3fileOptions */
-        $s3fileOptions = S3FileOptions::find()->where([
-            'mediafileId' => $this->mediafileModel->id
-        ])->one();
-
+        $s3fileOptions = $this->getS3FileOptions();
+        
         $objects = $this->s3Client->listObjects([
             'Bucket' => $s3fileOptions->bucket,
             'Prefix' => $s3fileOptions->prefix
@@ -158,7 +173,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             ];
         }, ArrayHelper::getColumn($objects['Contents'], 'Key'));
 
-        $this->bucketForUpdate = $s3fileOptions->bucket;
+        $this->bucketForDelete = $s3fileOptions->bucket;
     }
 
     /**
@@ -168,15 +183,15 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function sendFile(): bool
     {
-        if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
-            throw new InvalidConfigException('S3 bucket is not defined correctly.');
+        if (null === $this->bucketForUpload || !is_string($this->bucketForUpload)){
+            throw new InvalidConfigException('S3 bucket for upload is not defined correctly.');
         }
 
         $result = $this->s3Client->putObject([
             'ACL' => 'public-read',
             'SourceFile' => $this->file->tempName,
             'Key' => $this->uploadDir . self::BUCKET_DIR_SEPARATOR . $this->outFileName,
-            'Bucket' => $this->s3Bucket
+            'Bucket' => $this->bucketForUpload
         ]);
 
         if ($result['ObjectURL']){
@@ -195,7 +210,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     {
         if (count($this->objectsForDelete) > 0) {
             $this->s3Client->deleteObjects([
-                'Bucket' => $this->bucketForUpdate,
+                'Bucket' => $this->bucketForDelete,
                 'Delete' => [
                     'Objects' => $this->objectsForDelete,
                 ]
@@ -211,9 +226,12 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     protected function createThumb(ThumbConfigInterface $thumbConfig)
     {
         $originalFile = pathinfo($this->mediafileModel->url);
-        $s3fileOptions = $this->getS3FileOptions();
 
-        $uploadThumbUrl = $s3fileOptions->prefix .
+        if (null === $this->s3FileOptions){
+            $this->s3FileOptions = $this->getS3FileOptions();
+        }
+
+        $uploadThumbUrl = $this->s3FileOptions->prefix .
                     self::BUCKET_DIR_SEPARATOR .
                     $this->getThumbFilename($originalFile['filename'],
                         $originalFile['extension'],
@@ -234,7 +252,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             'ACL' => 'public-read',
             'Body' => $thumbContent,
             'Key' => $uploadThumbUrl,
-            'Bucket' => $s3fileOptions->bucket
+            'Bucket' => $this->s3FileOptions->bucket
         ]);
 
         if ($result['ObjectURL'] && !empty($result['ObjectURL'])){
@@ -252,7 +270,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
     {
         $this->addOwner();
 
-        $this->setS3FileOptions($this->s3Bucket, $this->uploadDir);
+        $this->setS3FileOptions($this->bucketForUpload, $this->uploadDir);
     }
 
     /**
@@ -275,17 +293,13 @@ class S3Upload extends BaseUpload implements UploadModelInterface
 
     /**
      * S3 file options (bucket, prefix).
-     * @return S3FileOptions
+     * @return array|null|\yii\db\ActiveRecord|S3FileOptions
      */
-    private function getS3FileOptions(): S3FileOptions
+    private function getS3FileOptions()
     {
-        if (null === $this->s3FileOptions){
-            $this->s3FileOptions = S3FileOptions::find()->where([
-                'mediafileId' => $this->mediafileModel->id
-            ])->one();
-        }
-
-        return $this->s3FileOptions;
+        return S3FileOptions::find()->where([
+            'mediafileId' => $this->mediafileModel->id
+        ])->one();
     }
 
     /**

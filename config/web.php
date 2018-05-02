@@ -104,17 +104,13 @@ $config = [
                 'local-upload-component' => [
                     'class' => app\modules\files\components\LocalUploadComponent::class,
                     'checkExtensionByMimeType' => false
-                    //'fileExtensions' => ['ext']
                 ],
                 's3-upload-component' => [
                     'class' => app\modules\files\components\S3UploadComponent::class,
                     'checkExtensionByMimeType' => false,
                     'credentials' => require __DIR__ . '/aws-credentials.php',
-                    //'region' => 'ap-south-1',
                     'region' => 'us-west-2',
-                    's3Bucket' => 'filesmodule2',
-                    //'s3Bucket' => 'andreyfiles',
-                    //'fileExtensions' => ['ext']
+                    's3DefaultBucket' => 'filesmodule2',
                 ],
                 'view' => require __DIR__ . '/admin/view-component.php',
             ],

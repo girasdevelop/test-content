@@ -222,9 +222,9 @@ abstract class BaseUpload extends Model
 
     /**
      * Delete files from local directory or from remote storage.
-     * @return mixed
+     * @return void
      */
-    abstract protected function deleteFiles();
+    abstract protected function deleteFiles(): void;
 
     /**
      * Create thumb.

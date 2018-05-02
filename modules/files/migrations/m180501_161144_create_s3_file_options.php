@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Class m180501_161144_create_s3_files_options
+ * Class m180501_161144_create_s3_file_options
  */
-class m180501_161144_create_s3_files_options extends Migration
+class m180501_161144_create_s3_file_options extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('s3_files_options', [
+        $this->createTable('s3_file_options', [
             'mediafileId' => $this->integer()->notNull(),
             'bucket' => $this->string()->notNull(),
             'prefix' => $this->string()->notNull(),
@@ -25,6 +25,6 @@ class m180501_161144_create_s3_files_options extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('s3_files_options');
+        $this->dropTable('s3_file_options');
     }
 }

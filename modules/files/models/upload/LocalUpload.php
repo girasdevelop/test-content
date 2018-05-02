@@ -125,13 +125,11 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
 
     /**
      * Delete local directory with original file and thumbs.
-     * @return mixed
+     * @return void
      */
-    protected function deleteFiles()
+    protected function deleteFiles(): void
     {
         BaseFileHelper::removeDirectory($this->directoryForDelete);
-
-        return true;
     }
 
     /**

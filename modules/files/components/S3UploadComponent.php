@@ -19,7 +19,6 @@ use app\modules\files\interfaces\{UploadModelInterface, UploadComponentInterface
  * @see https://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html
  * @property string $region Region to connect to.
  * @property string $clientVersion S3 client version.
- * @property string $s3Domain Amazon web services S3 domain.
  * @property string $s3Bucket Amazon web services S3 bucket.
  * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  *
@@ -62,12 +61,6 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
     public $clientVersion = 'latest';
 
     /**
-     * Amazon web services S3 domain.
-     * @var string
-     */
-    public $s3Domain;
-
-    /**
      * Amazon web services S3 bucket.
      * @var string
      */
@@ -84,10 +77,6 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
      */
     public function init()
     {
-        if (null === $this->s3Domain || !is_string($this->s3Domain)){
-            throw new InvalidConfigException('S3 domain is not defined correctly.');
-        }
-
         if (null === $this->s3Bucket || !is_string($this->s3Bucket)){
             throw new InvalidConfigException('S3 bucket is not defined correctly.');
         }
@@ -115,7 +104,6 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
                 'class' => S3Upload::class,
                 'mediafileModel' => $mediafileModel,
                 'uploadDirs' => $this->uploadDirs,
-                's3Domain' => $this->s3Domain,
                 's3Client' => $this->s3Client,
                 's3Bucket' => $this->s3Bucket,
             ], $this->getBaseConfigForSave())
@@ -135,7 +123,6 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
         $object = Yii::createObject([
             'class' => S3Upload::class,
             'mediafileModel' => $mediafileModel,
-            's3Domain' => $this->s3Domain,
             's3Client' => $this->s3Client,
             's3Bucket' => $this->s3Bucket,
         ]);

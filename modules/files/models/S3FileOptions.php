@@ -3,7 +3,7 @@
 namespace app\modules\files\models;
 
 /**
- * This is the model class for table "s3_files_options".
+ * This is the model class for table "s3_file_options".
  *
  * @property int $mediafileId Mediafile id.
  * @property string $bucket Bucket.
@@ -14,14 +14,14 @@ namespace app\modules\files\models;
  *
  * @author Andrey Girnik <girnikandrey@gmail.com>
  */
-class S3FilesOptions extends \yii\db\ActiveRecord
+class S3FileOptions extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 's3_files_options';
+        return 's3_file_options';
     }
 
     /**

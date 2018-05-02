@@ -114,8 +114,6 @@ $config = [
                     'region' => 'us-west-2',
                     's3Bucket' => 'filesmodule2',
                     //'s3Bucket' => 'andreyfiles',
-                    's3Domain' => 'https://s3-us-west-2.amazonaws.com',
-                    //'s3Domain' => 'https://s3.ap-south-1.amazonaws.com',
                     //'fileExtensions' => ['ext']
                 ],
                 'view' => require __DIR__ . '/admin/view-component.php',

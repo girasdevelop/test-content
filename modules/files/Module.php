@@ -119,6 +119,24 @@ class Module extends BaseModule
     private $_view = null;
 
     /**
+     * Urls to save files depending on the storage type.
+     * @var array
+     */
+    private static $saveSrcUrls = [
+        self::STORAGE_TYPE_LOCAL => self::LOCAL_SAVE_SRC,
+        self::STORAGE_TYPE_S3 => self::S3_SAVE_SRC,
+    ];
+
+    /**
+     * Urls to delete files depending on the storage type.
+     * @var array
+     */
+    private static $deleteSrcUrls = [
+        self::STORAGE_TYPE_LOCAL => self::LOCAL_DELETE_SRC,
+        self::STORAGE_TYPE_S3 => self::S3_DELETE_SRC,
+    ];
+
+    /**
      * Module translations.
      * @var array|null
      */
@@ -192,6 +210,36 @@ class Module extends BaseModule
     public static function getBaseDir(): string
     {
         return __DIR__;
+    }
+
+    /**
+     * Get src to save files.
+     * @param string $storageType
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public static function getSaveSrc(string $storageType): string
+    {
+        if (!isset(self::$saveSrcUrls[$storageType])){
+            throw new InvalidConfigException('There is no such storage type in the save src urls.');
+        }
+
+        return self::$saveSrcUrls[$storageType];
+    }
+
+    /**
+     * Get src to delete files.
+     * @param string $storageType
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public static function getDeleteSrc(string $storageType): string
+    {
+        if (!isset(self::$deleteSrcUrls[$storageType])){
+            throw new InvalidConfigException('There is no such storage type in the delete src urls.');
+        }
+
+        return self::$deleteSrcUrls[$storageType];
     }
 
     /**

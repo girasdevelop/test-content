@@ -8,6 +8,8 @@ use app\modules\files\assets\FilemanagerAsset;
 /** @var $this yii\web\View */
 /** @var $model Mediafile */
 /** @var $fileAttributeName string */
+/* @var $saveSrc string */
+/* @var $deleteSrc string */
 
 $bundle = FilemanagerAsset::register($this);
 ?>
@@ -30,8 +32,8 @@ $bundle = FilemanagerAsset::register($this);
      data-file-url="<?php echo $model->url ?>"
      data-file-type="<?php echo $model->type ?>"
      data-file-attribute-name="<?php echo $fileAttributeName ?>"
-     data-save-src="<?php echo Module::LOCAL_SAVE_SRC ?>"
-     data-delete-src="<?php echo Module::LOCAL_DELETE_SRC ?>"
+     data-save-src="<?php echo $saveSrc ?>"
+     data-delete-src="<?php echo $deleteSrc ?>"
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
      data-is-image="<?php echo $model->isImage() ?>"
      data-base-url="<?php echo $bundle->baseUrl ?>"

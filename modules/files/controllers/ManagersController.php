@@ -123,6 +123,8 @@ class ManagersController extends Controller
             return $this->render('uploadmanager', [
                 'manager' => 'uploadmanager',
                 'fileAttributeName' => $this->module->fileAttributeName,
+                'saveSrc' => Module::getSaveSrc($this->module->defaultStorageType),
+                'deleteSrc' => Module::getDeleteSrc($this->module->defaultStorageType),
             ]);
         } catch (\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());

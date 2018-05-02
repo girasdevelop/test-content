@@ -65,7 +65,9 @@ class FileinfoController extends Controller
 
         return $this->renderAjax('index', [
             'model' => $model,
-            'fileAttributeName' => $this->module->fileAttributeName
+            'fileAttributeName' => $this->module->fileAttributeName,
+            'saveSrc' => Module::getSaveSrc($this->module->defaultStorageType),
+            'deleteSrc' => Module::getDeleteSrc($this->module->defaultStorageType),
         ]);
     }
 }

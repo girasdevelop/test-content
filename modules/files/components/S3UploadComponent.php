@@ -84,10 +84,6 @@ class S3UploadComponent extends BaseUploadComponent implements UploadComponentIn
      */
     public function init()
     {
-        if (null === $this->s3DefaultBucket || !is_string($this->s3DefaultBucket)){
-            throw new InvalidConfigException('S3 default bucket is not defined correctly.');
-        }
-
         if (null === $this->credentials && !is_callable($this->credentials)) {
             throw new InvalidConfigException('Credentials are not defined correctly.');
         }

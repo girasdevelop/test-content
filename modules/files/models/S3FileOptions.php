@@ -79,7 +79,7 @@ class S3FileOptions extends \yii\db\ActiveRecord
         return [
             'mediafileId' => 'Mediafile ID',
             'bucket' => 'Bucket',
-            'key' => 'Key',
+            'prefix' => 'Prefix',
         ];
     }
 

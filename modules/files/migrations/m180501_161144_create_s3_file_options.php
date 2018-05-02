@@ -16,7 +16,7 @@ class m180501_161144_create_s3_file_options extends Migration
             'mediafileId' => $this->integer()->notNull(),
             'bucket' => $this->string()->notNull(),
             'prefix' => $this->string()->notNull(),
-            'PRIMARY KEY (`mediafileId`, `bucket`, `key`, `region`)',
+            'PRIMARY KEY (`mediafileId`, `bucket`, `prefix`)',
         ]);
     }
 

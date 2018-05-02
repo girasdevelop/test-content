@@ -20,6 +20,7 @@ use app\modules\files\interfaces\{ThumbConfigInterface, UploadModelInterface};
  * @property S3MultiRegionClient|S3ClientInterface $s3Client Amazon web services SDK S3 client.
  * @property string $originalContent Binary contente of the original file.
  * @property array $objectsForDelete Objects for delete (files in the S3 directory).
+ * @property string $bucketForUpdate Bucket, in which the located files will be deleted or uploaded once again.
  *
  * @package Itstructure\FilesModule\models
  *
@@ -62,6 +63,12 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * @var array
      */
     private $objectsForDelete;
+
+    /**
+     * Bucket, in which the located files will be deleted or uploaded once again.
+     * @var string
+     */
+    private $bucketForUpdate;
 
     /**
      * Initialize.
@@ -147,6 +154,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * Set some params for delete.
      * It is needed to set the next parameters:
      * $this->objectsForDelete
+     * $this->bucketForUpdate
      * @return void
      */
     protected function setParamsForDelete(): void
@@ -162,6 +170,8 @@ class S3Upload extends BaseUpload implements UploadModelInterface
         ]);
 
         $this->objectsForDelete = ArrayHelper::getColumn($objects['Contents'], 'Key');
+
+        $this->bucketForUpdate = $s3fileOptions->bucket;
     }
 
     /**

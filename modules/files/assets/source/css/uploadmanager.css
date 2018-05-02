@@ -32,13 +32,16 @@
 #uploadmanager .progress {
   margin-top: 10px;
 }
+#uploadmanager div[role="progress-block"] {
+  max-width: 600px;
+}
 #uploadmanager #workspace div.popup {
   font-weight: bold;
 }
-#uploadmanager #workspace div.popup .error {
+#uploadmanager #workspace div.popup.error {
   color: red;
 }
-#uploadmanager #workspace div.popup .success {
+#uploadmanager #workspace div.popup.success {
   color: green;
 }
 div[role="button-block-delete"]{

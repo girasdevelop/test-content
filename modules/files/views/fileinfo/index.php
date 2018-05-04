@@ -10,6 +10,8 @@ use app\modules\files\assets\FilemanagerAsset;
 /** @var $fileAttributeName string */
 /* @var $saveSrc string */
 /* @var $deleteSrc string */
+/* @var $urlToSetFile string */
+/* @var $widthToSetFile int|null */
 
 $bundle = FilemanagerAsset::register($this);
 ?>
@@ -29,7 +31,7 @@ $bundle = FilemanagerAsset::register($this);
 
 <div class="inputs" role="file-inputs"
      data-file-id="<?php echo $model->id ?>"
-     data-file-url="<?php echo $model->url ?>"
+     data-file-url="<?php echo $urlToSetFile ?>"
      data-file-type="<?php echo $model->type ?>"
      data-file-attribute-name="<?php echo $fileAttributeName ?>"
      data-save-src="<?php echo $saveSrc ?>"
@@ -37,7 +39,7 @@ $bundle = FilemanagerAsset::register($this);
      data-confirm-message="<?php echo Module::t('main', 'Are you sure you want to do this action?') ?>"
      data-is-image="<?php echo $model->isImage() ?>"
      data-base-url="<?php echo $bundle->baseUrl ?>"
-     data-original-preview-width="<?php echo Module::ORIGINAL_PREVIEW_WIDTH ?>">
+     data-original-preview-width="<?php echo $widthToSetFile ?>">
 
     <?php if ($model->isImage()): ?>
         <div class="input-group input-group-sm">

@@ -63,8 +63,33 @@ class FileinfoController extends Controller
 
         $model = Mediafile::findOne($id);
 
+        // Set url to set file by Java script.
+        if ($model->isImage()){
+            $urlToSetFile = $model->getThumbUrl(Module::MEDIUM_THUMB_ALIAS);
+            if (null === $urlToSetFile || empty($urlToSetFile)){
+                $urlToSetFile = $model->url;
+            }
+
+        } else {
+            $urlToSetFile = $model->url;
+        }
+
+        // Set width to set file by Java script.
+        if ($model->isImage()){
+            $widthToSetFile = isset($this->module->thumbsConfig[Module::MEDIUM_THUMB_ALIAS]) ?
+                $this->module->thumbsConfig[Module::MEDIUM_THUMB_ALIAS]['size'][0] : Module::ORIGINAL_PREVIEW_WIDTH;
+
+        } elseif ($model->isAudio() || $model->isVideo()){
+            $widthToSetFile = Module::ORIGINAL_PREVIEW_WIDTH;
+
+        } else {
+            $widthToSetFile = null;
+        }
+
         return $this->renderAjax('index', [
             'model' => $model,
+            'urlToSetFile' => $urlToSetFile,
+            'widthToSetFile' => $widthToSetFile,
             'fileAttributeName' => $this->module->fileAttributeName,
             'saveSrc' => Module::getSaveSrc($this->module->defaultStorageType),
             'deleteSrc' => Module::getDeleteSrc($this->module->defaultStorageType),

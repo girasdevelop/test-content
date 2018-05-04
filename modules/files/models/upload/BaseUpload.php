@@ -203,10 +203,10 @@ abstract class BaseUpload extends Model
     private $mediafileModel;
 
     /**
-     * Set some params for upload.
+     * Set params for send file.
      * @return void
      */
-    abstract protected function setParamsForSave(): void;
+    abstract protected function setParamsForSend(): void;
 
     /**
      * Set some params for delete.
@@ -215,7 +215,7 @@ abstract class BaseUpload extends Model
     abstract protected function setParamsForDelete(): void;
 
     /**
-     * Save file in local directory or send file to remote storage.
+     * Send file to local directory or send file to remote storage.
      * @return bool
      */
     abstract protected function sendFile(): bool;
@@ -403,7 +403,7 @@ abstract class BaseUpload extends Model
     }
 
     /**
-     * Save file in directory and database by using a "mediafileModel".
+     * Save file in the storage and database by using a "mediafileModel".
      * @throws \Exception
      * @return bool
      */
@@ -421,10 +421,10 @@ abstract class BaseUpload extends Model
 
         if (null !== $this->file){
 
-            $this->setParamsForSave();
+            $this->setParamsForSend();
 
             if (!$this->sendFile()){
-                throw new \Exception('Error save file in to directory.', 500);
+                throw new \Exception('Error upload file.', 500);
             }
 
             if ($this->getScenario() == self::SCENARIO_UPDATE){
@@ -568,17 +568,6 @@ abstract class BaseUpload extends Model
 
         } else {
             return $this->uploadDirs[UploadModelInterface::FILE_TYPE_OTHER];
-        }
-    }
-
-    /**
-     * Add owner for mediafile.
-     * @return void
-     */
-    protected function addOwner(): void
-    {
-        if (null !== $this->owner && null !== $this->ownerId && null != $this->ownerAttribute){
-            $this->mediafileModel->addOwner($this->ownerId, $this->owner, $this->ownerAttribute);
         }
     }
 }

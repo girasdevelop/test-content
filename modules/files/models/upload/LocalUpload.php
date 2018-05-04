@@ -59,7 +59,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
     }
 
     /**
-     * Set some params for upload.
+     * Set some params for send.
      * It is needed to set the next parameters:
      * $this->uploadDir
      * $this->uploadPath
@@ -68,7 +68,7 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      * @throws InvalidConfigException
      * @return void
      */
-    protected function setParamsForSave(): void
+    protected function setParamsForSend(): void
     {
         $uploadDir = trim(trim($this->getUploadDirConfig($this->file->type), '/'), '\\');
 
@@ -165,6 +165,8 @@ class LocalUpload extends BaseUpload implements UploadModelInterface
      */
     protected function afterSave()
     {
-        $this->addOwner();
+        if (null !== $this->owner && null !== $this->ownerId && null != $this->ownerAttribute){
+            $this->mediafileModel->addOwner($this->ownerId, $this->owner, $this->ownerAttribute);
+        }
     }
 }

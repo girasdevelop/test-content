@@ -128,7 +128,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      * @throws InvalidConfigException
      * @return void
      */
-    protected function setParamsForSave(): void
+    protected function setParamsForSend(): void
     {
         $uploadDir = $this->getUploadDirConfig($this->file->type);
         $uploadDir = trim(str_replace('\\', self::BUCKET_DIR_SEPARATOR, $uploadDir), self::BUCKET_DIR_SEPARATOR);
@@ -268,9 +268,13 @@ class S3Upload extends BaseUpload implements UploadModelInterface
      */
     protected function afterSave()
     {
-        $this->addOwner();
+        if (null !== $this->owner && null !== $this->ownerId && null != $this->ownerAttribute){
+            $this->mediafileModel->addOwner($this->ownerId, $this->owner, $this->ownerAttribute);
+        }
 
-        $this->setS3FileOptions($this->bucketForUpload, $this->uploadDir);
+        if (null !== $this->bucketForUpload && null !== $this->uploadDir) {
+            $this->setS3FileOptions($this->bucketForUpload, $this->uploadDir);
+        }
     }
 
     /**

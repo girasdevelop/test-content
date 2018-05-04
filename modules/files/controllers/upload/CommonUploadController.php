@@ -202,12 +202,17 @@ abstract class CommonUploadController extends Controller
 
     /**
      * Provides upload or update file.
+     * @throws InvalidConfigException
      * @throws BadRequestHttpException
      * @param Request $request
      * @return array
      */
     private function actionSave(Request $request)
     {
+        if (null === $this->uploadModel){
+            throw new InvalidConfigException('Upload model is not defined.');
+        }
+
         $this->uploadModel->setAttributes($request->post(), false);
         $this->uploadModel->setFile(UploadedFile::getInstanceByName($this->module->fileAttributeName));
 

@@ -40,9 +40,11 @@ class Module extends BaseModule
     const FILE_MANAGER_SRC   = '/files/managers/filemanager';
     const UPLOAD_MANAGER_SRC = '/files/managers/uploadmanager';
     const FILE_INFO_SRC      = '/files/fileinfo/index';
-    const LOCAL_SAVE_SRC     = '/files/upload/local-upload/save';
+    const LOCAL_SEND_SRC     = '/files/upload/local-upload/send';
+    const LOCAL_UPDATE_SRC   = '/files/upload/local-upload/update';
     const LOCAL_DELETE_SRC   = '/files/upload/local-upload/delete';
-    const S3_SAVE_SRC        = '/files/upload/s3-upload/save';
+    const S3_SEND_SRC        = '/files/upload/s3-upload/send';
+    const S3_UPDATE_SRC      = '/files/upload/s3-upload/update';
     const S3_DELETE_SRC      = '/files/upload/s3-upload/delete';
 
     const BACK_URL_PARAM = '__backUrl';
@@ -119,16 +121,25 @@ class Module extends BaseModule
     private $_view = null;
 
     /**
-     * Urls to save files depending on the storage type.
+     * Urls to send new files depending on the storage type.
      * @var array
      */
-    private static $saveSrcUrls = [
-        self::STORAGE_TYPE_LOCAL => self::LOCAL_SAVE_SRC,
-        self::STORAGE_TYPE_S3 => self::S3_SAVE_SRC,
+    private static $sendSrcUrls = [
+        self::STORAGE_TYPE_LOCAL => self::LOCAL_SEND_SRC,
+        self::STORAGE_TYPE_S3 => self::S3_SEND_SRC,
     ];
 
     /**
-     * Urls to delete files depending on the storage type.
+     * Urls to update existing files depending on the storage type.
+     * @var array
+     */
+    private static $updateSrcUrls = [
+        self::STORAGE_TYPE_LOCAL => self::LOCAL_UPDATE_SRC,
+        self::STORAGE_TYPE_S3 => self::S3_UPDATE_SRC,
+    ];
+
+    /**
+     * Urls to delete existing files depending on the storage type.
      * @var array
      */
     private static $deleteSrcUrls = [
@@ -210,22 +221,37 @@ class Module extends BaseModule
     }
 
     /**
-     * Get src to save files.
+     * Get src to send new files.
      * @param string $storageType
      * @return string
      * @throws InvalidConfigException
      */
-    public static function getSaveSrc(string $storageType): string
+    public static function getSendSrc(string $storageType): string
     {
-        if (!isset(self::$saveSrcUrls[$storageType])){
-            throw new InvalidConfigException('There is no such storage type in the save src urls.');
+        if (!isset(self::$sendSrcUrls[$storageType])){
+            throw new InvalidConfigException('There is no such storage type in the send src urls.');
         }
 
-        return self::$saveSrcUrls[$storageType];
+        return self::$sendSrcUrls[$storageType];
     }
 
     /**
-     * Get src to delete files.
+     * Get src to update existing files.
+     * @param string $storageType
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public static function getUpdateSrc(string $storageType): string
+    {
+        if (!isset(self::$updateSrcUrls[$storageType])){
+            throw new InvalidConfigException('There is no such storage type in the update src urls.');
+        }
+
+        return self::$updateSrcUrls[$storageType];
+    }
+
+    /**
+     * Get src to delete existing files.
      * @param string $storageType
      * @return string
      * @throws InvalidConfigException

@@ -7,7 +7,7 @@ use app\modules\files\assets\UploadmanagerAsset;
 /* @var $manager string */
 /* @var $fileAttributeName string */
 /* @var $thumbStubUrls array */
-/* @var $saveSrc string */
+/* @var $sendSrc string */
 /* @var $deleteSrc string */
 
 $this->params['bundle'] = UploadmanagerAsset::register($this);
@@ -19,7 +19,7 @@ $this->params['manager'] = $manager;
 </script>
 
 <div id="uploadmanager" role="uploadmanager"
-     data-save-src="<?php echo $saveSrc ?>"
+     data-send-src="<?php echo $sendSrc ?>"
      data-delete-src="<?php echo $deleteSrc ?>"
      data-file-attribute-name="<?php echo $fileAttributeName ?>"
      data-base-url="<?php echo $this->params['bundle']->baseUrl ?>">

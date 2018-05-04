@@ -54,7 +54,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var fileInputs = $('[role="file-inputs"]'),
-            url = fileInputs.attr("data-save-src"),
+            url = fileInputs.attr("data-update-src"),
             baseUrl = fileInputs.attr("data-base-url"),
             popupElement = $('[role="popup"]'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),

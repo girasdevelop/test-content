@@ -7,4 +7,5 @@ return [
     'Deleted {0} files.' => 'Удалено {0} файлов.',
     'Error save file in to directory.' => 'Ошибка сохранения файла в директорию.',
     'Error save file data in database.' => 'Ошибка сохранения параметров файла в базе данных.',
+    'Parameter id must be sent.' => 'Параметр id должен быть отправлен.',
 ];

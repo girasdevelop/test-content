@@ -91,7 +91,7 @@ class FileinfoController extends Controller
             'urlToSetFile' => $urlToSetFile,
             'widthToSetFile' => $widthToSetFile,
             'fileAttributeName' => $this->module->fileAttributeName,
-            'saveSrc' => Module::getSaveSrc($this->module->defaultStorageType),
+            'updateSrc' => Module::getUpdateSrc($this->module->defaultStorageType),
             'deleteSrc' => Module::getDeleteSrc($this->module->defaultStorageType),
         ]);
     }

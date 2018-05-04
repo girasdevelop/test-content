@@ -50,7 +50,7 @@ $(document).ready(function() {
             progressBlock = fileBlock.find('[role="progress-block"]'),
             buttonBlockUpload = fileBlock.find('[role="button-block-upload"]'),
             buttonBlockDelete = fileBlock.find('[role="button-block-delete"]'),
-            url = window.uploadManagerContainer.attr('data-save-src'),
+            url = window.uploadManagerContainer.attr('data-send-src'),
             fileAttributeName = window.uploadManagerContainer.attr('data-file-attribute-name'),
             subDir = window.fileManagerModalContainer.attr("data-sub-dir"),
             owner = window.fileManagerModalContainer.attr("data-owner"),

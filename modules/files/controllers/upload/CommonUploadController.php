@@ -5,7 +5,7 @@ namespace app\modules\files\controllers\upload;
 use Yii;
 use yii\filters\{AccessControl, ContentNegotiator, VerbFilter};
 use yii\base\{InvalidConfigException, UnknownMethodException};
-use yii\web\{Controller, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException, ForbiddenHttpException};
+use yii\web\{Controller, Request, Response, UploadedFile, BadRequestHttpException, NotFoundHttpException, ForbiddenHttpException};
 use Aws\Exception\AwsException;
 use Aws\S3\Exception\S3Exception;
 use app\modules\files\Module;
@@ -132,35 +132,43 @@ abstract class CommonUploadController extends Controller
     }
 
     /**
-     * Provides upload file.
+     * Send new file to upload it.
      * @throws BadRequestHttpException
      * @return array
      */
-    public function actionSave()
+    public function actionSend()
+    {
+        try {
+            $this->uploadModel = $this->getUploadComponent()->setModelForSave($this->setMediafileModel());
+
+            return $this->actionSave(Yii::$app->request);
+
+        } catch (InvalidConfigException|UnknownMethodException|NotFoundHttpException|AwsException|S3Exception|\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * Update existing file.
+     * @throws BadRequestHttpException
+     * @return array
+     */
+    public function actionUpdate()
     {
         try {
             $request = Yii::$app->request;
 
-            $this->uploadModel = $this->getUploadComponent()->setModelForSave(
-                $this->setMediafileModel(!empty($request->post('id')) ? $request->post('id') : null)
-            );
-
-            $this->uploadModel->setAttributes($request->post(), false);
-            $this->uploadModel->setFile(UploadedFile::getInstanceByName($this->module->fileAttributeName));
-
-            if (!$this->uploadModel->save()){
+            if (empty($request->post('id'))){
                 return $this->getFailResponse(Module::t('actions', 'Error to save file.'), [
-                    'errors' => $this->uploadModel->errors
+                    'errors' => Module::t('actions', 'Parameter id must be sent.')
                 ]);
             }
 
-            if ($this->uploadModel->mediafileModel->isImage()){
-                $this->uploadModel->createThumbs();
-            }
+            $this->uploadModel = $this->getUploadComponent()->setModelForSave(
+                $this->setMediafileModel($request->post('id'))
+            );
 
-            $response['files'][] = $this->getUploadResponse();
-
-            return $this->getSuccessResponse(Module::t('actions', 'File saved.'), $response);
+            return $this->actionSave($request);
 
         } catch (InvalidConfigException|UnknownMethodException|NotFoundHttpException|AwsException|S3Exception|\Exception $e) {
             throw new BadRequestHttpException($e->getMessage(), $e->getCode());
@@ -193,13 +201,39 @@ abstract class CommonUploadController extends Controller
     }
 
     /**
+     * Provides upload or update file.
+     * @throws BadRequestHttpException
+     * @param Request $request
+     * @return array
+     */
+    private function actionSave(Request $request)
+    {
+        $this->uploadModel->setAttributes($request->post(), false);
+        $this->uploadModel->setFile(UploadedFile::getInstanceByName($this->module->fileAttributeName));
+
+        if (!$this->uploadModel->save()){
+            return $this->getFailResponse(Module::t('actions', 'Error to save file.'), [
+                'errors' => $this->uploadModel->errors
+            ]);
+        }
+
+        if ($this->uploadModel->mediafileModel->isImage()){
+            $this->uploadModel->createThumbs();
+        }
+
+        $response['files'][] = $this->getUploadResponse();
+
+        return $this->getSuccessResponse(Module::t('actions', 'File saved.'), $response);
+    }
+
+    /**
      * Serializes the specified data.
      * The default implementation will create a serializer based on the configuration given by [[serializer]].
      * It then uses the serializer to serialize the given data.
      * @param mixed $data the data to be serialized
      * @return mixed the serialized data.
      */
-    protected function serializeData($data)
+    private function serializeData($data)
     {
         return Yii::createObject($this->serializer)->serialize($data);
     }

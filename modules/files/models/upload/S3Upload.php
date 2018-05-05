@@ -244,9 +244,7 @@ class S3Upload extends BaseUpload implements UploadModelInterface
             $thumbConfig->width,
             $thumbConfig->height,
             $thumbConfig->mode
-        )->get($originalFile['extension'], [
-            //'animated' => false
-        ]);
+        )->get($originalFile['extension']);
 
         $result = $this->s3Client->putObject([
             'ACL' => 'public-read',

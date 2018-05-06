@@ -176,6 +176,10 @@ class Catalog extends ActiveRecord
      */
     public function getThumbnailModel()
     {
+        if (null === $this->id) {
+            return null;
+        }
+
         return OwnersMediafiles::getOwnerThumbnail($this->tableName(), $this->id);
     }
 }

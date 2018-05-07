@@ -42,32 +42,32 @@ return [
                 'imageAlbums' => [
                     'title' => 'Image albums',
                     'icon' => 'fa fa-picture-o',
-                    'url' => '/files/image-album',
+                    'url' => '/mfuploader/image-album',
                 ],
                 'audioAlbums' => [
                     'title' => 'Audio albums',
                     'icon' => 'fa fa-headphones',
-                    'url' => '/files/audio-album',
+                    'url' => '/mfuploader/audio-album',
                 ],
                 'videoAlbums' => [
                     'title' => 'Video albums',
                     'icon' => 'fa fa-video-camera',
-                    'url' => '/files/video-album',
+                    'url' => '/mfuploader/video-album',
                 ],
                 'appAlbums' => [
                     'title' => 'Application albums',
                     'icon' => 'fa fa-microchip',
-                    'url' => '/files/application-album',
+                    'url' => '/mfuploader/application-album',
                 ],
                 'textAlbums' => [
                     'title' => 'Text albums',
                     'icon' => 'fa fa-file-text',
-                    'url' => '/files/text-album',
+                    'url' => '/mfuploader/text-album',
                 ],
                 'otherAlbums' => [
                     'title' => 'Other albums',
                     'icon' => 'fa fa-file',
-                    'url' => '/files/other-album',
+                    'url' => '/mfuploader/other-album',
                 ],
             ]
         ],

@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 use yii\data\ArrayDataProvider;
 use Itstructure\FieldWidgets\TableMultilanguage;
 use Itstructure\AdminModule\models\Language;
-use app\modules\files\models\album\Album;
-use app\modules\files\Module as FilesModule;
+use Itstructure\MFUploader\models\album\Album;
+use Itstructure\MFUploader\Module as MFUModule;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Catalog */
@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (($defaultThumbImage = $model->getDefaultThumbImage()) !== null): ?>
         <div class="row">
             <div class="col-md-4">
-                <h5><?php echo FilesModule::t('main', 'Thumbnail'); ?></h5>
+                <h5><?php echo MFUModule::t('main', 'Thumbnail'); ?></h5>
                 <?php echo $defaultThumbImage ?>
             </div>
         </div>
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]),
         'columns' => [
             'thumbnail' => [
-                'label' => FilesModule::t('main', 'Thumbnail'),
+                'label' => MFUModule::t('main', 'Thumbnail'),
                 'value' => function($item) {
                     /** @var Album $item */
                     return Html::a(
@@ -99,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             'name' => [
-                'label' => FilesModule::t('album', 'Albums'),
+                'label' => MFUModule::t('album', 'Albums'),
                 'value' => function($item) {
                     /** @var Album $item */
                     return Html::a(

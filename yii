@@ -8,7 +8,8 @@
  * @license http://www.yiiframework.com/license/
  */
 
-use Itstructure\AdminModule\Module;
+use Itstructure\AdminModule\Module as AdminModule;
+use Itstructure\MFUploader\Module as MFUModule;
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
@@ -20,7 +21,8 @@ $config = require __DIR__ . '/config/console.php';
 
 $application = new yii\console\Application($config);
 
-\Yii::setAlias('@admin', Module::getBaseDir());
+\Yii::setAlias('@admin', AdminModule::getBaseDir());
+\Yii::setAlias('@mfuploader', MFUModule::getBaseDir());
 
 $exitCode = $application->run();
 exit($exitCode);

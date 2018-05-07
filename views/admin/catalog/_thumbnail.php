@@ -1,9 +1,9 @@
 <?php
 
 use yii\helpers\ArrayHelper;
-use app\modules\files\Module;
-use app\modules\files\widgets\FileSetter;
-use app\modules\files\interfaces\UploadModelInterface;
+use Itstructure\MFUploader\Module;
+use Itstructure\MFUploader\widgets\FileSetter;
+use Itstructure\MFUploader\interfaces\UploadModelInterface;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $model app\models\Catalog|Itstructure\AdminModule\models\MultilanguageValidateModel */

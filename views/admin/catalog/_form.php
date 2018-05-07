@@ -4,13 +4,13 @@ use yii\helpers\{Html, ArrayHelper};
 use yii\widgets\ActiveForm;
 use Itstructure\FieldWidgets\{Fields, FieldType};
 use Itstructure\AdminModule\models\Language;
-use app\modules\files\Module;
-use app\modules\files\models\album\Album;
+use Itstructure\MFUploader\Module as MFUModule;
+use Itstructure\MFUploader\models\album\Album;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $model app\models\Catalog|Itstructure\AdminModule\models\MultilanguageValidateModel */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $albums app\modules\files\models\album\Album[] */
+/* @var $albums Album[] */
 /* @var $ownerParams array */
 ?>
 
@@ -58,7 +58,7 @@ use app\modules\files\models\album\Album;
                 [
                     'separator' => '<br />',
                 ]
-            )->label(Module::t('album', 'Albums')); ?>
+            )->label(MFUModule::t('album', 'Albums')); ?>
 
         </div>
     </div>

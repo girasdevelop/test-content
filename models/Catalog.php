@@ -2,14 +2,14 @@
 
 namespace app\models;
 
-use app\modules\files\behaviors\BehaviorMediafile;
 use yii\helpers\{ArrayHelper, Html};
 use Itstructure\AdminModule\models\MultilanguageTrait;
-use app\modules\files\Module;
-use app\modules\files\behaviors\BehaviorAlbum;
-use app\modules\files\models\{Mediafile, OwnersAlbums, OwnersMediafiles};
-use app\modules\files\models\album\Album;
-use app\modules\files\interfaces\UploadModelInterface;
+use Itstructure\MFUploader\behaviors\BehaviorMediafile;
+use Itstructure\MFUploader\Module as MFUModule;
+use Itstructure\MFUploader\behaviors\BehaviorAlbum;
+use Itstructure\MFUploader\models\{Mediafile, OwnersAlbums, OwnersMediafiles};
+use Itstructure\MFUploader\models\album\Album;
+use Itstructure\MFUploader\interfaces\UploadModelInterface;
 
 /**
  * This is the model class for table "catalog".
@@ -157,7 +157,7 @@ class Catalog extends ActiveRecord
             return null;
         }
 
-        $url = $thumbnailModel->getThumbUrl(Module::DEFAULT_THUMB_ALIAS);
+        $url = $thumbnailModel->getThumbUrl(MFUModule::DEFAULT_THUMB_ALIAS);
 
         if (empty($url)) {
             return null;

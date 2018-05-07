@@ -1,6 +1,7 @@
 <?php
 
-use Itstructure\AdminModule\Module;
+use Itstructure\AdminModule\Module as AdminModule;
+use Itstructure\MFUploader\Module as MFUModule;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -34,8 +35,11 @@ $config = [
     'params' => $params,
     'modules' => [
         'admin' => [
-            'class' => Module::class,
+            'class' => AdminModule::class,
         ],
+        'mfuploader' => [
+            'class' => MFUModule::class,
+        ]
     ],
     /*
     'controllerMap' => [

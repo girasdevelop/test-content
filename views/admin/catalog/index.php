@@ -2,8 +2,8 @@
 
 use yii\helpers\{Url, Html};
 use yii\grid\GridView;
-use app\modules\files\Module as FilesModule;
-use app\modules\files\models\album\Album;
+use Itstructure\MFUploader\Module as FilesModule;
+use Itstructure\MFUploader\models\album\Album;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $searchModel app\models\CatalogSearch|Itstructure\AdminModule\models\MultilanguageTrait */

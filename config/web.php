@@ -1,5 +1,18 @@
 <?php
 
+use Itstructure\MFUploader\Module as MFUModule;
+use Itstructure\MFUploader\controllers\ManagersController;
+use Itstructure\MFUploader\controllers\upload\{LocalUploadController, S3UploadController};
+use Itstructure\MFUploader\controllers\album\{
+    ImageAlbumController,
+    AudioAlbumController,
+    VideoAlbumController,
+    ApplicationAlbumController,
+    TextAlbumController,
+    OtherAlbumController
+};
+use Itstructure\MFUploader\components\{LocalUploadComponent, S3UploadComponent};
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -83,30 +96,30 @@ $config = [
     'defaultRoute' => 'site',
     'params' => $params,
     'modules' => [
-        'files' => [
-            'class' => app\modules\files\Module::class,
+        'mfuploader' => [
+            'class' => MFUModule::class,
             'layout' => '@admin/views/layouts/main-admin.php',
             'controllerMap' => [
-                'upload/local-upload' => app\modules\files\controllers\upload\LocalUploadController::class,
-                'upload/s3-upload' => app\modules\files\controllers\upload\S3UploadController::class,
-                'managers' => app\modules\files\controllers\ManagersController::class,
-                'image-album' => app\modules\files\controllers\album\ImageAlbumController::class,
-                'audio-album' => app\modules\files\controllers\album\AudioAlbumController::class,
-                'video-album' => app\modules\files\controllers\album\VideoAlbumController::class,
-                'application-album' => app\modules\files\controllers\album\ApplicationAlbumController::class,
-                'text-album' => app\modules\files\controllers\album\TextAlbumController::class,
-                'other-album' => app\modules\files\controllers\album\OtherAlbumController::class,
+                'upload/local-upload' => LocalUploadController::class,
+                'upload/s3-upload' => S3UploadController::class,
+                'managers' => ManagersController::class,
+                'image-album' => ImageAlbumController::class,
+                'audio-album' => AudioAlbumController::class,
+                'video-album' => VideoAlbumController::class,
+                'application-album' => ApplicationAlbumController::class,
+                'text-album' => TextAlbumController::class,
+                'other-album' => OtherAlbumController::class,
             ],
             'accessRoles' => ['@', '?'],
             'enableCsrfValidation' => false,
-            'defaultStorageType' => app\modules\files\Module::STORAGE_TYPE_S3,
+            'defaultStorageType' => MFUModule::STORAGE_TYPE_LOCAL,
             'components' => [
                 'local-upload-component' => [
-                    'class' => app\modules\files\components\LocalUploadComponent::class,
+                    'class' => LocalUploadComponent::class,
                     'checkExtensionByMimeType' => false
                 ],
                 's3-upload-component' => [
-                    'class' => app\modules\files\components\S3UploadComponent::class,
+                    'class' => S3UploadComponent::class,
                     'checkExtensionByMimeType' => false,
                     'credentials' => require __DIR__ . '/aws-credentials.php',
                     'region' => 'us-west-2',

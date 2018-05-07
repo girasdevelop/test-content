@@ -2,7 +2,7 @@
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $model Itstructure\AdminModule\models\MultilanguageValidateModel */
-/* @var $albums app\modules\files\models\album\Album[] */
+/* @var $albums Itstructure\MFUploader\models\album\Album[] */
 
 $this->title = 'Update Catalog: ' . $model->mainModel->getDefaultTranslate('title');
 $this->params['breadcrumbs'][] = ['label' => 'Catalogs', 'url' => ['index']];

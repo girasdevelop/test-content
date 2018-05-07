@@ -3,7 +3,7 @@
 namespace app\controllers\admin;
 
 use app\models\{Catalog, CatalogSearch};
-use app\modules\files\models\album\Album;
+use Itstructure\MFUploader\models\album\Album;
 use Itstructure\AdminModule\controllers\CommonAdminController;
 
 /**

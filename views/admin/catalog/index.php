@@ -2,8 +2,8 @@
 
 use yii\helpers\{Url, Html};
 use yii\grid\GridView;
+use app\models\Catalog;
 use Itstructure\MFUploader\Module as MFUModule;
-use Itstructure\MFUploader\models\album\Album;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
 /* @var $searchModel app\models\CatalogSearch|Itstructure\AdminModule\models\MultilanguageTrait */
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => MFUModule::t('main', 'Thumbnail'),
                 'value' => function($data) {
-                    /* @var $data Album */
+                    /* @var $data Catalog */
                     $defaultThumbImage = $data->getDefaultThumbImage();
                     return !empty($defaultThumbImage) ? Html::a($defaultThumbImage, Url::to([
                         'view',

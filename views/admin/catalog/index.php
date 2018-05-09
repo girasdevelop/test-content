@@ -2,7 +2,7 @@
 
 use yii\helpers\{Url, Html};
 use yii\grid\GridView;
-use Itstructure\MFUploader\Module as FilesModule;
+use Itstructure\MFUploader\Module as MFUModule;
 use Itstructure\MFUploader\models\album\Album;
 
 /* @var $this Itstructure\AdminModule\components\AdminView */
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             [
-                'label' => FilesModule::t('main', 'Thumbnail'),
+                'label' => MFUModule::t('main', 'Thumbnail'),
                 'value' => function($data) {
                     /* @var $data Album */
                     $defaultThumbImage = $data->getDefaultThumbImage();

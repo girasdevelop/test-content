@@ -111,7 +111,6 @@ $config = [
                 'other-album' => OtherAlbumController::class,
             ],
             'accessRoles' => ['@', '?'],
-            'enableCsrfValidation' => false,
             'defaultStorageType' => MFUModule::STORAGE_TYPE_LOCAL,
             'components' => [
                 'local-upload-component' => [
